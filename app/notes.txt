@@ -1,0 +1,160 @@
+├─ app
+│  ├─ (site)
+│  │  ├─ layout.tsx                      # GLOBAL UI SHELL (+ theme)
+│  │  │  └─ GLOBAL UI SHELL
+│  │  │     ├─ <ThemeProvider />         # 🌗 dark/light
+│  │  │     ├─ <SidebarNav />
+│  │  │     ├─ <Topbar />                # ThemeToggle burada
+│  │  │     └─ <main>{children}</main>
+│  │  │
+│  │  ├─ template.tsx                    # global reset / transitions
+│  │  ├─ page.tsx                        # Home  (/)
+│  │
+│  │  ├─ about/page.tsx
+│  │  ├─ experience/page.tsx
+│  │  ├─ contact/page.tsx
+│  │
+│  │  ├─ updates
+│  │  │  ├─ page.tsx
+│  │  │  └─ success/page.tsx
+│  │  │
+│  │  ├─ blog
+│  │  │  ├─ page.tsx
+│  │  │  └─ [slug]
+│  │  │     ├─ layout.tsx
+│  │  │     └─ page.tsx
+│  │  │
+│  │  └─ projects
+│  │     ├─ layout.tsx                   # PROJECTS SHELL (2 column)
+│  │     ├─ template.tsx                 # filter/search reset
+│  │     ├─ page.tsx                     # /projects list
+│  │     ├─ loading.tsx
+│  │     ├─ error.tsx
+│  │
+│  │     ├─ @modal
+│  │     │  ├─ default.tsx
+│  │     │  └─ (.)[slug]
+│  │     │     ├─ page.tsx               # modal preview (intercept)
+│  │     │     └─ loading.tsx
+│  │
+│  │     ├─ [slug]
+│  │     │  ├─ layout.tsx
+│  │     │  ├─ page.tsx                  # SEO full page
+│  │     │  ├─ not-found.tsx
+│  │     │
+│  │     │  ├─ @lightbox
+│  │     │  │  ├─ default.tsx
+│  │     │  │  └─ (.)images
+│  │     │  │     └─ [imageId]
+│  │     │  │        ├─ page.tsx
+│  │     │  │        └─ loading.tsx
+│  │     │  │
+│  │     │  └─ _lightbox
+│  │     │     ├─ LightboxShell.tsx
+│  │     │     └─ ImageViewer.tsx
+│  │
+│  │     ├─ _components
+│  │     └─ _lib
+│  │
+│  ├─ api
+│  │  ├─ projects
+│  │  │  ├─ route.ts
+│  │  │  └─ [slug]/route.ts
+│  │  │
+│  │  └─ subscriptions
+│  │     ├─ route.ts
+│  │     └─ confirm/route.ts
+│  │
+│  ├─ sitemap.ts
+│  ├─ robots.ts
+│  ├─ not-found.tsx
+│  ├─ error.tsx
+│  └─ global-error.tsx
+│
+├─ components
+│  ├─ providers
+│  │  ├─ ThemeProvider.tsx               # 🌗
+│  │  └─ ThemeToggle.tsx                 # 🌗 (Topbar’a koy)
+│  │
+│  ├─ layout
+│  │  ├─ SidebarNav.tsx
+│  │  ├─ Topbar.tsx
+│  │  └─ Footer.tsx
+│  │
+│  ├─ navigation
+│  │  ├─ Breadcrumbs.tsx
+│  │  └─ BreadcrumbsInline.tsx
+│  │
+│  ├─ marketing
+│  │  ├─ SubscribeForm.tsx
+│  │  ├─ SubscribeInline.tsx
+│  │  └─ SubscribeFooter.tsx
+│  │
+│  ├─ seo
+│  │  ├─ BreadcrumbsJsonLd.tsx
+│  │  ├─ JsonLd.tsx
+│  │  └─ Metadata.ts
+│  │
+│  └─ ui
+│     ├─ button.tsx
+│     ├─ card.tsx
+│     ├─ badge.tsx
+│     ├─ input.tsx
+│     └─ tabs.tsx
+│
+├─ lib
+│  ├─ theme                               # 🌗 (opsiyonel helpers)
+│  │  ├─ themes.ts
+│  │  └─ useTheme.ts
+│  │
+│  ├─ breadcrumbs.ts
+│  ├─ seo.ts
+│  ├─ env.ts
+│  ├─ rateLimit.ts
+│  ├─ cn.ts
+│  └─ constants.ts
+│
+├─ lib/email
+│  ├─ subscription.ts
+│  └─ providers
+│     ├─ resend.ts
+│     └─ mailchimp.ts
+│
+├─ data
+│  ├─ projects
+│  │  ├─ index.ts
+│  │  ├─ types.ts
+│  │  └─ content
+│  │     ├─ seo-friendly-portfolio.ts
+│  │     └─ keyword-rank-tracker.ts
+│  │
+│  └─ site
+│     ├─ navigation.ts
+│     └─ social.ts
+│
+├─ server
+│  ├─ db
+│  │  ├─ client.ts
+│  │  └─ schema.prisma
+│  │
+│  └─ repositories
+│     ├─ projectsRepo.ts
+│     └─ subscribersRepo.ts
+│
+├─ public
+│  └─ projects
+│
+├─ styles
+│  └─ globals.css                         # tailwind dark:
+│
+├─ tests
+│  ├─ unit
+│  ├─ integration
+│  └─ e2e
+│     └─ theme.spec.ts                    # dark ↔ light
+│
+├─ playwright.config.ts
+├─ vitest.config.ts
+├─ next.config.ts
+├─ tsconfig.json
+└─ package.json

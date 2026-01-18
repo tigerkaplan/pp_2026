@@ -1,0 +1,8 @@
+projects/not-found.tsx
+
+Project-specific + icon + metadata
+
+
+http://localhost:3000/robots.txt
+http://localhost:3000/sitemap.xml
+
