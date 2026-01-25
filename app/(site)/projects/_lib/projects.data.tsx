@@ -46,14 +46,17 @@ export const PROJECTS: Project[] = [
     result: "Page load time reduced by 40% and conversion rate increased.",
     features: ["SSR product pages", "Stripe payments", "Admin product management"],
     images: ["/images/projects/ecommerce-1.jpg"],
-    links: { github: "https://github.com/username/ecommerce" },
+    links: {
+       live: "https://example.com",
+      github: "https://github.com/username/ecommerce"
+    },
   },
   {
     id: 3,
     slug: "inventory-management-api",
     title: "Inventory Management API",
     summary: "A RESTful API for managing inventory and stock movements.",
-    featured: true,
+    featured: false,
     year: 2025,
     role: "Backend Developer",
     stack: [".NET Web API", "MS SQL Server"],

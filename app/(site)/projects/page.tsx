@@ -28,26 +28,21 @@ export default async function ProjectsPage() {
         </header>
 
         {featured.length > 0 && (
-          <section className="space-y-4">
-            <h2
-              id="featured-projects"
-              className="scroll-mt-28 text-xl font-semibold"
-            >
-              Featured Projects
-            </h2>
-            <ProjectGrid projects={featured} />
-          </section>
-        )}
+  <section className="space-y-4">
+    <h2 id="featured-projects" className="scroll-mt-28 text-xl font-semibold">
+      Featured Projects
+    </h2>
+    <ProjectGrid projects={featured} variant="featured" />
+  </section>
+)}
 
-        <section className="space-y-4">
-          <h2
-            id="all-projects"
-            className="scroll-mt-28 text-xl font-semibold"
-          >
-            All Projects
-          </h2>
-          <ProjectGrid projects={projects.filter((p) => !p.featured)} />
-        </section>
+<section className="space-y-4">
+  <h2 id="all-projects" className="scroll-mt-28 text-xl font-semibold">
+    All Projects
+  </h2>
+  <ProjectGrid projects={projects.filter((p) => !p.featured)} variant="default" />
+</section>
+
       </section>
     </div>
   );
