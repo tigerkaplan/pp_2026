@@ -117,7 +117,7 @@ function Cover({
           priority={priority} // Preload featured images for faster LCP
         />
       ) : (
-        <div className="absolute inset-0 bg-linear-to-br from-neutral-900 via-neutral-700 to-neutral-500">
+        <div className="absolute inset-0 bg-amber-500/10">
           <div className="absolute inset-0 flex items-center justify-center">
             {/* Placeholder icon:
                - visually neutral
@@ -156,8 +156,7 @@ function Cover({
             </span>
           ))}
           {tagRemaining > 0 ? (
-            <span className="rounded-full bg-neutral-900 px-2.5 py-1 text-[11px] font-medium text-neutral-100 ring-1 ring-white/15"
->
+            <span className="rounded-full bg-white/15 px-2 py-1 text-[11px] text-white">
               +{tagRemaining}
             </span>
           ) : null}
@@ -171,7 +170,7 @@ function Cover({
          - Optionally shows summary (featured only)
          WHY: default cards already show summary in the content column
       ----------------------------------------------------------------------- */}
-      <div className="absolute inset-x-0 bottom-0 p-5 text-white">
+      <div className="absolute inset-x-0 bottom-0 p-5 text-white ">
         <div className="text-xs text-white/75">
           {year} • {role}
         </div>
@@ -181,7 +180,7 @@ function Cover({
            - Default: compact title for dense grid */}
         <h3
           className={
-            isFeatured ? "mt-1 text-2xl font-semibold" : "mt-1 text-base font-semibold"
+            isFeatured ? "mt-1 text-2xl font-semibold" : "mt-1 text-base font-semibold "
           }
         >
           {title}
@@ -191,7 +190,7 @@ function Cover({
            - increases visual density
            - controlled via showSummaryOnImage to keep default cards uniform */}
         {showSummaryOnImage ? (
-          <p className="mt-2 max-w-prose text-sm text-white/85 line-clamp-2">
+          <p className="mt-2 max-w-prose text-sm text-white/85 line-clamp-2 bg-amber-500">
             {summary}
           </p>
         ) : null}
@@ -229,8 +228,17 @@ function Ctas({
   featuredStyle?: boolean;
 }) {
   return (
-    <div className={featuredStyle ? "px-6 py-4" : "border-t border-neutral-200 px-6 py-3"}>
-      <div className="flex flex-wrap items-center gap-3">
+    /* -------------------------------------------------------------------------
+       CTA CONTAINER
+       - Featured: more padding, no border (feels premium / hero)
+       - Default: top border separates CTA from content
+    ------------------------------------------------------------------------- */
+    <div className={featuredStyle ? "px-6 py-5" : "border-t border-neutral-200 px-6 py-4 bg-gray-600/50"}>
+      {/* Row actions:
+         - gap-3 keeps spacing consistent
+         - whitespace-nowrap prevents buttons from wrapping into two lines */}
+      <div className="flex items-center gap-3  ">
+        {/* Live Demo: external link opens new tab */}
         {links?.live ? (
           <a
             href={links.live}
@@ -242,6 +250,7 @@ function Ctas({
           </a>
         ) : null}
 
+        {/* GitHub: external link opens new tab */}
         {links?.github ? (
           <a
             href={links.github}
@@ -253,6 +262,7 @@ function Ctas({
           </a>
         ) : null}
 
+        {/* Details: internal route used for modal (scroll disabled for better UX) */}
         <Link
           href={href}
           scroll={false}
@@ -266,27 +276,28 @@ function Ctas({
         </Link>
       </div>
 
+      {/* -----------------------------------------------------------------------
+         SECONDARY BADGES
+         - optional row under CTAs
+         - used for tech/features labels
+         - kept limited to avoid increasing card height unpredictably
+      ----------------------------------------------------------------------- */}
       {shownBadges.length ? (
-        <div className="mt-2 flex flex-wrap items-center gap-2">
+        <div className="mt-4 flex flex-wrap gap-2">
           {shownBadges.map((t) => (
-            <span
-              key={t}
-              className="rounded-full bg-neutral-900/70 px-2.5 py-1 text-[11px] text-neutral-100 ring-1 ring-white/12"
-            >
+            <span key={t}   className="rounded-full bg-neutral-900/70 px-2.5 py-1 text-[11px] text-neutral-100 ring-1 ring-white/12"
+>
               {t}
             </span>
           ))}
           {remainingBadges > 0 ? (
-            <span className="rounded-full bg-neutral-900/60 px-2.5 py-1 text-[11px] text-neutral-300 ring-1 ring-white/10">
-              +{remainingBadges}
-            </span>
+            <span className="text-xs text-neutral-500">+{remainingBadges}</span>
           ) : null}
         </div>
       ) : null}
     </div>
   );
 }
-
 
 /* =============================================================================
   PROJECT CARD (MAIN)
