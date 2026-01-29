@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { MainNav } from "@/components/navigation/MainNav";
+import Providers from "./providers";
+import { ThemeToggle } from "@/components/providers/ThemeToggle";
+import { Breadcrumbs } from "@/components/navigation/Breadcrumbs";
+
 
 export const metadata: Metadata = {
   title: "Portfolio",
@@ -11,29 +15,39 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="min-h-screen" suppressHydrationWarning>
-        <div className="min-h-screen flex flex-col lg:flex-row">
-          <header className="lg:hidden sticky top-0 z-50 border-b bg-background/80 backdrop-blur">
-            <div className="px-4 py-3">
-              <MainNav />
-            </div>
-          </header>
+        <Providers>
+          <div className="min-h-screen flex flex-col lg:flex-row">
+            <header className="lg:hidden sticky top-0 z-50 border-b bg-background/80 backdrop-blur">
+              <div className="px-4 py-3">
+                <MainNav />
+              </div>
+            </header>
 
-          <aside className="hidden lg:sticky lg:top-0 lg:flex lg:h-screen lg:w-72 xl:w-80 2xl:w-96 border-r bg-background/80 backdrop-blur">
-            <div className="flex h-full w-full flex-col px-4 py-6">
-              <MainNav />
-            </div>
-          </aside>
+            <aside className="hidden lg:sticky lg:top-0 lg:flex lg:h-screen lg:w-72 xl:w-80 2xl:w-96 border-r bg-background/80 backdrop-blur">
+              <div className="flex h-full w-full flex-col px-4 py-6">
+                <MainNav />
+              </div>
+            </aside>
 
-          <main className="flex-1 min-w-0">
-            <div className="w-full border-b">
-              <div className="mx-auto w-full max-w-screen-2xl px-4 sm:px-6 lg:px-8 py-4" />
-            </div>
+            <main className="flex-1 min-w-0">
+              <div className="w-full border-b">
+                <div className="mx-auto w-full max-w-screen-2xl px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between gap-4">
+                  <div className="min-w-0">
+                    <Breadcrumbs />
+                  </div>
 
-            <div className="mx-auto w-full max-w-screen-2xl px-4 sm:px-6 lg:px-8 py-6">
-              {children}
-            </div>
-          </main>
-        </div>
+                  <div className="shrink-0">
+                    <ThemeToggle />
+                  </div>
+                </div>
+              </div>
+
+              <div className="mx-auto w-full max-w-screen-2xl px-4 sm:px-6 lg:px-8 py-6">
+                {children}
+              </div>
+            </main>
+          </div>
+        </Providers>
       </body>
     </html>
   );
