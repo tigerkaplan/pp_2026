@@ -37,7 +37,6 @@ type LegacyMediaQueryList = MediaQueryList & {
 const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  // IMPORTANT: make server + first client render deterministic
   const [mounted, setMounted] = useState(false);
   const [setting, setSetting] = useState<ThemeSetting>("system");
   const [theme, setTheme] = useState<Theme>("light");
@@ -54,11 +53,10 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
     const initialSetting = readInitialSetting();
     setSetting(initialSetting);
-    // apply will run below from the [setting] effect as well,
-    // but we can set theme once immediately:
-    setTheme(resolveTheme(initialSetting));
-    document.documentElement.classList.toggle("dark", resolveTheme(initialSetting) === "dark");
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
+    const initialTheme = resolveTheme(initialSetting);
+    setTheme(initialTheme);
+    document.documentElement.classList.toggle("dark", initialTheme === "dark");
   }, []);
 
   useEffect(() => {
