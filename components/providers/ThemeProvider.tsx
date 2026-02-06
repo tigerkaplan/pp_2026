@@ -1,94 +1,128 @@
+// components/providers/ThemeProvider.tsx
 "use client";
 
-import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  useSyncExternalStore,
+} from "react";
 
 type Theme = "light" | "dark";
 type ThemeSetting = Theme | "system";
 
 type ThemeContextValue = {
+  /** resolved theme (light/dark) */
   theme: Theme;
+  /** user setting (light/dark/system) */
   setting: ThemeSetting;
-  setSetting: React.Dispatch<React.SetStateAction<ThemeSetting>>;
-  toggleTheme: () => void;
-  mounted: boolean;
+  setSetting: (s: ThemeSetting) => void;
+  toggleTheme: () => void; // toggles light<->dark (exits system)
+  cycleSetting: () => void; // cycles system -> light -> dark
 };
 
 const STORAGE_KEY = "theme";
 
-function getSystemTheme(): Theme {
+const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
+
+// ---- system theme subscription (NO setState inside effects) ----
+function subscribeToSystemTheme(cb: () => void) {
+  if (typeof window === "undefined") return () => {};
+  const mql = window.matchMedia("(prefers-color-scheme: dark)");
+
+  // modern
+  if (typeof mql.addEventListener === "function") {
+    mql.addEventListener("change", cb);
+    return () => mql.removeEventListener("change", cb);
+  }
+  // legacy
+  // @ts-expect-error legacy safari
+  if (typeof mql.addListener === "function") {
+    // @ts-expect-error legacy safari
+    mql.addListener(cb);
+    // @ts-expect-error legacy safari
+    return () => mql.removeListener(cb);
+  }
+  return () => {};
+}
+
+function getSystemSnapshot(): Theme {
+  if (typeof window === "undefined") return "light";
   return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 }
 
-function resolveTheme(setting: ThemeSetting): Theme {
-  return setting === "system" ? getSystemTheme() : setting;
+function getServerSnapshot(): Theme {
+  return "light";
 }
 
-function readInitialSetting(): ThemeSetting {
+// ---- localStorage helpers ----
+function readStoredSetting(): ThemeSetting | null {
+  if (typeof window === "undefined") return null;
   const v = window.localStorage.getItem(STORAGE_KEY);
   if (v === "light" || v === "dark" || v === "system") return v;
-  return "system";
+  return null;
 }
 
-type LegacyMediaQueryList = MediaQueryList & {
-  addListener?: (listener: (this: MediaQueryList, ev: MediaQueryListEvent) => void) => void;
-  removeListener?: (listener: (this: MediaQueryList, ev: MediaQueryListEvent) => void) => void;
-};
+function writeStoredSetting(setting: ThemeSetting) {
+  window.localStorage.setItem(STORAGE_KEY, setting);
+}
 
-const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
+function resolveTheme(setting: ThemeSetting, systemTheme: Theme): Theme {
+  return setting === "system" ? systemTheme : setting;
+}
 
-export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [mounted, setMounted] = useState(false);
-  const [setting, setSetting] = useState<ThemeSetting>("system");
-  const [theme, setTheme] = useState<Theme>("light");
+function applyHtmlThemeClass(theme: Theme) {
+  document.documentElement.classList.toggle("dark", theme === "dark");
+}
 
-  const toggleTheme = useCallback(() => {
-    setSetting((prev) => {
-      if (prev === "system") return theme === "dark" ? "light" : "dark";
-      return prev === "dark" ? "light" : "dark";
-    });
-  }, [theme]);
+export function ThemeProvider({
+  children,
+  defaultSetting = "light",
+}: {
+  children: React.ReactNode;
+  /** first-load default if nothing in localStorage */
+  defaultSetting?: ThemeSetting;
+}) {
+  const systemTheme = useSyncExternalStore(
+    subscribeToSystemTheme,
+    getSystemSnapshot,
+    getServerSnapshot
+  );
 
-  useEffect(() => {
-    setMounted(true);
+  const [setting, _setSetting] = useState<ThemeSetting>(() => {
+    return readStoredSetting() ?? defaultSetting;
+  });
 
-    const initialSetting = readInitialSetting();
-    setSetting(initialSetting);
-
-    const initialTheme = resolveTheme(initialSetting);
-    setTheme(initialTheme);
-    document.documentElement.classList.toggle("dark", initialTheme === "dark");
+  const setSetting = useCallback((s: ThemeSetting) => {
+    _setSetting(s);
   }, []);
 
+  const theme = useMemo(() => resolveTheme(setting, systemTheme), [setting, systemTheme]);
+
+  // Side effects only: sync external systems (html class + localStorage)
   useEffect(() => {
-    if (!mounted) return;
+    if (typeof window === "undefined") return;
+    applyHtmlThemeClass(theme);
+    writeStoredSetting(setting);
+  }, [theme, setting]);
 
-    const apply = (t: Theme) => {
-      setTheme(t);
-      document.documentElement.classList.toggle("dark", t === "dark");
-    };
+  const toggleTheme = useCallback(() => {
+    _setSetting((prev) => {
+      const resolved = resolveTheme(prev, getSystemSnapshot());
+      return resolved === "dark" ? "light" : "dark";
+    });
+  }, []);
 
-    window.localStorage.setItem(STORAGE_KEY, setting);
-    apply(resolveTheme(setting));
-
-    if (setting !== "system") return;
-
-    const mql = window.matchMedia("(prefers-color-scheme: dark)") as LegacyMediaQueryList;
-    const onChange = () => apply(mql.matches ? "dark" : "light");
-
-    if (typeof mql.addEventListener === "function") {
-      mql.addEventListener("change", onChange);
-      return () => mql.removeEventListener("change", onChange);
-    }
-
-    if (typeof mql.addListener === "function") {
-      mql.addListener(onChange);
-      return () => mql.removeListener?.(onChange);
-    }
-  }, [setting, mounted]);
+  const cycleSetting = useCallback(() => {
+    _setSetting((prev) => (prev === "system" ? "light" : prev === "light" ? "dark" : "system"));
+  }, []);
 
   const value = useMemo(
-    () => ({ theme, setting, setSetting, toggleTheme, mounted }),
-    [theme, setting, toggleTheme, mounted]
+    () => ({ theme, setting, setSetting, toggleTheme, cycleSetting }),
+    [theme, setting, setSetting, toggleTheme, cycleSetting]
   );
 
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;

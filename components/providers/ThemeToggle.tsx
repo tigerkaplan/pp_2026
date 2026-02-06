@@ -1,30 +1,34 @@
+// components/providers/ThemeToggle.tsx
 "use client";
 
-import { useTheme } from "@/components/providers/ThemeProvider";
+import { useSyncExternalStore } from "react";
+import { useTheme } from "@/components/providers/ThemeProvider"; // ✅ use correct absolute path
 
-export function ThemeToggle() {
-  const { theme, setting, toggleTheme, setSetting, mounted } = useTheme();
+function useIsHydrated() {
+  return useSyncExternalStore(
+    (cb) => {
+      queueMicrotask(cb); // runs once after hydration
+      return () => {};
+    },
+    () => true,  // client snapshot
+    () => false  // server snapshot
+  );
+}
 
-  // prevents hydration mismatch
-  if (!mounted) return null;
+export default function ThemeToggle() {
+  const { theme, toggleTheme } = useTheme();
+  const hydrated = useIsHydrated();
 
   return (
     <div className="flex items-center gap-2">
       <button
+        type="button"
         onClick={toggleTheme}
-        className="rounded-md border px-3 py-1 text-sm bg-white hover:bg-neutral-100 dark:bg-neutral-900 dark:hover:bg-neutral-800"
-        aria-label="Toggle theme"
+        className="rounded-md border border-[rgb(var(--color-border))] px-3 py-2 text-sm"
+        aria-label="Toggle light/dark"
+        title="Toggle light/dark"
       >
-        {theme === "dark" ? "Dark" : "Light"}
-      </button>
-
-      <button
-        onClick={() => setSetting("system")}
-        className="rounded-md border px-2 py-1 text-xs bg-white hover:bg-neutral-100 dark:bg-neutral-900 dark:hover:bg-neutral-800"
-        aria-pressed={setting === "system"}
-        title="Use system theme"
-      >
-        System
+        {hydrated ? (theme === "dark" ? "Dark" : "Light") : "Theme"}
       </button>
     </div>
   );
