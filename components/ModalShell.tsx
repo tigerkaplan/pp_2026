@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import CopyLinkButton from "@/app/(site)/projects/@modal/(.)[slug]/copy-link-button";
 
 export default function ModalShell({
   title,
@@ -17,11 +18,10 @@ export default function ModalShell({
   const router = useRouter();
   const pathname = usePathname();
 
-  // If user opened modal URL directly, there may be no "back" entry that returns to /projects
   const closeHref = useMemo(() => "/projects", []);
+  const copyUrl = pathname;
 
   const close = () => {
-    // heuristic: if this isn't the first entry, back usually works
     if (typeof window !== "undefined" && window.history.length > 1) {
       router.back();
     } else {
@@ -35,7 +35,6 @@ export default function ModalShell({
     };
     window.addEventListener("keydown", onKeyDown);
 
-    // optional: lock scroll behind modal
     const prevOverflow = document.documentElement.style.overflow;
     document.documentElement.style.overflow = "hidden";
 
@@ -47,10 +46,10 @@ export default function ModalShell({
   }, [pathname]);
 
   return (
-    <div className="fixed inset-0 z-1000">
+    <div className="fixed inset-0 z-[1000]">
       {/* Overlay */}
       <div
-        className="absolute inset-0 bg-yellow/60"
+        className="absolute inset-0 bg-[rgb(var(--color-overlay)/0.55)]"
         onClick={close}
         aria-hidden="true"
       />
@@ -58,28 +57,53 @@ export default function ModalShell({
       {/* Panel */}
       <div className="absolute inset-x-0 top-10 mx-auto w-[min(980px,calc(100%-24px))]">
         <div
-          className="relative z-10 overflow-hidden rounded-2xl border border-white/10 bg-neutral-950/90 shadow-xl backdrop-blur"
+          className={[
+            "relative z-10 overflow-hidden rounded-2xl border shadow-xl backdrop-blur",
+            "border-[rgb(var(--color-modal-border))]",
+            "bg-[rgb(var(--color-modal-bg)/0.9)]",
+            "text-[rgb(var(--color-modal-fg))]",
+          ].join(" ")}
           role="dialog"
           aria-modal="true"
-          aria-label={typeof title === "string" ? title : "Project preview"}
-          onClick={(e) => e.stopPropagation()} // prevent overlay close when clicking inside
+          aria-label={title || "Project preview"}
+          onClick={(e) => e.stopPropagation()}
         >
-          <div className="flex items-start justify-between gap-3 border-b border-white/10 px-5 py-4">
+          {/* Header */}
+          <div
+            className={[
+              "flex items-start justify-between gap-3 border-b px-5 py-4",
+              "border-[rgb(var(--color-modal-border))]",
+            ].join(" ")}
+          >
             <div className="min-w-0">
-              <h2 className="truncate text-base font-semibold text-white">
+              <h2 className="truncate text-base font-semibold text-[rgb(var(--color-modal-fg))]">
                 {title}
               </h2>
+
               {subtitle ? (
-                <p className="mt-1 text-sm text-white/60">{subtitle}</p>
+                <p className="mt-1 text-sm text-[rgb(var(--color-modal-fg-muted))]">
+                  {subtitle}
+                </p>
               ) : null}
             </div>
 
+            {/* ACTIONS */}
             <div className="flex items-center gap-2">
               {actions}
+
+              <CopyLinkButton url={copyUrl} />
+
               <button
                 type="button"
                 onClick={close}
-                className="rounded-md border border-white/10 px-3 py-2 text-sm text-white/80 hover:bg-white/5 hover:text-white"
+                className={[
+                  "rounded-md border px-3 py-2 text-sm transition",
+                  "border-[rgb(var(--color-modal-border))]",
+                  "text-[rgb(var(--color-modal-fg))]",
+                  "hover:bg-[rgb(var(--color-surface)/0.25)]",
+                  "focus-visible:outline-none focus-visible:ring-2",
+                  "focus-visible:ring-[rgb(var(--color-nav-active))]/40",
+                ].join(" ")}
                 aria-label="Close"
                 title="Close"
               >
@@ -88,7 +112,24 @@ export default function ModalShell({
             </div>
           </div>
 
-          <div className="max-h-[75vh] overflow-auto px-5 py-4">
+          {/* Content */}
+          <div
+            className={[
+              "max-h-[75vh] overflow-auto px-5 py-4",
+              // IMPORTANT: do NOT force buttons in content to become white.
+              // Only normalize common text nodes:
+              "[&_p]:text-[rgb(var(--color-modal-fg))]",
+              "[&_li]:text-[rgb(var(--color-modal-fg))]",
+              "[&_span]:text-[rgb(var(--color-modal-fg))]",
+              "[&_h1]:text-[rgb(var(--color-modal-fg))]",
+              "[&_h2]:text-[rgb(var(--color-modal-fg))]",
+              "[&_h3]:text-[rgb(var(--color-modal-fg))]",
+              "[&_h4]:text-[rgb(var(--color-modal-fg))]",
+              "[&_small]:text-[rgb(var(--color-modal-fg-muted))]",
+              "[&_.muted]:text-[rgb(var(--color-modal-fg-muted))]",
+              "[&_a]:text-[rgb(var(--color-modal-fg))] [&_a]:underline [&_a]:underline-offset-4",
+            ].join(" ")}
+          >
             {children}
           </div>
         </div>
