@@ -14,18 +14,25 @@ export default function CopyLinkButton({ url }: { url: string }) {
             setCopied(true);
             setTimeout(() => setCopied(false), 1200);
         } catch {
-            // fallback
-            const text = absolute || url;
-            prompt("Copy this link:", text);
+            prompt("Copy this link:", absolute || url);
         }
     };
 
     return (
         <button
+            type="button"
             onClick={copy}
-            className="rounded-md border px-2 py-1 text-sm hover:bg-muted"
             aria-label="Copy link"
             title="Copy link"
+            className={[
+                "rounded-md px-3 py-2 text-sm font-medium transition",
+                "border border-[rgb(var(--color-modal-border))]",
+                "!text-[rgb(var(--color-modal-fg))]",
+                "!bg-[rgb(var(--color-surface)/0.18)]",
+                "hover:!bg-[rgb(var(--color-surface)/0.3)]",
+                "focus-visible:outline-none focus-visible:ring-2",
+                "focus-visible:ring-[rgb(var(--color-nav-active))]/40",
+            ].join(" ")}
         >
             {copied ? "Copied" : "Copy link"}
         </button>

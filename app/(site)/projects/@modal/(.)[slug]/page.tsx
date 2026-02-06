@@ -9,7 +9,14 @@ type Props = { params: Promise<{ slug: string }> };
 
 function Badge({ children }: { children: React.ReactNode }) {
   return (
-    <span className="rounded-full bg-white/5 px-2 py-1 text-xs text-white/80 ring-1 ring-white/10">
+    <span
+      className={[
+        "rounded-full px-2 py-1 text-xs ring-1 backdrop-blur",
+        "bg-[rgb(var(--color-surface)/0.22)]",
+        "text-[rgb(var(--color-modal-fg-muted))]",
+        "ring-[rgb(var(--color-modal-border))]",
+      ].join(" ")}
+    >
       {children}
     </span>
   );
@@ -23,9 +30,19 @@ function StatCard({
   value: React.ReactNode;
 }) {
   return (
-    <div className="rounded-xl border border-white/10 bg-white/5 p-4">
-      <div className="text-xs font-medium text-white/60">{label}</div>
-      <div className="mt-2 text-sm text-white/85">{value}</div>
+    <div
+      className={[
+        "rounded-xl border p-4",
+        "border-[rgb(var(--color-modal-border))]",
+        "bg-[rgb(var(--color-surface)/0.18)]",
+      ].join(" ")}
+    >
+      <div className="text-xs font-medium text-[rgb(var(--color-modal-fg-muted))]">
+        {label}
+      </div>
+      <div className="mt-2 text-sm text-[rgb(var(--color-modal-fg))]">
+        {value}
+      </div>
     </div>
   );
 }
@@ -48,14 +65,22 @@ export default async function ProjectModal({ params }: Props) {
     <ModalShell
       title={project.title}
       subtitle={
-        <span className="inline-flex flex-wrap items-center gap-2">
-          <span>{project.year}</span>
+        <span className="inline-flex flex-wrap items-center gap-2 text-[rgb(var(--color-modal-fg-muted))]">
+          <span className="text-[rgb(var(--color-modal-fg))]">{project.year}</span>
           <span className="opacity-60">•</span>
-          <span>{project.role}</span>
+          <span className="text-[rgb(var(--color-modal-fg))]">{project.role}</span>
+
           {project.featured ? (
             <>
               <span className="opacity-60">•</span>
-              <span className="rounded-full bg-yellow-400/15 px-2 py-0.5 text-xs text-yellow-200 ring-1 ring-yellow-400/20">
+              <span
+                className={[
+                  "rounded-full px-2 py-0.5 text-xs ring-1",
+                  "bg-[rgb(var(--color-nav-active))/0.18]",
+                  "text-[rgb(var(--color-modal-fg))]",
+                  "ring-[rgb(var(--color-modal-border))]",
+                ].join(" ")}
+              >
                 Featured
               </span>
             </>
@@ -65,7 +90,7 @@ export default async function ProjectModal({ params }: Props) {
       actions={<OpenRevealButton href={fullUrl} />}
     >
       {/* SUMMARY */}
-      <p className="text-sm text-white/75 leading-relaxed">
+      <p className="text-sm leading-relaxed text-[rgb(var(--color-modal-fg))]">
         {project.summary}
       </p>
 
@@ -74,9 +99,11 @@ export default async function ProjectModal({ params }: Props) {
         {tags.map((t) => (
           <Badge key={t}>{t}</Badge>
         ))}
+
         {tags.length > 0 && stack.length > 0 ? (
-          <span className="mx-1 text-white/20">|</span>
+          <span className="mx-1 text-[rgb(var(--color-modal-border))]">|</span>
         ) : null}
+
         {stack.map((s) => (
           <Badge key={s}>{s}</Badge>
         ))}
@@ -92,14 +119,20 @@ export default async function ProjectModal({ params }: Props) {
       {/* HIGHLIGHTS */}
       {highlights.length > 0 ? (
         <div className="mt-6">
-          <div className="text-sm font-semibold text-white">
+          <div className="text-sm font-semibold text-[rgb(var(--color-modal-fg))]">
             Highlights
           </div>
+
           <ul className="mt-3 grid gap-2 md:grid-cols-2">
             {highlights.map((h) => (
               <li
                 key={h}
-                className="rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white/85"
+                className={[
+                  "rounded-lg border px-3 py-2 text-sm",
+                  "border-[rgb(var(--color-modal-border))]",
+                  "bg-[rgb(var(--color-surface)/0.18)]",
+                  "text-[rgb(var(--color-modal-fg))]",
+                ].join(" ")}
               >
                 {h}
               </li>
@@ -109,7 +142,12 @@ export default async function ProjectModal({ params }: Props) {
       ) : null}
 
       {/* LINKS + BACK */}
-      <div className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-white/10 pt-4">
+      <div
+        className={[
+          "mt-6 flex flex-wrap items-center justify-between gap-3 border-t pt-4",
+          "border-[rgb(var(--color-modal-border))]",
+        ].join(" ")}
+      >
         <BackToProjectsButton />
 
         <div className="flex flex-wrap gap-2">
@@ -119,10 +157,14 @@ export default async function ProjectModal({ params }: Props) {
             rel="noreferrer"
             aria-disabled={!github}
             className={[
-              "rounded-md border border-white/10 px-3 py-2 text-sm",
+              "rounded-md border px-3 py-2 text-sm transition",
+              "border-[rgb(var(--color-modal-border))]",
               github
-                ? "text-white/80 hover:bg-white/5 hover:text-white"
-                : "pointer-events-none text-white/30 opacity-50",
+                ? [
+                    "text-[rgb(var(--color-modal-fg))]",
+                    "hover:bg-[rgb(var(--color-surface)/0.25)]",
+                  ].join(" ")
+                : "pointer-events-none opacity-50 text-[rgb(var(--color-modal-fg-muted))]",
             ].join(" ")}
           >
             GitHub
@@ -134,10 +176,19 @@ export default async function ProjectModal({ params }: Props) {
             rel="noreferrer"
             aria-disabled={!live}
             className={[
-              "rounded-md px-3 py-2 text-sm font-medium",
+              "rounded-md px-3 py-2 text-sm font-medium transition",
               live
-                ? "bg-white text-neutral-900 hover:opacity-90"
-                : "pointer-events-none bg-white/20 text-white/30 opacity-50",
+                ? [
+                    "bg-[rgb(var(--color-nav-active))]",
+                    "text-[rgb(var(--color-nav-active-fg))]",
+                    "hover:opacity-90",
+                  ].join(" ")
+                : [
+                    "pointer-events-none opacity-50",
+                    "bg-[rgb(var(--color-surface)/0.25)]",
+                    "text-[rgb(var(--color-modal-fg-muted))]",
+                    "ring-1 ring-[rgb(var(--color-modal-border))]",
+                  ].join(" "),
             ].join(" ")}
           >
             Live
@@ -146,7 +197,7 @@ export default async function ProjectModal({ params }: Props) {
       </div>
 
       {/* OPTIONAL: small note */}
-      <p className="mt-4 text-xs text-white/45">
+      <p className="mt-4 text-xs text-[rgb(var(--color-modal-fg-muted))]">
         Tip: Press ESC or click outside to close. Use “View full case study” for the SEO page.
       </p>
     </ModalShell>
