@@ -1,0 +1,83 @@
+/* =========================================================
+   LIGHT MODE (default)
+   ========================================================= */
+:root {
+  /* ---------- Background ---------- */
+  --color-bg: 206 214 198;           /* #CED6C6 */
+
+  /* ---------- Surfaces ---------- */
+  --color-surface: 156 175 136;      /* #9CAF88 */
+  --color-surface-weak: 190 200 180; /* #BEC8B4 */
+
+  /* ---------- Borders ---------- */
+  --color-border: 190 200 180;       /* #BEC8B4 */
+
+  /* ---------- Text (global) ---------- */
+  --color-fg: 22 32 42;              /* #16202A */
+  --color-fg-muted: 62 74 86;        /* #3E4A56 */
+
+  /* ---------- Glass (light) ---------- */
+  --color-glass: 206 214 198;
+  --color-glass-hover: 190 200 180;
+
+  /* ---------- Navigation ---------- */
+  --color-nav-active: 94 107 79;     /* #5E6B4F */
+  --color-nav-active-fg: 255 255 255;
+
+  /* =====================================================
+     MODAL (LIGHT MODE — DARKER TEXT & BORDER)
+     ===================================================== */
+  --color-overlay: 18 26 34;          /* darker overlay */
+
+  --color-modal-bg: 206 214 198;      /* #C6CEBE */
+  --color-modal-border: 130 140 120;  /* #828C78 (darker edge) */
+
+  --color-modal-fg: 16 24 32;         /* #101820 (strong title/body text) */
+  --color-modal-fg-muted: 46 58 66; 
+    /* #2E3A42 */
+
+  --color-modal-fg: 22 32 42;              /* #16202A */
+  --color-modal-fg-muted: 62 74 86;        /* #3E4A56 */
+}
+
+/* =========================================================
+   DARK MODE
+   ========================================================= */
+.dark {
+  /* ---------- Background (depth) ---------- */
+  --color-bg: 66 70 101;              /* #424665 */
+  --color-bg-1: 56 60 90;             /* #383C5A */
+  --color-bg-2: 44 47 74;             /* #2C2F4A */
+
+  /* ---------- Surfaces ---------- */
+  --color-surface: 100 104 132;       /* #646884 */
+  --color-surface-weak: 76 80 110;    /* #4C506E */
+
+  /* ---------- Borders ---------- */
+  --color-border: 76 80 110;        /* #8D8FA4 */
+
+  /* ---------- Text (global) ---------- */
+  --color-fg: 176 176 193;            /* #B0B0C1 */
+  --color-fg-muted: 154 156 178;      /* #9A9CB2 */
+  --color-fg-muted-1: 168 170 192;    /* #A8AAC0 */
+  --color-fg-muted-2: 182 184 206;    /* #B6B8CE */
+
+  /* ---------- Glass (dark) ---------- */
+  --color-glass: 66 70 101;
+  --color-glass-hover: 100 104 132;
+
+  /* ---------- Navigation ---------- */
+  --color-nav-active: 50 54 82;       /* #323652 */
+  --color-nav-active-fg: 176 176 193;
+
+  /* =====================================================
+     MODAL (DARK MODE — DARKER BORDER, CLEAR TEXT)
+     ===================================================== */
+  --color-overlay: 0 0 0;
+
+  --color-modal-bg: 44 47 74;         /* bg-2 */
+  --color-modal-border: 120 122 150;  /* darker than global border */
+
+  --color-modal-fg: 210 210 225;      /* clear, readable */
+  --color-modal-fg-muted: 170 172 194;
+}

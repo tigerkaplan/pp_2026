@@ -1,0 +1,14 @@
+:root {
+  /* layout widths */
+  --sidebar-sm: 16rem;
+  --sidebar-md: 18rem;
+  --sidebar-lg: 20rem;
+
+  /* content */
+  --content-max: 72rem;
+
+  /* spacing */
+  --gutter-sm: 1rem;
+  --gutter-md: 1.5rem;
+  --gutter-lg: 2.5rem;
+}

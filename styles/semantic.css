@@ -1,0 +1,51 @@
+/* semantic.css — roles mapped to tokens */
+
+:root {
+  /* App */
+  --color-bg: var(--lavender);
+  --color-fg: var(--oxford-blue);
+
+  /* Surfaces */
+  --color-surface: var(--white);
+  --color-surface-muted: 241 245 249;
+
+  /* Borders */
+  --color-border: 199 210 233;
+
+  /* Layout roles */
+  --color-sidebar-bg: var(--space-cadet);
+  --color-topbar-bg: var(--oxford-blue);
+
+  /* Accents */
+  --color-primary: var(--jordy-blue);
+  --color-primary-hover: 167 196 236;
+  --color-primary-fg: var(--oxford-blue);
+
+  /* Breadcrumbs */
+  --color-breadcrumb: var(--yinmn-blue);
+}
+
+.dark {
+  /* App */
+  --color-bg: var(--oxford-blue);
+  --color-fg: 232 236 246;
+
+  /* Surfaces */
+  --color-surface: var(--space-cadet);
+  --color-surface-muted: var(--yinmn-blue);
+
+  /* Borders */
+  --color-border: 47 62 99;
+
+  /* Layout roles */
+  --color-sidebar-bg: var(--space-cadet);
+  --color-topbar-bg: var(--oxford-blue);
+
+  /* Accents */
+  --color-primary: var(--jordy-blue);
+  --color-primary-hover: 193 214 242;
+  --color-primary-fg: var(--oxford-blue);
+
+  /* Breadcrumbs */
+  --color-breadcrumb: var(--jordy-blue);
+}

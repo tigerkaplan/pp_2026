@@ -1,0 +1,21 @@
+:root {
+  /* breakpoints (optional reference) */
+  --bp-lg: 1024px;
+  --bp-xl: 1280px;
+  --bp-2xl: 1536px;
+
+  /* layout sizing */
+  --sidebar-lg: 18rem;   /* 288px */
+  --sidebar-xl: 20rem;   /* 320px */
+  --sidebar-2xl: 24rem;  /* 384px */
+
+  --content-max: 80rem;  /* ~1280px (instead of max-w-screen-2xl) */
+
+  /* spacing */
+  --pad-x: 1rem;         /* px-4 */
+  --pad-x-sm: 1.5rem;    /* sm:px-6 */
+  --pad-x-lg: 2rem;      /* lg:px-8 */
+
+  --content-pad-y: 1.5rem; /* py-6 */
+  --topbar-pad-y: 1rem;    /* py-4 */
+}
