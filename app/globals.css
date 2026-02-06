@@ -1,8 +1,21 @@
 @import "tailwindcss";
+@import "../styles/tokens.css";
 
-/* optional */
+/* Tailwind v4 variants */
+@custom-variant dark (&:where(.dark, .dark *));
+@custom-variant portrait (@media (orientation: portrait));
+@custom-variant landscape (@media (orientation: landscape));
+
 @layer base {
   html {
     color-scheme: light dark;
+    background-color: rgb(var(--color-bg));
+    color: rgb(var(--color-fg));
+  }
+
+  body {
+    min-height: 100vh;
+    background-color: rgb(var(--color-bg));
+    color: rgb(var(--color-fg));
   }
 }
