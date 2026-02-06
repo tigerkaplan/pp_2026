@@ -1,3 +1,4 @@
+// components/navigation/NavLinks.tsx
 "use client";
 
 import Link from "next/link";
@@ -12,39 +13,47 @@ const LINKS = [
   { label: "Contact", href: "/contact" },
 ];
 
-export const NavLinks = () => {
+type NavLinksProps = {
+  onNavigate?: () => void;
+};
+
+export const NavLinks = ({ onNavigate }: NavLinksProps) => {
   const pathname = usePathname();
 
-  // 🔽 BURAYA
   const isActive = (href: string) =>
     href === "/"
       ? pathname === "/"
       : pathname === href || pathname.startsWith(href + "/");
 
-  const activeHref = LINKS.find((l) => isActive(l.href))?.href;
-
   return (
     <div className="h-full grid grid-cols-1 auto-rows-fr gap-2">
       {LINKS.map((item) => {
-        const active = item.href === activeHref;
+        const active = isActive(item.href);
 
         return (
           <Link
             key={item.href}
             href={item.href}
+            onClick={onNavigate}
             aria-current={active ? "page" : undefined}
             className={[
+              // DO NOT change sizing
               "h-full rounded-lg border px-4",
               "flex items-center justify-between",
               "text-sm lg:text-base font-medium transition",
-              active
-                ? "opacity-100 bg-muted/40 ring-1 ring-foreground/10"
-                : activeHref
-                ? "opacity-35 hover:opacity-70"
-                : "opacity-100 hover:bg-muted/20",
+
+              // base color always
+              "bg-[rgb(var(--color-surface-weak)_/_0.9)]",
+
+              // hover ONLY when not active (so active stays darker)
+              active ? "" : "hover:bg-[rgb(var(--color-surface-strong))]",
+
+              // active stays darker
+              active ? "bg-rgb(var(--color-surface-strong)]" : "",
             ].join(" ")}
           >
-            <span className="truncate">{item.label}</span>
+            
+               <span className="truncate">{item.label}</span>
             {active && (
               <span className="text-xs opacity-70">Current</span>
             )}

@@ -2,13 +2,9 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import type { Project } from "@/app/projects/_types/project";
+import type { Project } from "@/app/(site)/projects/_types/project";
 
-export default function OnThisPageProjects({
-  projects,
-}: {
-  projects: Project[];
-}) {
+export default function OnThisPageProjects({ projects }: { projects: Project[] }) {
   const [open, setOpen] = useState(true);
   const [slideDown, setSlideDown] = useState(false);
 
@@ -29,7 +25,6 @@ export default function OnThisPageProjects({
         const delta = y - lastY.current;
 
         if (Math.abs(delta) > 8) {
-          // scroll down => slide down, scroll up => back
           setSlideDown(delta > 0);
           lastY.current = y;
         }
@@ -45,15 +40,32 @@ export default function OnThisPageProjects({
     };
   }, []);
 
+  const panelClass = [
+    "rounded-2xl border shadow-sm transition-all duration-300 backdrop-blur",
+    "border-[rgb(var(--color-border))]",
+    "bg-[rgb(var(--color-topbar-bg)/0.75)] supports-[backdrop-filter]:bg-[rgb(var(--color-topbar-bg)/0.6)]",
+    slideDown ? "translate-y-6" : "translate-y-0",
+    open ? "max-h-[70vh]" : "max-h-12",
+  ].join(" ");
+
+  const headerText = "text-sm font-semibold text-[rgb(var(--color-fg))]";
+  const subText = "text-xs text-[rgb(var(--color-fg-muted))]";
+
+  const sectionLabel = "mb-2 text-xs font-medium text-[rgb(var(--color-fg-muted))]";
+
+  const anchorClass =
+    "block rounded-md px-2 py-1 text-sm text-[rgb(var(--color-fg-muted))] " +
+    "hover:bg-[rgb(var(--color-surface)/0.35)] hover:text-[rgb(var(--color-fg))]";
+
+  const dividerClass = "my-3 border-t border-[rgb(var(--color-border))]";
+
+  const linkClass =
+    "block rounded-md px-2 py-1 text-sm text-[rgb(var(--color-fg-muted))] " +
+    "hover:bg-[rgb(var(--color-surface)/0.35)] hover:text-[rgb(var(--color-fg))]";
+
   return (
     <aside className="fixed right-6 top-24 z-40 hidden w-72 lg:block">
-      <div
-        className={[
-          "rounded-2xl border border-neutral-200 bg-white/80 backdrop-blur shadow-sm transition-all duration-300",
-          slideDown ? "translate-y-6" : "translate-y-0",
-          open ? "max-h-[70vh]" : "max-h-12",
-        ].join(" ")}
-      >
+      <div className={panelClass}>
         {/* Header / Toggle */}
         <button
           type="button"
@@ -61,12 +73,8 @@ export default function OnThisPageProjects({
           className="flex w-full items-center justify-between px-4 py-3"
           aria-expanded={open}
         >
-          <span className="text-sm font-semibold text-neutral-900">
-            On this page
-          </span>
-          <span className="text-xs text-neutral-600">
-            {open ? "Hide" : "Show"}
-          </span>
+          <span className={headerText}>On this page</span>
+          <span className={subText}>{open ? "Hide" : "Show"}</span>
         </button>
 
         {/* Body */}
@@ -74,58 +82,40 @@ export default function OnThisPageProjects({
           <div className="max-h-[calc(70vh-3rem)] overflow-y-auto px-2 pb-3">
             {/* Sections (anchors) */}
             <div className="px-2 pt-1">
-              <p className="mb-2 text-xs font-medium text-neutral-500">
-                Sections
-              </p>
+              <p className={sectionLabel}>Sections</p>
 
               <div className="space-y-1">
-                <a
-                  href="#featured-projects"
-                  className="block rounded-md px-2 py-1 text-sm text-neutral-700 hover:bg-neutral-50 hover:text-neutral-900"
-                >
+                <a href="#featured-projects" className={anchorClass}>
                   Featured Projects
                 </a>
-                <a
-                  href="#all-projects"
-                  className="block rounded-md px-2 py-1 text-sm text-neutral-700 hover:bg-neutral-50 hover:text-neutral-900"
-                >
+                <a href="#all-projects" className={anchorClass}>
                   All Projects
                 </a>
               </div>
             </div>
 
-            <div className="my-3 border-t border-neutral-200" />
+            <div className={dividerClass} />
 
             {/* Projects list (links to slug pages) */}
             <div className="px-2">
-              <p className="mb-2 text-xs font-medium text-neutral-500">
-                Featured
-              </p>
+              <p className={sectionLabel}>Featured</p>
               <ul className="space-y-1">
                 {featured.map((p) => (
                   <li key={p.id}>
-                    <Link
-                      href={`/projects/${p.slug}`}
-                      className="block rounded-md px-2 py-1 text-sm text-neutral-700 hover:bg-neutral-50 hover:text-neutral-900"
-                    >
+                    <Link href={`/projects/${p.slug}`} className={linkClass}>
                       {p.title}
                     </Link>
                   </li>
                 ))}
               </ul>
 
-              <div className="my-3 border-t border-neutral-200" />
+              <div className={dividerClass} />
 
-              <p className="mb-2 text-xs font-medium text-neutral-500">
-                All projects
-              </p>
+              <p className={sectionLabel}>All projects</p>
               <ul className="space-y-1">
                 {rest.map((p) => (
                   <li key={p.id}>
-                    <Link
-                      href={`/projects/${p.slug}`}
-                      className="block rounded-md px-2 py-1 text-sm text-neutral-700 hover:bg-neutral-50 hover:text-neutral-900"
-                    >
+                    <Link href={`/projects/${p.slug}`} className={linkClass}>
                       {p.title}
                     </Link>
                   </li>
