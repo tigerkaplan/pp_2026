@@ -1,51 +1,102 @@
-/* semantic.css — roles mapped to tokens */
+/* =========================================================
+   DESIGN TOKENS
+   ========================================================= */
 
 :root {
-  /* App */
-  --color-bg: var(--lavender);
-  --color-fg: var(--oxford-blue);
+  /* --- Palette --- */
+  --sage-50:  220 228 212;
+  --sage-100: 206 214 198;   /* base bg */
+  --sage-200: 190 200 180;
+  --sage-300: 156 175 136;
+  --sage-400: 94  107 79;    /* nav active */
 
-  /* Surfaces */
-  --color-surface: var(--white);
-  --color-surface-muted: 241 245 249;
+  --ink-900: 16  24  32;
+  --ink-800: 22  32  42;
+  --ink-700: 46  58  66;
+  --ink-600: 62  74  86;
 
-  /* Borders */
-  --color-border: 199 210 233;
+  /* --- Background --- */
+  --color-bg:           var(--sage-100);   /* #CED6C6 */
+  --color-topbar-bg:    var(--sage-200);
 
-  /* Layout roles */
-  --color-sidebar-bg: var(--space-cadet);
-  --color-topbar-bg: var(--oxford-blue);
+  /* --- Surfaces --- */
+  --color-surface:      var(--sage-300);   /* #9CAF88 */
+  --color-surface-weak: var(--sage-200);   /* #BEC8B4 */
 
-  /* Accents */
-  --color-primary: var(--jordy-blue);
-  --color-primary-hover: 167 196 236;
-  --color-primary-fg: var(--oxford-blue);
+  /* --- Borders --- */
+  --color-border:       var(--sage-200);   /* #BEC8B4 */
 
-  /* Breadcrumbs */
-  --color-breadcrumb: var(--yinmn-blue);
+  /* --- Text --- */
+  --color-fg:           var(--ink-800);    /* #16202A */
+  --color-fg-muted:     var(--ink-600);    /* #3E4A56 */
+
+  /* --- Navigation --- */
+  --color-nav-active:    var(--sage-400);  /* #5E6B4F */
+  --color-nav-active-fg: 255 255 255;
+
+  /* --- Modal --- */
+  --color-overlay:       var(--ink-900);
+  --color-modal-bg:      var(--sage-100);
+  --color-modal-border:  130 140 120;
+  --color-modal-fg:      var(--ink-800);
+  --color-modal-fg-muted:var(--ink-600);
+
+  /* --- Accents --- */
+  --color-primary:       167 196 236;
+  --color-primary-hover: 193 214 242;
+  --color-primary-fg:    var(--ink-800);
 }
 
+/* =========================================================
+   DARK MODE
+   ========================================================= */
+
 .dark {
-  /* App */
-  --color-bg: var(--oxford-blue);
-  --color-fg: 232 236 246;
+  /* --- Palette --- */
+  --space-900: 44  47  74;
+  --space-800: 56  60  90;
+  --space-700: 66  70  101;
+  --space-600: 76  80  110;
+  --space-500: 100 104 132;
 
-  /* Surfaces */
-  --color-surface: var(--space-cadet);
-  --color-surface-muted: var(--yinmn-blue);
+  --mist-100: 210 210 225;
+  --mist-200: 182 184 206;
+  --mist-300: 168 170 192;
+  --mist-400: 154 156 178;
+  --mist-500: 176 176 193;
 
-  /* Borders */
-  --color-border: 47 62 99;
+  /* --- Background --- */
+  --color-bg:           var(--space-700);  /* #424665 */
+  --color-bg-1:         var(--space-800);  /* #383C5A */
+  --color-bg-2:         var(--space-900);  /* #2C2F4A */
+  --color-topbar-bg:    var(--space-800);
 
-  /* Layout roles */
-  --color-sidebar-bg: var(--space-cadet);
-  --color-topbar-bg: var(--oxford-blue);
+  /* --- Surfaces --- */
+  --color-surface:      var(--space-500);  /* #646884 */
+  --color-surface-weak: var(--space-600);  /* #4C506E */
 
-  /* Accents */
-  --color-primary: var(--jordy-blue);
+  /* --- Borders --- */
+  --color-border:       var(--space-600);  /* #4C506E */
+
+  /* --- Text --- */
+  --color-fg:           var(--mist-500);   /* #B0B0C1 */
+  --color-fg-muted:     var(--mist-400);   /* #9A9CB2 */
+  --color-fg-muted-1:   var(--mist-300);   /* #A8AAC0 */
+  --color-fg-muted-2:   var(--mist-200);   /* #B6B8CE */
+
+  /* --- Navigation --- */
+  --color-nav-active:    50 54 82;         /* #323652 */
+  --color-nav-active-fg: var(--mist-500);
+
+  /* --- Modal --- */
+  --color-overlay:       0 0 0;
+  --color-modal-bg:      var(--space-900);
+  --color-modal-border:  120 122 150;
+  --color-modal-fg:      var(--mist-100);
+  --color-modal-fg-muted:var(--mist-400);
+
+  /* --- Accents --- */
+  --color-primary:       167 196 236;
   --color-primary-hover: 193 214 242;
-  --color-primary-fg: var(--oxford-blue);
-
-  /* Breadcrumbs */
-  --color-breadcrumb: var(--jordy-blue);
+  --color-primary-fg:    44 47 74;
 }

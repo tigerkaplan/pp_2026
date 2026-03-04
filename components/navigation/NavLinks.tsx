@@ -26,7 +26,7 @@ export const NavLinks = ({ onNavigate }: NavLinksProps) => {
       : pathname === href || pathname.startsWith(href + "/");
 
   return (
-    <div className="h-full grid grid-cols-1 auto-rows-fr gap-2">
+    <div className="h-full grid grid-cols-1 gap-4">
       {LINKS.map((item) => {
         const active = isActive(item.href);
 
@@ -37,23 +37,24 @@ export const NavLinks = ({ onNavigate }: NavLinksProps) => {
             onClick={onNavigate}
             aria-current={active ? "page" : undefined}
             className={[
-              // DO NOT change sizing
-              "h-full rounded-lg border px-4",
-              "flex items-center justify-between",
-              "text-sm lg:text-base font-medium transition",
+  "h-full rounded-lg border px-4",
+  "flex items-center justify-between",
+  "text-l lg:text-base font-medium transition p-5",
 
-              // base color always
-              "bg-[rgb(var(--color-surface-weak)_/_0.9)]",
+  // base color always (non-active)
+  !active && "bg-[rgb(var(--color-surface-weak)_/_0.9)]",
 
-              // hover ONLY when not active (so active stays darker)
-              active ? "" : "hover:bg-[rgb(var(--color-surface-strong))]",
+  // hover ONLY when not active
+  !active && "hover:bg-[rgb(var(--color-surface-strong))]",
 
-              // active stays darker
-              active ? "bg-rgb(var(--color-surface-strong)]" : "",
-            ].join(" ")}
+  // active: darker background + stronger border
+  active && "bg-[rgb(var(--color-surface-strong))] border-[rgb(var(--color-surface-strong))]",
+]
+  .filter(Boolean)
+  .join(" ")}
           >
-            
-               <span className="truncate">{item.label}</span>
+
+            <span className="truncate">{item.label}</span>
             {active && (
               <span className="text-xs opacity-70">Current</span>
             )}
