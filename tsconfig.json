@@ -22,7 +22,7 @@
     "jsx": "react-jsx",
 
     /* Paths & Aliases */
-    "baseUrl": ".",
+    
     "paths": {
       "@/*": ["./*"]
     },
