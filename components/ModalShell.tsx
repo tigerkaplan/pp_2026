@@ -50,7 +50,7 @@ export default function ModalShell({
   }, [pathname]);
 
   return (
-    <div className="fixed inset-0 z-[1000] flex items-center justify-center p-3 sm:p-6">
+    <div className="fixed inset-0 z-1000 flex items-center justify-center p-3 sm:p-6">
       {/* Overlay */}
       <div
         className="absolute inset-0 bg-[rgb(var(--color-overlay)/0.55)]"
