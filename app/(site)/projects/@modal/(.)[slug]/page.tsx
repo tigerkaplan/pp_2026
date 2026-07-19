@@ -151,48 +151,30 @@ export default async function ProjectModal({ params }: Props) {
         <BackToProjectsButton />
 
         <div className="flex flex-wrap gap-2">
-          <a
-            href={github || "#"}
+          {github ? <a
+            href={github}
             target="_blank"
             rel="noreferrer"
-            aria-disabled={!github}
             className={[
               "rounded-md border px-3 py-2 text-sm transition",
               "border-[rgb(var(--color-modal-border))]",
-              github
-                ? [
-                    "text-[rgb(var(--color-modal-fg))]",
-                    "hover:bg-[rgb(var(--color-surface)/0.25)]",
-                  ].join(" ")
-                : "pointer-events-none opacity-50 text-[rgb(var(--color-modal-fg-muted))]",
+              "text-[rgb(var(--color-modal-fg))] hover:bg-[rgb(var(--color-surface)/0.25)]",
             ].join(" ")}
           >
             GitHub
-          </a>
+          </a> : null}
 
-          <a
-            href={live || "#"}
+          {live ? <a
+            href={live}
             target="_blank"
             rel="noreferrer"
-            aria-disabled={!live}
             className={[
               "rounded-md px-3 py-2 text-sm font-medium transition",
-              live
-                ? [
-                    "bg-[rgb(var(--color-nav-active))]",
-                    "text-[rgb(var(--color-nav-active-fg))]",
-                    "hover:opacity-90",
-                  ].join(" ")
-                : [
-                    "pointer-events-none opacity-50",
-                    "bg-[rgb(var(--color-surface)/0.25)]",
-                    "text-[rgb(var(--color-modal-fg-muted))]",
-                    "ring-1 ring-[rgb(var(--color-modal-border))]",
-                  ].join(" "),
+              "bg-[rgb(var(--color-nav-active))] text-[rgb(var(--color-nav-active-fg))] hover:opacity-90",
             ].join(" ")}
           >
             Live
-          </a>
+          </a> : null}
         </div>
       </div>
 

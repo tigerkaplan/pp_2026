@@ -7,6 +7,7 @@ import { MainNav } from "@/components/navigation/MainNav";
 import ThemeToggle from "@/components/providers/ThemeToggle";
 import { Breadcrumbs } from "@/components/navigation/Breadcrumbs";
 import MobileNavDrawer from "@/components/navigation/MobileNavDrawer";
+import SkipLink from "@/components/accessibility/SkipLink";
 
 export const metadata: Metadata = {
   title: "Portfolio",
@@ -20,6 +21,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         className="min-h-screen bg-[rgb(var(--color-bg))] text-[rgb(var(--color-fg))]"
         suppressHydrationWarning
       >
+        <SkipLink />
         <Providers>
           <div className="min-h-screen flex flex-col lg:flex-row">
             {/* Desktop sidebar */}
@@ -37,7 +39,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               </div>
             </aside>
 
-            <main className="flex-1 min-w-0">
+            <main id="main-content" tabIndex={-1} className="flex-1 min-w-0 outline-none">
               {/* Top bar */}
               <div
                 className="

@@ -39,12 +39,13 @@ function subscribeToSystemTheme(cb: () => void) {
     return () => mql.removeEventListener("change", cb);
   }
   // legacy
-  // @ts-expect-error legacy safari
-  if (typeof mql.addListener === "function") {
-    // @ts-expect-error legacy safari
-    mql.addListener(cb);
-    // @ts-expect-error legacy safari
-    return () => mql.removeListener(cb);
+  const legacyMediaQueryList = mql as typeof mql & {
+    addListener?: (listener: EventListener) => void;
+    removeListener?: (listener: EventListener) => void;
+  };
+  if (typeof legacyMediaQueryList.addListener === "function") {
+    legacyMediaQueryList.addListener(cb);
+    return () => legacyMediaQueryList.removeListener?.(cb);
   }
   return () => {};
 }
@@ -61,13 +62,21 @@ function getServerSnapshot(): Theme {
 // ---- localStorage helpers ----
 function readStoredSetting(): ThemeSetting | null {
   if (typeof window === "undefined") return null;
-  const v = window.localStorage.getItem(STORAGE_KEY);
-  if (v === "light" || v === "dark" || v === "system") return v;
+  try {
+    const v = window.localStorage.getItem(STORAGE_KEY);
+    if (v === "light" || v === "dark" || v === "system") return v;
+  } catch {
+    return null;
+  }
   return null;
 }
 
 function writeStoredSetting(setting: ThemeSetting) {
-  window.localStorage.setItem(STORAGE_KEY, setting);
+  try {
+    window.localStorage.setItem(STORAGE_KEY, setting);
+  } catch {
+    // Storage can be unavailable in privacy modes; the in-memory choice still works.
+  }
 }
 
 function resolveTheme(setting: ThemeSetting, systemTheme: Theme): Theme {
@@ -80,7 +89,7 @@ function applyHtmlThemeClass(theme: Theme) {
 
 export function ThemeProvider({
   children,
-  defaultSetting = "light",
+  defaultSetting = "system",
 }: {
   children: React.ReactNode;
   /** first-load default if nothing in localStorage */
@@ -93,8 +102,13 @@ export function ThemeProvider({
   );
 
   const [setting, _setSetting] = useState<ThemeSetting>(() => {
-    return readStoredSetting() ?? defaultSetting;
+    return defaultSetting;
   });
+
+  useEffect(() => {
+    const saved = readStoredSetting();
+    if (saved) queueMicrotask(() => _setSetting(saved));
+  }, []);
 
   const setSetting = useCallback((s: ThemeSetting) => {
     _setSetting(s);

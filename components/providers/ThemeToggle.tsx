@@ -25,8 +25,9 @@ export default function ThemeToggle() {
         type="button"
         onClick={toggleTheme}
         className="rounded-md border border-[rgb(var(--color-border))] px-3 py-2 text-sm"
-        aria-label="Toggle light/dark"
-        title="Toggle light/dark"
+        aria-label={hydrated ? `Switch to ${theme === "dark" ? "light" : "dark"} theme` : "Change colour theme"}
+        aria-pressed={hydrated ? theme === "dark" : undefined}
+        title={hydrated ? `Switch to ${theme === "dark" ? "light" : "dark"} theme` : "Change colour theme"}
       >
         {hydrated ? (theme === "dark" ? "Dark" : "Light") : "Theme"}
       </button>

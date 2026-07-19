@@ -271,8 +271,8 @@ export default function ProjectCard({
             sizes="(min-width:768px) 260px, 100vw"
           />
 
-          <div className="flex h-40 flex-col p-3">
-            <p className="h-14 text-sm text-[var(--text-muted)] line-clamp-2">
+          <div className="flex min-h-40 flex-col p-3">
+            <p className="min-h-14 text-sm text-[var(--text-muted)]">
               {project.summary}
             </p>
 
