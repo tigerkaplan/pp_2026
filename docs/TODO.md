@@ -1,11 +1,12 @@
 # TODO
 
 ## Current priority
-- [ ] Add and validate the GitHub Actions workflow.
-- [ ] Commit the YAML and control files.
-- [ ] Push feature/accessibility-improvements.
-- [ ] Inspect the first Frontend Quality GitHub Actions run.
-- [ ] Update project status after the CI result.
+- [x] Add and validate the GitHub Actions workflow.
+- [x] Commit the YAML and project control files.
+- [x] Push feature/accessibility-improvements.
+- [x] Run the Frontend Quality workflow.
+- [x] Confirm the Linux production build.
+- [x] Record the successful GitHub Actions result.
 - [ ] Resolve the local Windows .next/types EPERM problem separately.
 
 ## Lint warnings

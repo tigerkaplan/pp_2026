@@ -15,17 +15,22 @@
 - .next, node_modules, coverage and environment files are not tracked.
 
 ## Local validation results
-- Jest: PASS — 6/6 suites, 8/8 tests
-- Coverage: PASS — Statements 68.4%, Branches 79.48%, Functions 79.41%, Lines 68.4%
+- GitHub Actions validation: PASS
+- Linux production build: PASS
+- Local Windows production build: BLOCKED by environment-specific EPERM
+- Local Jest: PASS — 6/6 suites, 8/8 tests
+- Local coverage: Statements 68.4%, Branches 79.48%, Functions 79.41%, Lines 68.4%
 - Typecheck: PASS
-- Lint: PASS with 0 errors and 6 warnings
-- Standard local build: BLOCKED
-- Webpack local build: BLOCKED
+- Lint: PASS with 6 warnings
+- Manual WCAG verification: PENDING
+- Full WCAG compliance: NOT CLAIMED
 - Exact blocker: EPERM: operation not permitted, scandir '.next/types'
 
 ## CI status
 - GitHub Actions workflow path: .github/workflows/frontend-quality.yml
-- GitHub Actions result: PENDING
+- GitHub Actions result: PASS
+- Feature branch pushed: yes
+- Pull request status: open (PR #1 against master)
 
 ## Remaining lint warnings
 - unused `_fill` in ProjectCard.test.tsx
@@ -54,8 +59,16 @@
 - realistic long English-content review
 
 ## Exact next action
-- Push feature/accessibility-improvements and inspect the first Frontend Quality GitHub Actions run.
+- Complete the remaining manual WCAG verification checklist, then begin the next approved route-based frontend content phase.
 
 ## Scope restrictions
-- No Turkish localisation or accordion work
-- No backend, ASP.NET Core, SQL Server, database, Twig, XML, XPath or SOAP work
+- English-only
+- no accordion
+- no expandable-card navigation
+- no backend
+- no database
+- no Twig
+- no XML
+- no XPath
+- no SOAP
+- no broad redesign
