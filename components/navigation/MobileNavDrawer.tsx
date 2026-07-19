@@ -1,8 +1,9 @@
 // components/navigation/MobileNavDrawer.tsx
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { MainNav } from "@/components/navigation/MainNav";
+import { useDialogFocus } from "@/components/accessibility/useDialogFocus";
 
 function HamburgerIcon() {
   return (
@@ -24,6 +25,9 @@ function HamburgerIcon() {
 
 export default function MobileNavDrawer() {
   const [open, setOpen] = useState(false);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
+  useDialogFocus(open, dialogRef, closeRef);
 
   // ESC to close
   useEffect(() => {
@@ -51,6 +55,7 @@ export default function MobileNavDrawer() {
         type="button"
         aria-label="Open menu"
         aria-expanded={open}
+        aria-controls="mobile-navigation-dialog"
         onClick={() => setOpen(true)}
         className="lg:hidden text-[rgb(var(--color-fg))] focus:outline-none focus:ring-2 focus:ring-[rgb(var(--color-border))] rounded-md"
       >
@@ -73,12 +78,16 @@ export default function MobileNavDrawer() {
 
           {/* Drawer */}
           <div
+            id="mobile-navigation-dialog"
+            ref={dialogRef}
             role="dialog"
             aria-modal="true"
+            aria-labelledby="mobile-navigation-title"
+            tabIndex={-1}
             className="
               absolute inset-x-0 top-0
-              mt-20
-              h-[calc(100dvh-5rem)]
+              mt-16
+              max-h-[calc(100dvh-4rem)]
               px-4 pb-6
             "
           >
@@ -104,11 +113,12 @@ export default function MobileNavDrawer() {
                   backdrop-blur-xl
                 "
               >
-                <div className="text-base font-semibold tracking-tight">
+                <div id="mobile-navigation-title" className="text-base font-semibold tracking-tight">
                   Menu
                 </div>
 
                 <button
+                  ref={closeRef}
                   type="button"
                   aria-label="Close"
                   onClick={() => setOpen(false)}
@@ -125,10 +135,8 @@ export default function MobileNavDrawer() {
               </div>
 
               {/* Links */}
-              <div className="h-full overflow-y-auto px-5 py-6">
-                <nav className="text-2xl">
+              <div className="min-h-0 overflow-y-auto px-5 py-6 text-2xl">
                   <MainNav onNavigate={() => setOpen(false)} />
-                </nav>
               </div>
             </div>
           </div>

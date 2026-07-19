@@ -15,6 +15,9 @@
   /* --- Text --- */
   --color-fg:             22 32 42;      /* #16202A */
   --color-fg-muted:       62 74 86;      /* #3E4A56 */
+  --color-focus:          20 72 120;
+  --color-topbar-bg:      190 200 180;
+  --color-surface-strong: 130 148 112;
 
   /* --- Glass --- */
   --color-glass:          206 214 198;
@@ -51,6 +54,9 @@
   /* --- Text --- */
   --color-fg:             176 176 193;   /* #B0B0C1 */
   --color-fg-muted:       154 156 178;   /* #9A9CB2 */
+  --color-focus:          193 214 242;
+  --color-topbar-bg:      56 60 90;
+  --color-surface-strong: 50 54 82;
   --color-fg-muted-1:     168 170 192;   /* #A8AAC0 */
   --color-fg-muted-2:     182 184 206;   /* #B6B8CE */
 

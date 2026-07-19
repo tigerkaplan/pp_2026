@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import CopyLinkButton from "@/app/(site)/projects/@modal/(.)[slug]/copy-link-button";
+import { useDialogFocus } from "@/components/accessibility/useDialogFocus";
 
 export default function ModalShell({
   title,
@@ -17,6 +18,9 @@ export default function ModalShell({
 }) {
   const router = useRouter();
   const pathname = usePathname();
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
+  useDialogFocus(true, dialogRef, closeRef);
 
   const closeHref = useMemo(() => "/projects", []);
   const copyUrl = pathname;
@@ -46,7 +50,7 @@ export default function ModalShell({
   }, [pathname]);
 
   return (
-    <div className="fixed inset-0 z-[1000]">
+    <div className="fixed inset-0 z-1000 flex items-center justify-center p-3 sm:p-6">
       {/* Overlay */}
       <div
         className="absolute inset-0 bg-[rgb(var(--color-overlay)/0.55)]"
@@ -55,17 +59,19 @@ export default function ModalShell({
       />
 
       {/* Panel */}
-      <div className="absolute inset-x-0 top-10 mx-auto w-[min(980px,calc(100%-24px))]">
+      <div className="relative z-10 flex max-h-full w-full max-w-980px">
         <div
+          ref={dialogRef}
           className={[
-            "relative z-10 overflow-hidden rounded-2xl border shadow-xl backdrop-blur",
+            "relative flex max-h-full w-full min-w-0 flex-col overflow-hidden rounded-2xl border shadow-xl backdrop-blur",
             "border-[rgb(var(--color-modal-border))]",
             "bg-[rgb(var(--color-modal-bg)/0.9)]",
             "text-[rgb(var(--color-modal-fg))]",
           ].join(" ")}
           role="dialog"
           aria-modal="true"
-          aria-label={title || "Project preview"}
+          aria-labelledby="project-dialog-title"
+          tabIndex={-1}
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header */}
@@ -76,7 +82,7 @@ export default function ModalShell({
             ].join(" ")}
           >
             <div className="min-w-0">
-              <h2 className="truncate text-base font-semibold text-[rgb(var(--color-modal-fg))]">
+              <h2 id="project-dialog-title" className="text-base font-semibold text-[rgb(var(--color-modal-fg))]">
                 {title}
               </h2>
 
@@ -94,6 +100,7 @@ export default function ModalShell({
               <CopyLinkButton url={copyUrl} />
 
               <button
+                ref={closeRef}
                 type="button"
                 onClick={close}
                 className={[
@@ -115,7 +122,7 @@ export default function ModalShell({
           {/* Content */}
           <div
             className={[
-              "max-h-[75vh] overflow-auto px-5 py-4",
+              "min-h-0 overflow-auto px-5 py-4",
               // IMPORTANT: do NOT force buttons in content to become white.
               // Only normalize common text nodes:
               "[&_p]:text-[rgb(var(--color-modal-fg))]",
