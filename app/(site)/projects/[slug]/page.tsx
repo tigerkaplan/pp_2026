@@ -2,10 +2,19 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getProjectBySlug } from "../_lib/getProjectBySlug";
+import { getProjects } from "../_lib/getProjects";
+import { ProjectMedia } from "../_components/ProjectMedia";
 
 type Props = {
   params: Promise<{ slug: string }>;
 };
+
+export const dynamicParams = false;
+
+export async function generateStaticParams() {
+  const projects = await getProjects();
+  return projects.map(({ slug }) => ({ slug }));
+}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
@@ -16,9 +25,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const title = `${project.title} | Projects`;
   const description = project.summary;
 
-  const ogImage =
-    project.images?.[0] ? project.images[0] : "/images/og/projects-default.png";
-
   return {
     title,
     description,
@@ -28,13 +34,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description,
       type: "article",
       url: `/projects/${project.slug}`,
-      images: [ogImage],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: [ogImage],
     },
   };
 }
@@ -51,7 +55,7 @@ export default async function ProjectPage({ params }: Props) {
       <div>
         <Link
           href="/projects"
-          className="inline-flex items-center gap-2 text-sm text-[rgb(var(--color-fg-muted))] hover:text-[rgb(var(--color-fg))]"
+          className="inline-flex items-center gap-2 text-sm text-[rgb(var(--color-fg-muted))] hover:text-[rgb(var(--color-fg))] sm:text-base"
         >
           ← Back to projects
         </Link>
@@ -87,11 +91,11 @@ export default async function ProjectPage({ params }: Props) {
           </span>
         </div>
 
-        <h1 className="text-3xl font-bold tracking-tight text-[rgb(var(--color-fg))] sm:text-4xl">
+        <h1 className="text-4xl font-bold tracking-tight text-[rgb(var(--color-fg))] sm:text-5xl">
           {project.title}
         </h1>
 
-        <p className="max-w-3xl text-base text-[rgb(var(--color-fg-muted))] sm:text-lg">
+        <p className="max-w-3xl text-base leading-7 text-[rgb(var(--color-fg-muted))] sm:text-lg">
           {project.summary}
         </p>
 
@@ -103,7 +107,7 @@ export default async function ProjectPage({ params }: Props) {
               target="_blank"
               rel="noreferrer"
               className={[
-                "rounded-md border px-3 py-2 text-sm transition",
+                "rounded-md border px-3 py-2 text-sm transition sm:text-base",
                 "border-[rgb(var(--color-border))]",
                 "text-[rgb(var(--color-fg))]",
                 "hover:bg-[rgb(var(--color-surface)/0.22)]",
@@ -118,7 +122,7 @@ export default async function ProjectPage({ params }: Props) {
               target="_blank"
               rel="noreferrer"
               className={[
-                "rounded-md border px-3 py-2 text-sm transition",
+                "rounded-md border px-3 py-2 text-sm transition sm:text-base",
                 "border-[rgb(var(--color-border))]",
                 "text-[rgb(var(--color-fg))]",
                 "hover:bg-[rgb(var(--color-surface)/0.22)]",
@@ -131,28 +135,28 @@ export default async function ProjectPage({ params }: Props) {
       </header>
 
       {/* Hero image */}
-      {project.images?.[0] && (
-        <figure
-          className={[
-            "overflow-hidden rounded-2xl border",
-            "border-[rgb(var(--color-border))]",
-            "bg-[rgb(var(--color-surface)/0.18)]",
-          ].join(" ")}
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={project.images[0]}
-            alt={`${project.title} cover`}
+      <figure
+        className={[
+          "overflow-hidden rounded-2xl border",
+          "border-[rgb(var(--color-border))]",
+          "bg-[rgb(var(--color-surface)/0.18)]",
+        ].join(" ")}
+      >
+        <div className="relative h-[320px] w-full sm:h-[420px]">
+          <ProjectMedia
+            src={project.images?.[0]}
+            title={project.title}
             className="h-[320px] w-full object-cover sm:h-[420px]"
-            loading="eager"
+            priority
+            sizes="(min-width: 768px) 70vw, 100vw"
           />
-        </figure>
-      )}
+        </div>
+      </figure>
 
       {/* Stack */}
       {project.stack?.length > 0 && (
         <section className="space-y-3">
-          <h2 className="text-lg font-semibold text-[rgb(var(--color-fg))]">
+          <h2 className="text-xl font-semibold text-[rgb(var(--color-fg))] sm:text-2xl">
             Tech stack
           </h2>
 
@@ -161,7 +165,7 @@ export default async function ProjectPage({ params }: Props) {
               <span
                 key={t}
                 className={[
-                  "rounded-full px-3 py-1 text-xs ring-1 backdrop-blur",
+                  "rounded-full px-3 py-1 text-xs ring-1 backdrop-blur sm:text-sm",
                   "bg-[rgb(var(--color-surface)/0.18)]",
                   "text-[rgb(var(--color-fg-muted))]",
                   "ring-[rgb(var(--color-border))]",
@@ -183,8 +187,8 @@ export default async function ProjectPage({ params }: Props) {
             "bg-[rgb(var(--color-surface)/0.14)]",
           ].join(" ")}
         >
-          <h2 className="font-semibold text-[rgb(var(--color-fg))]">Problem</h2>
-          <p className="text-sm text-[rgb(var(--color-fg-muted))]">
+          <h2 className="text-lg font-semibold text-[rgb(var(--color-fg))]">Problem</h2>
+          <p className="text-sm leading-6 text-[rgb(var(--color-fg-muted))] sm:text-base">
             {project.problem}
           </p>
         </div>
@@ -196,8 +200,8 @@ export default async function ProjectPage({ params }: Props) {
             "bg-[rgb(var(--color-surface)/0.14)]",
           ].join(" ")}
         >
-          <h2 className="font-semibold text-[rgb(var(--color-fg))]">Solution</h2>
-          <p className="text-sm text-[rgb(var(--color-fg-muted))]">
+          <h2 className="text-lg font-semibold text-[rgb(var(--color-fg))]">Solution</h2>
+          <p className="text-sm leading-6 text-[rgb(var(--color-fg-muted))] sm:text-base">
             {project.solution}
           </p>
         </div>
@@ -209,8 +213,8 @@ export default async function ProjectPage({ params }: Props) {
             "bg-[rgb(var(--color-surface)/0.14)]",
           ].join(" ")}
         >
-          <h2 className="font-semibold text-[rgb(var(--color-fg))]">Result</h2>
-          <p className="text-sm text-[rgb(var(--color-fg-muted))]">
+          <h2 className="text-lg font-semibold text-[rgb(var(--color-fg))]">Result</h2>
+          <p className="text-sm leading-6 text-[rgb(var(--color-fg-muted))] sm:text-base">
             {project.result}
           </p>
         </div>
@@ -219,7 +223,7 @@ export default async function ProjectPage({ params }: Props) {
       {/* Features */}
       {project.features?.length > 0 && (
         <section className="space-y-4">
-          <h2 className="text-lg font-semibold text-[rgb(var(--color-fg))]">
+          <h2 className="text-xl font-semibold text-[rgb(var(--color-fg))] sm:text-2xl">
             Key features
           </h2>
 
@@ -228,7 +232,7 @@ export default async function ProjectPage({ params }: Props) {
               <li
                 key={f}
                 className={[
-                  "rounded-xl border p-4 text-sm",
+                  "rounded-xl border p-4 text-sm leading-6 sm:text-base",
                   "border-[rgb(var(--color-border))]",
                   "bg-[rgb(var(--color-surface)/0.14)]",
                   "text-[rgb(var(--color-fg))]",
@@ -244,7 +248,7 @@ export default async function ProjectPage({ params }: Props) {
       {/* Gallery */}
       {project.images?.length > 1 && (
         <section className="space-y-4">
-          <h2 className="text-lg font-semibold text-[rgb(var(--color-fg))]">
+          <h2 className="text-xl font-semibold text-[rgb(var(--color-fg))] sm:text-2xl">
             Screenshots
           </h2>
 
@@ -258,13 +262,14 @@ export default async function ProjectPage({ params }: Props) {
                   "bg-[rgb(var(--color-surface)/0.18)]",
                 ].join(" ")}
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
+                <div className="relative h-64 w-full">
+                  <ProjectMedia
                   src={src}
-                  alt={`${project.title} screenshot ${idx + 1}`}
-                  className="h-64 w-full object-cover"
-                  loading="lazy"
-                />
+                    title={project.title}
+                    className="object-cover"
+                    sizes="(min-width: 640px) 35vw, 100vw"
+                  />
+                </div>
               </figure>
             ))}
           </div>

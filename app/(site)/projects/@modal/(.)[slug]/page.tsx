@@ -4,6 +4,7 @@ import ModalShell from "@/components/ModalShell";
 import { getProjectBySlug } from "../../_lib/getProjectBySlug";
 import BackToProjectsButton from "../../_components/BackToProjectsButton";
 import OpenRevealButton from "../../_components/OpenRevealButton";
+import { ProjectMedia } from "../../_components/ProjectMedia";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -11,7 +12,7 @@ function Badge({ children }: { children: React.ReactNode }) {
   return (
     <span
       className={[
-        "rounded-full px-2 py-1 text-xs ring-1 backdrop-blur",
+        "rounded-full px-2 py-1 text-xs ring-1 backdrop-blur sm:text-sm",
         "bg-[rgb(var(--color-surface)/0.22)]",
         "text-[rgb(var(--color-modal-fg-muted))]",
         "ring-[rgb(var(--color-modal-border))]",
@@ -37,10 +38,10 @@ function StatCard({
         "bg-[rgb(var(--color-surface)/0.18)]",
       ].join(" ")}
     >
-      <div className="text-xs font-medium text-[rgb(var(--color-modal-fg-muted))]">
+      <div className="text-sm font-medium text-[rgb(var(--color-modal-fg-muted))]">
         {label}
       </div>
-      <div className="mt-2 text-sm text-[rgb(var(--color-modal-fg))]">
+      <div className="mt-2 text-sm leading-6 text-[rgb(var(--color-modal-fg))] sm:text-base">
         {value}
       </div>
     </div>
@@ -89,8 +90,18 @@ export default async function ProjectModal({ params }: Props) {
       }
       actions={<OpenRevealButton href={fullUrl} />}
     >
+      <div className="relative mb-6 h-48 w-full overflow-hidden rounded-xl sm:h-64">
+        <ProjectMedia
+          src={project.images?.[0]}
+          title={project.title}
+          className="object-cover"
+          sizes="(min-width: 640px) 900px, 100vw"
+          priority
+        />
+      </div>
+
       {/* SUMMARY */}
-      <p className="text-sm leading-relaxed text-[rgb(var(--color-modal-fg))]">
+      <p className="text-base leading-7 text-[rgb(var(--color-modal-fg))]">
         {project.summary}
       </p>
 
@@ -119,7 +130,7 @@ export default async function ProjectModal({ params }: Props) {
       {/* HIGHLIGHTS */}
       {highlights.length > 0 ? (
         <div className="mt-6">
-          <div className="text-sm font-semibold text-[rgb(var(--color-modal-fg))]">
+          <div className="text-base font-semibold text-[rgb(var(--color-modal-fg))]">
             Highlights
           </div>
 
@@ -128,7 +139,7 @@ export default async function ProjectModal({ params }: Props) {
               <li
                 key={h}
                 className={[
-                  "rounded-lg border px-3 py-2 text-sm",
+                  "rounded-lg border px-3 py-2 text-sm leading-6 sm:text-base",
                   "border-[rgb(var(--color-modal-border))]",
                   "bg-[rgb(var(--color-surface)/0.18)]",
                   "text-[rgb(var(--color-modal-fg))]",
@@ -156,7 +167,7 @@ export default async function ProjectModal({ params }: Props) {
             target="_blank"
             rel="noreferrer"
             className={[
-              "rounded-md border px-3 py-2 text-sm transition",
+              "rounded-md border px-3 py-2 text-sm transition sm:text-base",
               "border-[rgb(var(--color-modal-border))]",
               "text-[rgb(var(--color-modal-fg))] hover:bg-[rgb(var(--color-surface)/0.25)]",
             ].join(" ")}
@@ -169,7 +180,7 @@ export default async function ProjectModal({ params }: Props) {
             target="_blank"
             rel="noreferrer"
             className={[
-              "rounded-md px-3 py-2 text-sm font-medium transition",
+              "rounded-md px-3 py-2 text-sm font-medium transition sm:text-base",
               "bg-[rgb(var(--color-nav-active))] text-[rgb(var(--color-nav-active-fg))] hover:opacity-90",
             ].join(" ")}
           >
@@ -179,7 +190,7 @@ export default async function ProjectModal({ params }: Props) {
       </div>
 
       {/* OPTIONAL: small note */}
-      <p className="mt-4 text-xs text-[rgb(var(--color-modal-fg-muted))]">
+      <p className="mt-4 text-sm leading-6 text-[rgb(var(--color-modal-fg-muted))]">
         Tip: Press ESC or click outside to close. Use “View full case study” for the SEO page.
       </p>
     </ModalShell>
