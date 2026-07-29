@@ -74,7 +74,7 @@ export function Breadcrumbs({
 
   return (
     <nav aria-label="Breadcrumb" className="min-w-0">
-      <ol className="flex flex-wrap items-center gap-2 text-sm text-neutral-600 dark:text-neutral-300">
+      <ol className="flex flex-wrap items-center gap-2 text-sm text-[rgb(var(--color-fg-muted))] lg:text-[15px]">
         <li className="shrink-0">
           <Link href="/" className="hover:underline">
             Home
@@ -88,7 +88,7 @@ export function Breadcrumbs({
             {item.kind === "ellipsis" ? (
               <span className="shrink-0">…</span>
             ) : item.isLast ? (
-              <span className="font-medium text-black dark:text-white truncate">
+              <span className="font-medium text-[rgb(var(--color-fg))] truncate">
                 <span className="inline-flex items-center gap-2">
                   {item.icon ? <span className="shrink-0">{item.icon}</span> : null}
                   {item.label}

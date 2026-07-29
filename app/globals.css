@@ -12,15 +12,27 @@
     outline-offset: 3px;
   }
   html {
-    color-scheme: light dark;
+    color-scheme: light;
     background-color: rgb(var(--color-bg));
     color: rgb(var(--color-fg));
+  }
+
+  html.dark {
+    color-scheme: dark;
   }
 
   body {
     min-height: 100vh;
     background-color: rgb(var(--color-bg));
     color: rgb(var(--color-fg));
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+}
+
+@media (min-width: 64rem) {
+  body {
+    font-size: 1.0625rem;
   }
 }
 

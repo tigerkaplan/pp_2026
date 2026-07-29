@@ -8,6 +8,7 @@ import ThemeToggle from "@/components/providers/ThemeToggle";
 import { Breadcrumbs } from "@/components/navigation/Breadcrumbs";
 import MobileNavDrawer from "@/components/navigation/MobileNavDrawer";
 import SkipLink from "@/components/accessibility/SkipLink";
+import { THEME_BOOTSTRAP_SCRIPT } from "@/components/providers/theme";
 
 export const metadata: Metadata = {
   title: "Portfolio",
@@ -17,6 +18,12 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          id="theme-bootstrap"
+          dangerouslySetInnerHTML={{ __html: THEME_BOOTSTRAP_SCRIPT }}
+        />
+      </head>
       <body
         className="min-h-screen bg-[rgb(var(--color-bg))] text-[rgb(var(--color-fg))]"
         suppressHydrationWarning
@@ -34,8 +41,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 supports-[backdrop-filter]:bg-[rgb(var(--color-topbar-bg)/0.6)]
               "
             >
-              <div className="flex h-full w-full flex-col px-4 py-6">
-                <MainNav />
+              <div className="flex h-full min-h-0 w-full flex-col px-4">
+                <MainNav desktop />
               </div>
             </aside>
 

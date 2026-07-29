@@ -39,16 +39,16 @@ export const NavLinks = ({ onNavigate }: NavLinksProps) => {
             className={[
   "h-full rounded-lg border px-4",
   "flex items-center justify-between",
-  "text-l lg:text-base font-medium transition p-5",
+  "text-base leading-6 font-medium transition p-5 lg:text-[17px]",
 
   // base color always (non-active)
   !active && "bg-[rgb(var(--color-surface-weak)_/_0.9)]",
 
   // hover ONLY when not active
-  !active && "hover:bg-[rgb(var(--color-surface-strong))]",
+  !active && "hover:bg-[rgb(var(--color-surface))]",
 
   // active: darker background + stronger border
-  active && "bg-[rgb(var(--color-surface-strong))] border-[rgb(var(--color-surface-strong))]",
+  active && "bg-[rgb(var(--color-nav-active))] border-[rgb(var(--color-nav-active))] text-[rgb(var(--color-nav-active-fg))]",
 ]
   .filter(Boolean)
   .join(" ")}

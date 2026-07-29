@@ -31,7 +31,7 @@ export default function CopyLinkButton({ url }: { url: string }) {
                 "!bg-[rgb(var(--color-surface)/0.18)]",
                 "hover:!bg-[rgb(var(--color-surface)/0.3)]",
                 "focus-visible:outline-none focus-visible:ring-2",
-                "focus-visible:ring-[rgb(var(--color-nav-active))]/40",
+                "focus-visible:ring-[rgb(var(--color-focus))]",
             ].join(" ")}
         >
             {copied ? "Copied" : "Copy link"}
