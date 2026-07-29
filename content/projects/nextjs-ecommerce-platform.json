@@ -1,0 +1,36 @@
+{
+  "id": 2,
+  "slug": "nextjs-ecommerce-platform",
+  "title": "Next.js eCommerce Platform",
+  "featured": true,
+  "year": 2025,
+  "role": "Full-stack Developer",
+  "tags": ["Ecommerce", "Next.js"],
+  "order": 2,
+  "card": {
+    "summary": "A scalable eCommerce platform with server-side rendering and secure payments.",
+    "highlights": ["SSR product pages", "Stripe payments", "Admin product management"]
+  },
+  "technologies": ["Next.js", ".NET Web API", "MS SQL Server", "Stripe"],
+  "skillIds": [],
+  "links": {
+    "live": "https://example.com",
+    "github": "https://github.com/username/ecommerce"
+  },
+  "media": {
+    "cover": "/images/projects/ecommerce-1.jpg",
+    "coverAlt": "",
+    "gallery": []
+  },
+  "caseStudy": {
+    "problem": "Slow page loads and low conversion rates on a legacy eCommerce site.",
+    "solution": "Built an SSR-based frontend with optimized API endpoints and Stripe integration.",
+    "result": "Page load time reduced by 40% and conversion rate increased."
+  },
+  "display": {
+    "showLiveLink": true,
+    "showGithubLink": true,
+    "showPreview": true,
+    "showFullProject": true
+  }
+}

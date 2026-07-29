@@ -1,0 +1,41 @@
+{
+  "id": 1,
+  "slug": "seo-portfolio-platform",
+  "title": "SEO-Friendly Personal Portfolio Platform",
+  "featured": true,
+  "year": 2026,
+  "role": "Full-stack Developer",
+  "tags": ["Portfolio", "SEO", "Next.js"],
+  "order": 1,
+  "card": {
+    "summary": "A fast, SEO-optimized software developer portfolio built with Next.js 16 and .NET Web API.",
+    "highlights": [
+      "Intercept modal + full page architecture",
+      "Dynamic metadata and sitemap",
+      "Filtering and search",
+      "Reusable case study layout"
+    ]
+  },
+  "technologies": ["Next.js 16", "React", ".NET Web API", "MS SQL Server", "Tailwind"],
+  "skillIds": [],
+  "links": {
+    "live": "https://example.com",
+    "github": "https://github.com/username/portfolio"
+  },
+  "media": {
+    "cover": "/images/projects/portfolio-1.jpg",
+    "coverAlt": "",
+    "gallery": ["/images/projects/portfolio-2.png"]
+  },
+  "caseStudy": {
+    "problem": "Traditional portfolios lacked SEO-friendly project pages and smooth project navigation.",
+    "solution": "Implemented App Router, intercepting routes, and modal project details with SEO-friendly full pages.",
+    "result": "Achieved Lighthouse SEO scores above 95 and improved project exploration UX."
+  },
+  "display": {
+    "showLiveLink": true,
+    "showGithubLink": true,
+    "showPreview": true,
+    "showFullProject": true
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "id": 3,
+  "slug": "inventory-management-api",
+  "title": "Inventory Management API",
+  "featured": false,
+  "year": 2025,
+  "role": "Backend Developer",
+  "tags": ["API", ".NET"],
+  "order": 3,
+  "card": {
+    "summary": "A RESTful API for managing inventory and stock movements.",
+    "highlights": ["CRUD endpoints", "Role-based access", "Structured logging"]
+  },
+  "technologies": [".NET Web API", "MS SQL Server"],
+  "skillIds": [],
+  "links": {
+    "live": null,
+    "github": "https://github.com/username/inventory-api"
+  },
+  "media": {
+    "cover": "/images/projects/inventory-1.jpg",
+    "coverAlt": "",
+    "gallery": []
+  },
+  "caseStudy": {
+    "problem": "Manual inventory tracking caused data inconsistency.",
+    "solution": "Designed normalized SQL tables and a RESTful API with validation.",
+    "result": "Improved inventory accuracy and reduced processing time."
+  },
+  "display": {
+    "showLiveLink": false,
+    "showGithubLink": true,
+    "showPreview": true,
+    "showFullProject": true
+  }
+}

@@ -1,6 +1,10 @@
 import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
-import ProjectPage, { dynamicParams, generateStaticParams } from "./page";
+import ProjectPage, {
+  dynamicParams,
+  generateMetadata,
+  generateStaticParams,
+} from "./page";
 import { getProjectBySlug } from "../_lib/getProjectBySlug";
 import type { Project } from "../_types/project";
 
@@ -51,6 +55,22 @@ test("prebuilds only the twelve known project routes", async () => {
   expect(params).toHaveLength(12);
   expect(params).toContainEqual({ slug: "seo-portfolio-platform" });
   expect(params).not.toContainEqual({ slug: "not-a-real-project" });
+});
+
+test("maps normalized project fields into route metadata", async () => {
+  jest.mocked(getProjectBySlug).mockResolvedValue(project);
+
+  await expect(
+    generateMetadata({ params: Promise.resolve({ slug: project.slug }) }),
+  ).resolves.toMatchObject({
+    title: `${project.title} | Projects`,
+    description: project.summary,
+    alternates: { canonical: `/projects/${project.slug}` },
+    openGraph: {
+      title: `${project.title} | Projects`,
+      description: project.summary,
+    },
+  });
 });
 
 test("uses semantic fallbacks for missing full-page project media", async () => {

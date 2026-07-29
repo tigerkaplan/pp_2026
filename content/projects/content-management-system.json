@@ -1,0 +1,36 @@
+{
+  "id": 5,
+  "slug": "content-management-system",
+  "title": "Content Management System",
+  "featured": false,
+  "year": 2024,
+  "role": "Full-stack Developer",
+  "tags": ["CMS", "Next.js"],
+  "order": 5,
+  "card": {
+    "summary": "A lightweight CMS for managing pages and blog content.",
+    "highlights": ["Role-based permissions", "Draft & publish workflow", "Live preview"]
+  },
+  "technologies": ["Next.js", ".NET Web API", "MS SQL Server"],
+  "skillIds": [],
+  "links": {
+    "live": null,
+    "github": null
+  },
+  "media": {
+    "cover": "/images/projects/cms-1.jpg",
+    "coverAlt": "",
+    "gallery": []
+  },
+  "caseStudy": {
+    "problem": "Content updates required developer involvement.",
+    "solution": "Created a CMS with role-based access and live previews.",
+    "result": "Non-technical users could manage content independently."
+  },
+  "display": {
+    "showLiveLink": false,
+    "showGithubLink": false,
+    "showPreview": true,
+    "showFullProject": true
+  }
+}
