@@ -1,65 +1,35 @@
 # Handoff
 
 - Project name: Personal Portfolio
-- Current phase: WCAG AND TESTING EXPANSION
-- Current branch: feature/accessibility-improvements
+- Current phase: MANUAL WCAG VERIFICATION
+- Current branch: test/manual-wcag-verification
 
 ## Existing commits
-- e78be8a test: add accessibility and interaction test coverage
-- 6e7f5bc feat: improve portfolio accessibility and focus management
+- 76b4dea Merge pull request #1 from tigerkaplan/feature/accessibility-improvements
+- 9959d16 docs: record successful frontend quality validation
+- 8418683 style: simplify project modal z-index utility
 
 ## Current repository state
-- Branch: feature/accessibility-improvements
+- Branch: test/manual-wcag-verification
 - No unrelated files are staged.
 - package.json and package-lock.json are synchronised.
-- .next, node_modules, coverage and environment files are not tracked.
+- .next, node_modules, coverage, and environment files are not tracked.
 
 ## Local validation results
+- Automated validation: PASS
 - GitHub Actions validation: PASS
 - Linux production build: PASS
-- Local Windows production build: BLOCKED by environment-specific EPERM
 - Local Jest: PASS — 6/6 suites, 8/8 tests
-- Local coverage: Statements 68.4%, Branches 79.48%, Functions 79.41%, Lines 68.4%
 - Typecheck: PASS
 - Lint: PASS with 6 warnings
-- Manual WCAG verification: PENDING
+- Manual WCAG verification: IN PROGRESS
 - Full WCAG compliance: NOT CLAIMED
-- Exact blocker: EPERM: operation not permitted, scandir '.next/types'
 
-## CI status
-- GitHub Actions workflow path: .github/workflows/frontend-quality.yml
-- GitHub Actions result: PASS
-- Feature branch pushed: yes
-- Pull request status: open (PR #1 against master)
+## Checklist location
+- docs/accessibility-testing.md
 
-## Remaining lint warnings
-- unused `_fill` in ProjectCard.test.tsx
-- unused `_priority` in ProjectCard.test.tsx
-- test mock uses `<img>` instead of `next/image`
-- test mock image accessibility warning
-- unused `error` parameter in global-error.tsx
-- unused eslint-disable directive in block-navigation.js
-
-## Remaining manual WCAG checks
-- keyboard-only navigation review
-- screen-reader review
-- mobile drawer focus review in a real browser
-- project modal focus review in a real browser
-- focus restoration review
-- 200% zoom
-- approximately 320 CSS-pixel reflow
-- WCAG text-spacing override
-- light-theme contrast measurement
-- dark-theme contrast measurement
-- focus-indicator contrast
-- forced-colours mode
-- touch-target review
-- reduced-motion review
-- small viewport-height review
-- realistic long English-content review
-
-## Exact next action
-- Complete the remaining manual WCAG verification checklist, then begin the next approved route-based frontend content phase.
+## Exact first manual test
+- M-01 keyboard-only navigation review on the local app at http://localhost:3000
 
 ## Scope restrictions
 - English-only
@@ -72,3 +42,10 @@
 - no XPath
 - no SOAP
 - no broad redesign
+
+## Current status
+- Missing project-image requests were corrected with a semantic placeholder fallback.
+- Project modal soft-navigation was adjusted so the preview interaction is separated from the full-page details link.
+- Manual Projects visual review must be repeated in a real browser after the fix.
+- Manual modal review remains RETEST REQUIRED.
+- Manual WCAG results have not yet been recorded.
