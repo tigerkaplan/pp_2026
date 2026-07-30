@@ -18,7 +18,7 @@
     "github": "https://github.com/username/ecommerce"
   },
   "media": {
-    "cover": "/images/projects/ecommerce-1.jpg",
+    "cover": null,
     "coverAlt": "",
     "gallery": []
   },

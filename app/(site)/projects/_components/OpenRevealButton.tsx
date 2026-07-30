@@ -13,7 +13,7 @@ export default function OpenRevealButton({ href }: { href: string }) {
         "focus-visible:ring-[rgb(var(--color-focus))]",
       ].join(" ")}
     >
-      View full case study
+      View full project
     </a>
   );
 }

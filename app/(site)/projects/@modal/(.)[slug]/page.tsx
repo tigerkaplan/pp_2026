@@ -191,7 +191,7 @@ export default async function ProjectModal({ params }: Props) {
 
       {/* OPTIONAL: small note */}
       <p className="mt-4 text-sm leading-6 text-[rgb(var(--color-modal-fg-muted))]">
-        Tip: Press ESC or click outside to close. Use “View full case study” for the SEO page.
+        Tip: Press ESC or click outside to close.
       </p>
     </ModalShell>
   );

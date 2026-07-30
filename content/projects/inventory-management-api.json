@@ -18,7 +18,7 @@
     "github": "https://github.com/username/inventory-api"
   },
   "media": {
-    "cover": "/images/projects/inventory-1.jpg",
+    "cover": null,
     "coverAlt": "",
     "gallery": []
   },

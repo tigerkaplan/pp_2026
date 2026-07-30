@@ -23,9 +23,9 @@
     "github": "https://github.com/username/portfolio"
   },
   "media": {
-    "cover": "/images/projects/portfolio-1.jpg",
+    "cover": null,
     "coverAlt": "",
-    "gallery": ["/images/projects/portfolio-2.png"]
+    "gallery": []
   },
   "caseStudy": {
     "problem": "Traditional portfolios lacked SEO-friendly project pages and smooth project navigation.",

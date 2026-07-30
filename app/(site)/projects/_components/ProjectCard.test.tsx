@@ -39,6 +39,9 @@ const project: Project = {
   features: ["Keyboard support"],
   images: ["/project.jpg"],
   links: {},
+  media: { cover: null, coverAlt: "", gallery: [] },
+  caseStudy: { problem: "Problem", solution: "Solution", result: "Result" },
+  display: { showLiveLink: false, showGithubLink: false, showPreview: true, showFullProject: true },
 };
 
 const validImageProject: Project = {

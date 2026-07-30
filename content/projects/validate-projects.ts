@@ -2,6 +2,7 @@ import type {
   ProjectContent,
   ProjectRegistration,
 } from "./project-content";
+import { isSafeProjectMediaPath } from "@/lib/project-media-path";
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
@@ -109,13 +110,7 @@ function nullableUrl(
 }
 
 function validMediaPath(value: string): boolean {
-  if (value.startsWith("/")) return true;
-  try {
-    const url = new URL(value);
-    return url.protocol === "https:" || url.protocol === "http:";
-  } catch {
-    return false;
-  }
+  return isSafeProjectMediaPath(value);
 }
 
 function optionalStringArray(

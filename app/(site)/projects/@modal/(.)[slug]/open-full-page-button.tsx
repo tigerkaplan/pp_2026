@@ -15,7 +15,7 @@ export default function OpenFullPageButton({ url }: { url: string }) {
         "focus-visible:ring-[rgb(var(--color-focus))]",
       ].join(" ")}
     >
-      View full case study
+      View full project
     </button>
   );
 }

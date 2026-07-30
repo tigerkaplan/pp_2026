@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { readdirSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { getProjectBySlug } from "@/app/(site)/projects/_lib/getProjectBySlug";
 import { getProjects } from "@/app/(site)/projects/_lib/getProjects";
@@ -35,7 +35,7 @@ const MOCK_SLUGS = [
 ];
 
 const LEGACY_PROJECTS_SHA256 =
-  "719d5e989440909ac0074c9750bf1b03c0ad387695e6b5dbc95bb8cfed53c978";
+  "cb220176f4f6fb03376cb4189a69d2ed6e9165b5d4267c32076c31fef9cff09e";
 
 function cloneSource(): Record<string, unknown> {
   return JSON.parse(JSON.stringify(sourceProject)) as Record<string, unknown>;
@@ -125,6 +125,31 @@ test("registers Council with only approved skill evidence and no public links", 
   });
 });
 
+test("keeps every registered media path inside the real public directory", () => {
+  const publicDirectory = path.join(process.cwd(), "public");
+  const resolveAsset = (assetPath: string) =>
+    path.join(publicDirectory, assetPath.replace(/^\/+/, ""));
+
+  for (const project of PROJECT_CONTENT) {
+    if (project.media.cover) {
+      expect(project.media.cover.startsWith("/")).toBe(true);
+      expect(existsSync(resolveAsset(project.media.cover))).toBe(true);
+    }
+    for (const galleryPath of project.media.gallery) {
+      expect(galleryPath.startsWith("/")).toBe(true);
+      expect(existsSync(resolveAsset(galleryPath))).toBe(true);
+    }
+  }
+
+  expect(PROJECT_CONTENT.find((project) => project.slug === COUNCIL_SLUG)?.media).toEqual(
+    { cover: null, coverAlt: "", gallery: [] },
+  );
+  expect(PROJECT_CONTENT.find((project) => project.slug === "nextjs-ecommerce-platform")?.media.cover).toBeNull();
+  expect(PROJECT_CONTENT.find((project) => project.slug === "seo-portfolio-platform")?.media).toEqual(
+    { cover: null, coverAlt: "", gallery: [] },
+  );
+});
+
 test("keeps every project consumer on the same normalized objects", async () => {
   expect(STABLE_PROJECTS).toBe(PROJECTS);
   await expect(getProjects()).resolves.toBe(PROJECTS);
@@ -185,6 +210,33 @@ test("rejects invalid links, media, display combinations and templates", () => {
   expect(() =>
     validateProjectContent(invalidMedia, "invalid-media.json", new Set()),
   ).toThrow("media.cover");
+
+  const remoteMedia = cloneSource();
+  (remoteMedia.media as Record<string, unknown>).cover = "https://example.com/cover.jpg";
+  expect(() =>
+    validateProjectContent(remoteMedia, "remote-media.json", new Set()),
+  ).toThrow("media.cover");
+
+  for (const path of [
+    "http://example.com/image.png",
+    "//example.com/image.png",
+    "/../package.json",
+    "/images/../window.svg",
+    "/./window.svg",
+    "\\images\\window.svg",
+  ]) {
+    const invalidPath = cloneSource();
+    (invalidPath.media as Record<string, unknown>).cover = path;
+    expect(() =>
+      validateProjectContent(invalidPath, "invalid-media-path.json", new Set()),
+    ).toThrow("media.cover");
+  }
+
+  const validLocalMedia = cloneSource();
+  (validLocalMedia.media as Record<string, unknown>).cover = "/window.svg";
+  expect(() =>
+    validateProjectContent(validLocalMedia, "local-media.json", new Set()),
+  ).not.toThrow();
 
   const invalidDisplay = cloneSource();
   invalidDisplay.links = { live: null, github: null };

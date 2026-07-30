@@ -76,8 +76,11 @@ export function normaliseProjectContent(content: ProjectContent): Project {
     id: content.id,
     slug: content.slug,
     title: content.title,
+    ...(content.shortTitle ? { shortTitle: content.shortTitle } : {}),
     summary: content.card.summary,
     featured: content.featured,
+    ...(content.status ? { status: content.status } : {}),
+    ...(content.category ? { category: content.category } : {}),
     year: content.year,
     role: content.role,
     stack: [...content.technologies],
@@ -94,6 +97,10 @@ export function normaliseProjectContent(content: ProjectContent): Project {
       ...(content.links.live ? { live: content.links.live } : {}),
       ...(content.links.github ? { github: content.links.github } : {}),
     },
+    media: { cover: content.media.cover, coverAlt: content.media.coverAlt, gallery: [...content.media.gallery] },
+    caseStudy: { ...content.caseStudy },
+    ...(content.evidence ? { evidence: { ...content.evidence } } : {}),
+    display: { ...content.display },
     ...(content.seo ? { seo: { ...content.seo } } : {}),
   };
 }

@@ -25,6 +25,9 @@ const project: Project = {
   features: ["Feature"],
   images: [],
   links: {},
+  media: { cover: null, coverAlt: "", gallery: [] },
+  caseStudy: { problem: "Problem", solution: "Solution", result: "Result" },
+  display: { showLiveLink: false, showGithubLink: false, showPreview: true, showFullProject: true },
 };
 
 test("uses one, two and three stretched card columns at the approved breakpoints", () => {

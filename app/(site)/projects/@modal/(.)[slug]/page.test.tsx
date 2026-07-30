@@ -35,7 +35,7 @@ jest.mock("../../_components/BackToProjectsButton", () => ({
 
 jest.mock("../../_components/OpenRevealButton", () => ({
   __esModule: true,
-  default: ({ href }: { href: string }) => <a href={href}>View full case study</a>,
+  default: ({ href }: { href: string }) => <a href={href}>View full project</a>,
 }));
 
 const project: Project = {
@@ -54,6 +54,9 @@ const project: Project = {
   features: ["Safe media"],
   images: ["/images/projects/missing-modal.jpg"],
   links: {},
+  media: { cover: "/images/projects/missing-modal.jpg", coverAlt: "Missing modal media preview", gallery: [] },
+  caseStudy: { problem: "Problem", solution: "Solution", result: "Result" },
+  display: { showLiveLink: false, showGithubLink: false, showPreview: true, showFullProject: true },
 };
 
 test("uses a semantic fallback for missing intercepted-modal media", async () => {
@@ -67,7 +70,7 @@ test("uses a semantic fallback for missing intercepted-modal media", async () =>
   expect(screen.getByText("Preview unavailable")).toBeInTheDocument();
   expect(container.querySelector("img")).not.toBeInTheDocument();
   expect(container.innerHTML).not.toContain("missing-modal.jpg");
-  expect(screen.getByRole("link", { name: /view full case study/i })).toHaveAttribute(
+  expect(screen.getByRole("link", { name: /view full project/i })).toHaveAttribute(
     "href",
     `/projects/${project.slug}`,
   );
@@ -86,7 +89,7 @@ test("keeps Council Preview content available without public action links", asyn
 
   expect(screen.getByRole("dialog", { name: council.title })).toBeInTheDocument();
   expect(screen.getByText("Preview unavailable")).toBeInTheDocument();
-  expect(screen.getByRole("link", { name: /view full case study/i })).toHaveAttribute(
+  expect(screen.getByRole("link", { name: /view full project/i })).toHaveAttribute(
     "href",
     `/projects/${council.slug}`,
   );

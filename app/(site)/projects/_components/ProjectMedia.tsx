@@ -1,23 +1,27 @@
 import { existsSync } from "node:fs";
 import path from "node:path";
 import Image from "next/image";
+import { isSafeProjectMediaPath } from "@/lib/project-media-path";
 
 export function hasRealProjectAsset(src?: string) {
-  if (!src || !src.startsWith("/")) return false;
+  if (!src || !isSafeProjectMediaPath(src)) return false;
 
-  const publicPath = path.join(process.cwd(), "public", src.replace(/^\/+/, ""));
-  return existsSync(publicPath);
+  const publicRoot = path.resolve(process.cwd(), "public");
+  const publicPath = path.resolve(publicRoot, src.slice(1));
+  return publicPath.startsWith(`${publicRoot}${path.sep}`) && existsSync(publicPath);
 }
 
 export function ProjectMedia({
   src,
   title,
+  alt = "",
   className,
   priority = false,
   sizes,
 }: {
   src?: string;
   title: string;
+  alt?: string;
   className?: string;
   priority?: boolean;
   sizes?: string;
@@ -47,7 +51,7 @@ export function ProjectMedia({
   return (
     <Image
       src={src as string}
-      alt=""
+      alt={alt}
       fill
       className={className ?? "object-cover"}
       priority={priority}

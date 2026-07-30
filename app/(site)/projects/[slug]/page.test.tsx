@@ -42,11 +42,11 @@ const project: Project = {
   solution: "Solution",
   result: "Result",
   features: ["Safe media"],
-  images: [
-    "/images/projects/missing-hero.jpg",
-    "/images/projects/missing-gallery.jpg",
-  ],
+  images: [],
   links: {},
+  media: { cover: null, coverAlt: "", gallery: [] },
+  caseStudy: { problem: "Problem", solution: "Solution", result: "Result" },
+  display: { showLiveLink: false, showGithubLink: false, showPreview: true, showFullProject: true },
 };
 
 test("prebuilds the thirteen registered project routes", async () => {
@@ -85,7 +85,17 @@ test("renders Council as a standalone project without public links", async () =>
   );
 
   expect(screen.getByRole("heading", { name: council.title, level: 1 })).toBeInTheDocument();
+  expect(screen.getByText("In progress")).toBeInTheDocument();
+  expect(screen.getByText("Accessible Digital Service")).toBeInTheDocument();
+  expect(screen.getAllByText(/fictional service data rather than a live council service/i)).toHaveLength(1);
+  expect(screen.getByText(/Final browser-based accessibility evidence is still being completed/i)).toBeInTheDocument();
+  expect(screen.getByText(/Final internal staff view and accessibility evidence are still being completed/i)).toBeInTheDocument();
+  expect(screen.getByRole("heading", { name: "Case study", level: 2 })).toBeInTheDocument();
+  expect(screen.getByRole("heading", { name: "Result", level: 3 })).toBeInTheDocument();
+  expect(screen.getAllByRole("heading", { name: "Outcomes", level: 3 })).toHaveLength(1);
+  expect(screen.queryByRole("heading", { name: "Screenshots" })).not.toBeInTheDocument();
   expect(screen.getByText("Preview unavailable")).toBeInTheDocument();
+  expect(container.querySelector('[data-project-media="fallback"]')).toHaveClass("h-36", "sm:h-52");
   expect(screen.queryByRole("link", { name: "Live demo" })).not.toBeInTheDocument();
   expect(screen.queryByRole("link", { name: "GitHub" })).not.toBeInTheDocument();
   expect(container.querySelector("img")).not.toBeInTheDocument();
@@ -107,6 +117,25 @@ test("maps normalized project fields into route metadata", async () => {
   });
 });
 
+test("keeps the large media structure for a project with a cover path", async () => {
+  const projectWithCover: Project = {
+    ...project,
+    slug: "project-with-cover",
+    media: { cover: "/window.svg", coverAlt: "Project window" , gallery: [] },
+  };
+  jest.mocked(getProjectBySlug).mockResolvedValue(projectWithCover);
+
+  const { container } = render(
+    await ProjectPage({ params: Promise.resolve({ slug: projectWithCover.slug }) }),
+  );
+
+  expect(container.querySelector('[data-project-media="cover"]')).toHaveClass(
+    "h-[320px]",
+    "sm:h-[420px]",
+  );
+  expect(screen.getByRole("heading", { name: projectWithCover.title, level: 1 })).toBeInTheDocument();
+});
+
 test("uses semantic fallbacks for missing full-page project media", async () => {
   jest.mocked(getProjectBySlug).mockResolvedValue(project);
 
@@ -115,11 +144,11 @@ test("uses semantic fallbacks for missing full-page project media", async () => 
   );
 
   expect(screen.getByRole("heading", { name: project.title, level: 1 })).toBeInTheDocument();
-  expect(screen.getAllByText("Preview unavailable")).toHaveLength(2);
+  expect(screen.getAllByText("Preview unavailable")).toHaveLength(1);
   expect(screen.getAllByText(project.title).length).toBeGreaterThan(1);
   expect(container.querySelector("img")).not.toBeInTheDocument();
-  expect(container.innerHTML).not.toContain("missing-hero.jpg");
-  expect(container.innerHTML).not.toContain("missing-gallery.jpg");
-  expect(screen.getByRole("link", { name: /back to projects/i })).toHaveAttribute("href", "/projects");
+  expect(container.querySelector('[data-project-media="fallback"]')).toHaveClass("h-36", "sm:h-52");
+  expect(screen.queryByRole("heading", { name: "Screenshots" })).not.toBeInTheDocument();
+  expect(screen.queryByRole("link", { name: /back to projects/i })).not.toBeInTheDocument();
   expect(await axe(container)).toHaveNoViolations();
 });
