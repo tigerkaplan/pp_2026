@@ -38,24 +38,25 @@ export function TechnologyOverflow({
   if (technologies.length === 0) return null;
 
   return (
-    <div ref={rootRef} className="relative">
+    <div ref={rootRef} className="relative shrink-0">
       <button
         ref={triggerRef}
         type="button"
         aria-expanded={open}
         aria-controls={panelId}
-        aria-label={`${technologies.length} more technologies`}
+        aria-label={`${technologies.length} additional technologies`}
+        title={`${technologies.length} additional technologies`}
         onClick={() => setOpen((current) => !current)}
         className="min-h-8 whitespace-nowrap rounded-full bg-[rgb(var(--color-surface-weak)/0.78)] px-2.5 py-1 text-xs font-medium text-[rgb(var(--color-fg))] ring-1 ring-[rgb(var(--color-border))] backdrop-blur focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgb(var(--color-focus))] sm:text-sm"
       >
-        +{technologies.length} more
+        +{technologies.length}
       </button>
 
       {open ? (
         <div
           id={panelId}
           role="region"
-          aria-label="More technologies"
+          aria-label="Additional technologies"
           className="absolute bottom-full left-0 z-20 mb-2 w-max max-w-[min(16rem,calc(100vw-2rem))] rounded-lg border border-[rgb(var(--color-card-border))] bg-[rgb(var(--color-card-surface))] p-3 shadow-xl sm:left-auto sm:right-0"
         >
           <ul className="space-y-1 text-sm leading-5 text-[rgb(var(--color-fg))]">

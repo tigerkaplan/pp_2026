@@ -4,6 +4,7 @@ import apiIntegrationService from "./api-integration-service.json";
 import authenticationService from "./authentication-service.json";
 import blogPlatform from "./blog-platform.json";
 import contentManagementSystem from "./content-management-system.json";
+import councilDigitalPlatformsMiniLab from "./council-digital-platforms-mini-lab.json";
 import elearningPlatform from "./elearning-platform.json";
 import inventoryManagementApi from "./inventory-management-api.json";
 import nextjsEcommercePlatform from "./nextjs-ecommerce-platform.json";
@@ -16,6 +17,10 @@ import type { ProjectContent, ProjectRegistration } from "./project-content";
 import { validateProjectRegistry } from "./validate-projects";
 
 const PROJECT_REGISTRY: readonly ProjectRegistration[] = [
+  {
+    source: "content/projects/council-digital-platforms-mini-lab.json",
+    content: councilDigitalPlatformsMiniLab,
+  },
   {
     source: "content/projects/seo-portfolio-platform.json",
     content: seoPortfolioPlatform,
@@ -89,6 +94,7 @@ export function normaliseProjectContent(content: ProjectContent): Project {
       ...(content.links.live ? { live: content.links.live } : {}),
       ...(content.links.github ? { github: content.links.github } : {}),
     },
+    ...(content.seo ? { seo: { ...content.seo } } : {}),
   };
 }
 

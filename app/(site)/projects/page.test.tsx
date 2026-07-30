@@ -11,7 +11,11 @@ jest.mock("./_components/ProjectGrid", () => ({
     projects: Project[];
     variant: "all" | "featured";
   }) => (
-    <div data-testid={`${variant}-projects-grid`} data-count={projects.length}>
+    <div
+      data-testid={`${variant}-projects-grid`}
+      data-count={projects.length}
+      data-first-project={projects[0]?.slug}
+    >
       {variant}
     </div>
   ),
@@ -33,11 +37,19 @@ test("renders the real projects page with explicit grid contracts and offsets", 
   );
   expect(screen.getByTestId("all-projects-grid")).toHaveAttribute(
     "data-count",
-    "10",
+    "11",
   );
   expect(screen.getByTestId("on-this-page")).toHaveAttribute(
     "data-count",
-    "12",
+    "13",
+  );
+  expect(screen.getByTestId("featured-projects-grid")).toHaveAttribute(
+    "data-first-project",
+    "council-digital-platforms-mini-lab",
+  );
+  expect(screen.getByTestId("all-projects-grid")).toHaveAttribute(
+    "data-first-project",
+    "nextjs-ecommerce-platform",
   );
 
   const projectsRoot = container.querySelector("[data-projects-page]");

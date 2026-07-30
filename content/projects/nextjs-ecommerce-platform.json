@@ -2,11 +2,11 @@
   "id": 2,
   "slug": "nextjs-ecommerce-platform",
   "title": "Next.js eCommerce Platform",
-  "featured": true,
+  "featured": false,
   "year": 2025,
   "role": "Full-stack Developer",
   "tags": ["Ecommerce", "Next.js"],
-  "order": 2,
+  "order": 3,
   "card": {
     "summary": "A scalable eCommerce platform with server-side rendering and secure payments.",
     "highlights": ["SSR product pages", "Stripe payments", "Admin product management"]

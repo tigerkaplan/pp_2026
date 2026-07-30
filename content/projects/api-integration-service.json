@@ -6,7 +6,7 @@
   "year": 2021,
   "role": "Backend Developer",
   "tags": ["Integration", "API"],
-  "order": 12,
+  "order": 13,
   "card": {
     "summary": "Service for integrating and aggregating multiple external APIs.",
     "highlights": ["API aggregation", "Error handling"]

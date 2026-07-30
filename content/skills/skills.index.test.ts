@@ -3,7 +3,24 @@ import rawSkills from "./skills.json";
 import { SKILL_GROUPS, SKILL_IDS, SKILLS } from "./skills.index";
 import { validateSkillGroups, validateSkills } from "./validate-skills";
 
-test("publishes only the five approved skill groups and no unverified skills", () => {
+const APPROVED_SKILL_IDS = [
+  "accessible-form-design",
+  "conditional-form-logic",
+  "server-side-validation",
+  "plain-language-form-design",
+  "keyboard-accessibility",
+  "structured-data-capture",
+  "json",
+  "rest-style-endpoints",
+  "technical-documentation",
+  "drupal",
+  "drupal-webform",
+  "php",
+  "twig",
+  "yaml-configuration",
+];
+
+test("publishes the five approved groups and fourteen approved skills", () => {
   expect(SKILL_GROUPS.map(({ id, label }) => ({ id, label }))).toEqual([
     {
       id: "front-end-development",
@@ -26,9 +43,30 @@ test("publishes only the five approved skill groups and no unverified skills", (
       label: "Platforms & Interoperability Knowledge",
     },
   ]);
-  expect(SKILLS).toEqual([]);
-  expect(SKILL_IDS.size).toBe(0);
-  expect(validateSkills(rawSkills, validateSkillGroups(rawGroups))).toEqual([]);
+  expect(SKILLS).toHaveLength(14);
+  expect(SKILLS.map((skill) => skill.id)).toEqual(APPROVED_SKILL_IDS);
+  expect(SKILL_IDS.size).toBe(14);
+  expect(validateSkills(rawSkills, validateSkillGroups(rawGroups))).toEqual(
+    SKILLS,
+  );
+  expect(
+    SKILLS.map(({ id, group, status }) => ({ id, group, status })),
+  ).toEqual([
+    { id: "accessible-form-design", group: "accessible-digital-services", status: "practical-evidence" },
+    { id: "conditional-form-logic", group: "accessible-digital-services", status: "practical-evidence" },
+    { id: "server-side-validation", group: "accessible-digital-services", status: "practical-evidence" },
+    { id: "plain-language-form-design", group: "accessible-digital-services", status: "practical-evidence" },
+    { id: "keyboard-accessibility", group: "accessible-digital-services", status: "developing-knowledge" },
+    { id: "structured-data-capture", group: "data-integration", status: "practical-evidence" },
+    { id: "json", group: "data-integration", status: "practical-evidence" },
+    { id: "rest-style-endpoints", group: "data-integration", status: "practical-evidence" },
+    { id: "technical-documentation", group: "testing-delivery", status: "applied" },
+    { id: "drupal", group: "platforms-interoperability", status: "practical-evidence" },
+    { id: "drupal-webform", group: "platforms-interoperability", status: "practical-evidence" },
+    { id: "php", group: "platforms-interoperability", status: "practical-evidence" },
+    { id: "twig", group: "platforms-interoperability", status: "developing-knowledge" },
+    { id: "yaml-configuration", group: "platforms-interoperability", status: "practical-evidence" },
+  ]);
 });
 
 test("rejects unknown groups, unsupported statuses and skill templates", () => {
@@ -60,4 +98,24 @@ test("rejects unknown groups, unsupported statuses and skill templates", () => {
       "content/templates/skill.template.json",
     ),
   ).toThrow("template must not be registered");
+});
+
+test("permits group-local order values but rejects duplicates within one group", () => {
+  const first = {
+    id: "first-skill",
+    name: "First skill",
+    group: "accessible-digital-services",
+    status: "applied",
+    summary: "First verified skill.",
+    order: 1,
+  };
+  const otherGroup = { ...first, id: "other-skill", group: "data-integration" };
+
+  expect(validateSkills([first, otherGroup], SKILL_GROUPS)).toHaveLength(2);
+  expect(() =>
+    validateSkills(
+      [first, { ...first, id: "duplicate-skill" }],
+      SKILL_GROUPS,
+    ),
+  ).toThrow("Duplicate skill order within group");
 });

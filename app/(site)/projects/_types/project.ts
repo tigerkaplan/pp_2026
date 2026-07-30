@@ -22,4 +22,10 @@ export type Project = {
     live?: string;
     github?: string;
   };
+
+  seo?: {
+    title: string;
+    description: string;
+    ogImage: string | null;
+  };
 };

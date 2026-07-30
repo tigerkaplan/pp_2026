@@ -1,1 +1,114 @@
-[]
+[
+  {
+    "id": "accessible-form-design",
+    "name": "Accessible form design",
+    "group": "accessible-digital-services",
+    "status": "practical-evidence",
+    "summary": "Designing clear public-service forms with structured questions, validation and accessible interaction patterns.",
+    "order": 1
+  },
+  {
+    "id": "conditional-form-logic",
+    "name": "Conditional form logic",
+    "group": "accessible-digital-services",
+    "status": "practical-evidence",
+    "summary": "Showing relevant questions based on earlier answers to reduce unnecessary complexity.",
+    "order": 2
+  },
+  {
+    "id": "server-side-validation",
+    "name": "Server-side validation",
+    "group": "accessible-digital-services",
+    "status": "practical-evidence",
+    "summary": "Validating submitted data on the server and returning clear, structured results.",
+    "order": 3
+  },
+  {
+    "id": "plain-language-form-design",
+    "name": "Plain-language form design",
+    "group": "accessible-digital-services",
+    "status": "practical-evidence",
+    "summary": "Structuring service questions and guidance in clear, task-focused language.",
+    "order": 4
+  },
+  {
+    "id": "keyboard-accessibility",
+    "name": "Keyboard accessibility",
+    "group": "accessible-digital-services",
+    "status": "developing-knowledge",
+    "summary": "Applying and documenting keyboard-accessible interaction patterns across forms and navigation.",
+    "order": 5
+  },
+  {
+    "id": "structured-data-capture",
+    "name": "Structured data capture",
+    "group": "data-integration",
+    "status": "practical-evidence",
+    "summary": "Capturing form responses in a consistent structure for downstream processing and internal use.",
+    "order": 1
+  },
+  {
+    "id": "json",
+    "name": "JSON",
+    "group": "data-integration",
+    "status": "practical-evidence",
+    "summary": "Representing and exchanging structured application and service-request data.",
+    "order": 2
+  },
+  {
+    "id": "rest-style-endpoints",
+    "name": "REST-style endpoints",
+    "group": "data-integration",
+    "status": "practical-evidence",
+    "summary": "Exposing structured application data through clear HTTP endpoints.",
+    "order": 3
+  },
+  {
+    "id": "technical-documentation",
+    "name": "Technical documentation",
+    "group": "testing-delivery",
+    "status": "applied",
+    "summary": "Recording implementation decisions, validation results, limitations and handover information.",
+    "order": 1
+  },
+  {
+    "id": "drupal",
+    "name": "Drupal",
+    "group": "platforms-interoperability",
+    "status": "practical-evidence",
+    "summary": "Building and configuring structured public-service forms in Drupal.",
+    "order": 1
+  },
+  {
+    "id": "drupal-webform",
+    "name": "Drupal Webform",
+    "group": "platforms-interoperability",
+    "status": "practical-evidence",
+    "summary": "Creating conditional service-request forms and exporting maintainable configuration.",
+    "order": 2
+  },
+  {
+    "id": "php",
+    "name": "PHP",
+    "group": "platforms-interoperability",
+    "status": "practical-evidence",
+    "summary": "Implementing focused server-side validation in a Drupal module.",
+    "order": 3
+  },
+  {
+    "id": "twig",
+    "name": "Twig",
+    "group": "platforms-interoperability",
+    "status": "developing-knowledge",
+    "summary": "Working with Drupal presentation templates and structured confirmation output.",
+    "order": 4
+  },
+  {
+    "id": "yaml-configuration",
+    "name": "YAML configuration",
+    "group": "platforms-interoperability",
+    "status": "practical-evidence",
+    "summary": "Exporting and maintaining Drupal form and module configuration in YAML.",
+    "order": 5
+  }
+]

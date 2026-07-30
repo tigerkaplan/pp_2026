@@ -6,7 +6,7 @@
   "year": 2022,
   "role": "Frontend Developer",
   "tags": ["Blog", "SEO"],
-  "order": 11,
+  "order": 12,
   "card": {
     "summary": "A blogging platform focused on technical content and SEO.",
     "highlights": ["Markdown support", "Static generation"]

@@ -6,6 +6,7 @@ import ProjectPage, {
   generateStaticParams,
 } from "./page";
 import { getProjectBySlug } from "../_lib/getProjectBySlug";
+import { PROJECTS } from "../_lib/projects.data";
 import type { Project } from "../_types/project";
 
 jest.mock("../_lib/getProjectBySlug", () => ({
@@ -48,13 +49,46 @@ const project: Project = {
   links: {},
 };
 
-test("prebuilds only the twelve known project routes", async () => {
+test("prebuilds the thirteen registered project routes", async () => {
   const params = await generateStaticParams();
 
   expect(dynamicParams).toBe(false);
-  expect(params).toHaveLength(12);
+  expect(params).toHaveLength(13);
+  expect(params).toContainEqual({ slug: "council-digital-platforms-mini-lab" });
   expect(params).toContainEqual({ slug: "seo-portfolio-platform" });
   expect(params).not.toContainEqual({ slug: "not-a-real-project" });
+});
+
+test("maps Council metadata from approved JSON content", async () => {
+  const council = PROJECTS.find(
+    (candidate) => candidate.slug === "council-digital-platforms-mini-lab",
+  ) as Project;
+  jest.mocked(getProjectBySlug).mockResolvedValue(council);
+
+  await expect(
+    generateMetadata({ params: Promise.resolve({ slug: council.slug }) }),
+  ).resolves.toMatchObject({
+    title: "Council Digital Platforms Mini Lab | Projects",
+    description:
+      "A council-style digital-service prototype using Drupal Webform, conditional logic, PHP postcode validation and structured JSON data.",
+  });
+});
+
+test("renders Council as a standalone project without public links", async () => {
+  const council = PROJECTS.find(
+    (candidate) => candidate.slug === "council-digital-platforms-mini-lab",
+  ) as Project;
+  jest.mocked(getProjectBySlug).mockResolvedValue(council);
+
+  const { container } = render(
+    await ProjectPage({ params: Promise.resolve({ slug: council.slug }) }),
+  );
+
+  expect(screen.getByRole("heading", { name: council.title, level: 1 })).toBeInTheDocument();
+  expect(screen.getByText("Preview unavailable")).toBeInTheDocument();
+  expect(screen.queryByRole("link", { name: "Live demo" })).not.toBeInTheDocument();
+  expect(screen.queryByRole("link", { name: "GitHub" })).not.toBeInTheDocument();
+  expect(container.querySelector("img")).not.toBeInTheDocument();
 });
 
 test("maps normalized project fields into route metadata", async () => {

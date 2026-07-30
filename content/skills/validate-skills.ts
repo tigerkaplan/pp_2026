@@ -95,6 +95,15 @@ export function validateSkills(
     };
   });
   rejectDuplicates(skills, (skill) => skill.id, "skill id");
-  rejectDuplicates(skills, (skill) => skill.order, "skill order");
-  return [...skills].sort((left, right) => left.order - right.order);
+  rejectDuplicates(
+    skills,
+    (skill) => `${skill.group}:${skill.order}`,
+    "skill order within group",
+  );
+  const groupOrders = new Map(groups.map((group) => [group.id, group.order]));
+  return [...skills].sort(
+    (left, right) =>
+      groupOrders.get(left.group)! - groupOrders.get(right.group)! ||
+      left.order - right.order,
+  );
 }

@@ -6,7 +6,7 @@
   "year": 2024,
   "role": "Full-stack Developer",
   "tags": ["CMS", "Next.js"],
-  "order": 5,
+  "order": 6,
   "card": {
     "summary": "A lightweight CMS for managing pages and blog content.",
     "highlights": ["Role-based permissions", "Draft & publish workflow", "Live preview"]

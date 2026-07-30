@@ -6,7 +6,7 @@
   "year": 2026,
   "role": "Full-stack Developer",
   "tags": ["Portfolio", "SEO", "Next.js"],
-  "order": 1,
+  "order": 2,
   "card": {
     "summary": "A fast, SEO-optimized software developer portfolio built with Next.js 16 and .NET Web API.",
     "highlights": [

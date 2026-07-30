@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 import ProjectModal from "./page";
 import { getProjectBySlug } from "../../_lib/getProjectBySlug";
+import { PROJECTS } from "../../_lib/projects.data";
 import type { Project } from "../../_types/project";
 
 jest.mock("../../_lib/getProjectBySlug", () => ({
@@ -71,4 +72,25 @@ test("uses a semantic fallback for missing intercepted-modal media", async () =>
     `/projects/${project.slug}`,
   );
   expect(await axe(container)).toHaveNoViolations();
+});
+
+test("keeps Council Preview content available without public action links", async () => {
+  const council = PROJECTS.find(
+    (candidate) => candidate.slug === "council-digital-platforms-mini-lab",
+  )!;
+  jest.mocked(getProjectBySlug).mockResolvedValue(council);
+
+  const { container } = render(
+    await ProjectModal({ params: Promise.resolve({ slug: council.slug }) }),
+  );
+
+  expect(screen.getByRole("dialog", { name: council.title })).toBeInTheDocument();
+  expect(screen.getByText("Preview unavailable")).toBeInTheDocument();
+  expect(screen.getByRole("link", { name: /view full case study/i })).toHaveAttribute(
+    "href",
+    `/projects/${council.slug}`,
+  );
+  expect(screen.queryByRole("link", { name: "Live" })).not.toBeInTheDocument();
+  expect(screen.queryByRole("link", { name: "GitHub" })).not.toBeInTheDocument();
+  expect(container.querySelector("img")).not.toBeInTheDocument();
 });

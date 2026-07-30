@@ -1,11 +1,11 @@
 import Link from "next/link";
 import type { Project } from "../_types/project";
-import { ProjectMedia } from "./ProjectMedia";
+import { hasRealProjectAsset, ProjectMedia } from "./ProjectMedia";
 import {
   ProjectActionOverflow,
   type ProjectOverflowAction,
 } from "./ProjectActionOverflow";
-import { TechnologyOverflow } from "./TechnologyOverflow";
+import { TechnologyTags } from "./TechnologyTags";
 
 /* =============================================================================
   ProjectCard.tsx (Token-based, Tailwind v4)
@@ -17,10 +17,6 @@ import { TechnologyOverflow } from "./TechnologyOverflow";
 const coverFeaturedH = "h-56 sm:h-64";
 const coverDefaultH = "h-48 sm:h-52";
 
-const slotLabel = "min-h-5";
-const slotList = "min-h-[3.75rem]";
-const slotMore = "min-h-5";
-
 /* ---------------------------------------------
   Shared style helpers
 ---------------------------------------------- */
@@ -31,9 +27,6 @@ const cardHover =
   "transition hover:border-[rgb(var(--color-card-border))] hover:bg-[rgb(var(--color-card-surface-hover))] hover:shadow-[0_16px_50px_-30px_rgba(0,0,0,0.65)]";
 
 const subtleBorder = "border-t border-[rgb(var(--color-card-border))]";
-
-const chip =
-  "whitespace-nowrap rounded-full bg-[rgb(var(--color-surface-weak)/0.78)] px-2.5 py-1 text-xs font-medium text-[rgb(var(--color-fg))] ring-1 ring-[rgb(var(--color-border))] backdrop-blur sm:text-sm";
 
 const chipPrimary =
   "whitespace-nowrap rounded-full bg-[rgb(var(--color-nav-active))] px-2.5 py-1 text-xs font-medium text-[rgb(var(--color-nav-active-fg))] ring-1 ring-[rgb(var(--color-border))] backdrop-blur sm:text-sm";
@@ -69,16 +62,18 @@ function Cover({
   sizes: string;
 }) {
   const primaryTag = tags[0];
+  const hasRealImage = hasRealProjectAsset(img);
 
   return (
-    <div
+    <div data-project-header>
+      <div
       className={[
         "relative w-full overflow-hidden rounded-t-2xl",
         heightClass,
         // fallback surface
         "bg-[rgb(var(--color-surface-strong))]",
       ].join(" ")}
-      data-project-header
+      data-project-media
     >
       <div className="absolute inset-0">
         <ProjectMedia
@@ -90,13 +85,15 @@ function Cover({
         />
       </div>
 
-      <div className={`absolute inset-0 ${overlayClass}`} />
-
       {primaryTag && (
         <div className="absolute right-4 top-4">
           <span className={chipPrimary}>{primaryTag}</span>
         </div>
       )}
+
+      {hasRealImage && (
+        <>
+          <div className={`absolute inset-0 ${overlayClass}`} />
 
       <div className="absolute inset-x-0 bottom-0 p-5">
         <div className="text-sm leading-5 text-white/80">
@@ -118,7 +115,32 @@ function Cover({
             {summary}
           </p>
         )}
+          </div>
+          </>
+        )}
       </div>
+
+      {!hasRealImage && (
+        <div className="p-5" data-project-title-content>
+          <div className="text-sm leading-5 text-[rgb(var(--color-fg-muted))]">
+            {year} {"\u2022"} {role}
+          </div>
+          <h3
+            className={
+              isFeatured
+                ? "mt-1 text-2xl font-semibold leading-tight text-[rgb(var(--color-fg))] sm:text-3xl"
+                : "mt-1 text-xl font-semibold leading-tight text-[rgb(var(--color-fg))] lg:text-2xl"
+            }
+          >
+            {title}
+          </h3>
+          {showSummaryOnImage && (
+            <p className="mt-2 text-sm leading-6 text-[rgb(var(--color-fg-muted))] line-clamp-2 sm:text-base">
+              {summary}
+            </p>
+          )}
+        </div>
+      )}
     </div>
   );
 }
@@ -139,8 +161,6 @@ function Ctas({
   technologies: string[];
   featuredStyle?: boolean;
 }) {
-  const shownTechnologies = technologies.slice(0, 2);
-  const hiddenTechnologies = technologies.slice(2);
   const actions: Array<
     ProjectOverflowAction & { intercepted?: boolean }
   > = [
@@ -216,7 +236,7 @@ function Ctas({
               {actions.map(renderAction)}
             </div>
             <div
-              className="flex min-h-11 flex-wrap items-center gap-1.5 @[21rem]:hidden"
+              className="flex min-h-11 flex-nowrap items-center gap-1.5 @[21rem]:hidden"
               data-project-actions-compact
             >
               {compactVisibleActions.map(renderAction)}
@@ -225,7 +245,7 @@ function Ctas({
           </>
         ) : (
           <div
-            className="flex min-h-11 flex-wrap items-center gap-1.5 @[21rem]:flex-nowrap"
+            className="flex min-h-11 flex-nowrap items-center gap-1.5"
             data-project-actions-direct
           >
             {actions.map(renderAction)}
@@ -233,17 +253,7 @@ function Ctas({
         )}
       </div>
 
-      <div
-        className="flex min-h-8 flex-wrap items-center gap-2 md:flex-nowrap"
-        data-project-technologies
-      >
-        {shownTechnologies.map((technology) => (
-          <span key={technology} className={chip}>
-            {technology}
-          </span>
-        ))}
-        <TechnologyOverflow technologies={hiddenTechnologies} />
-      </div>
+      <TechnologyTags technologies={technologies} />
     </div>
   );
 }
@@ -273,7 +283,7 @@ export default function ProjectCard({
   if (isFeatured) {
     return (
       <article className={["flex h-full flex-col", cardShell, cardHover].join(" ")}>
-        <div className="flex-1">
+        <div className="flex flex-1 flex-col" data-project-card-body>
           <Cover
             img={img}
             title={project.title}
@@ -303,7 +313,7 @@ export default function ProjectCard({
 
   return (
     <article className={["flex h-full flex-col", cardShell, cardHover].join(" ")}>
-      <div className="flex flex-1 flex-col">
+      <div className="flex flex-1 flex-col" data-project-card-body>
         <Cover
           img={img}
           title={project.title}
@@ -317,12 +327,15 @@ export default function ProjectCard({
           sizes="(min-width:1200px) 33vw, (min-width:768px) 50vw, 100vw"
         />
 
-          <div className="flex flex-1 flex-col p-5">
-            <p className="min-h-16 text-base leading-6 text-[rgb(var(--color-fg-muted))] lg:text-[17px]">
+          <div
+            className="flex flex-col gap-3 px-5 pb-5 pt-3"
+            data-project-content
+          >
+            <p className="text-base leading-6 text-[rgb(var(--color-fg-muted))] lg:text-[17px]">
               {project.summary}
             </p>
 
-            <div className={`mt-2 ${slotLabel}`}>
+            <div>
               <div className="text-sm font-semibold text-[rgb(var(--color-fg))]">
                 {label}
               </div>
@@ -330,9 +343,8 @@ export default function ProjectCard({
 
             <ul
               className={[
-                "mt-2 space-y-1.5 text-sm leading-5 sm:text-base sm:leading-6",
+                "space-y-1.5 text-sm leading-5 sm:text-base sm:leading-6",
                 "text-[rgb(var(--color-fg-muted))]",
-                slotList,
               ].join(" ")}
             >
               {shown.map((t) => (
@@ -343,9 +355,11 @@ export default function ProjectCard({
               ))}
             </ul>
 
-            <div className={`mt-1 text-sm text-[rgb(var(--color-fg-muted))] opacity-80 ${slotMore}`}>
-              {remaining > 0 ? `+${remaining} more` : "\u00A0"}
-            </div>
+            {remaining > 0 && (
+              <div className="text-sm text-[rgb(var(--color-fg-muted))] opacity-80">
+                +{remaining} more
+              </div>
+            )}
         </div>
       </div>
 

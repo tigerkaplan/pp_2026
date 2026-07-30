@@ -6,7 +6,7 @@
   "year": 2022,
   "role": "Frontend Developer",
   "tags": ["Productivity"],
-  "order": 10,
+  "order": 11,
   "card": {
     "summary": "A productivity app for managing tasks and priorities.",
     "highlights": ["Task grouping", "Deadlines", "Responsive UI"]

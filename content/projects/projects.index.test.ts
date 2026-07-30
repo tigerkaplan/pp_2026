@@ -4,6 +4,7 @@ import path from "node:path";
 import { getProjectBySlug } from "@/app/(site)/projects/_lib/getProjectBySlug";
 import { getProjects } from "@/app/(site)/projects/_lib/getProjects";
 import { PROJECTS as STABLE_PROJECTS } from "@/app/(site)/projects/_lib/projects.data";
+import { SKILL_IDS } from "@/content/skills/skills.index";
 import sourceProject from "./seo-portfolio-platform.json";
 import {
   normaliseProjectContent,
@@ -16,7 +17,9 @@ import {
   validateProjectRegistry,
 } from "./validate-projects";
 
-const EXPECTED_SLUGS = [
+const COUNCIL_SLUG = "council-digital-platforms-mini-lab";
+
+const MOCK_SLUGS = [
   "seo-portfolio-platform",
   "nextjs-ecommerce-platform",
   "inventory-management-api",
@@ -45,9 +48,12 @@ function registration(
   return { source, content };
 }
 
-test("preserves all twelve legacy fixtures with exact semantic parity", () => {
-  expect(PROJECTS).toHaveLength(12);
-  expect(PROJECTS.map((project) => project.slug)).toEqual(EXPECTED_SLUGS);
+test("adds Council first while preserving all twelve mock fixtures", () => {
+  expect(PROJECTS).toHaveLength(13);
+  expect(PROJECTS.map((project) => project.slug)).toEqual([
+    COUNCIL_SLUG,
+    ...MOCK_SLUGS,
+  ]);
   expect(PROJECTS.map((project) => project.featured)).toEqual([
     true,
     true,
@@ -61,19 +67,68 @@ test("preserves all twelve legacy fixtures with exact semantic parity", () => {
     false,
     false,
     false,
+    false,
   ]);
-  expect(PROJECT_CONTENT.map((project) => project.order)).toEqual([
-    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
-  ]);
+  expect(PROJECT_CONTENT.map((project) => project.order)).toEqual(
+    Array.from({ length: 13 }, (_, index) => index + 1),
+  );
+  const mockProjects = PROJECTS.filter((project) => project.slug !== COUNCIL_SLUG);
+  expect(mockProjects.map((project) => project.slug)).toEqual(MOCK_SLUGS);
+  const mockParityProjection = mockProjects.map((project) =>
+    project.slug === "nextjs-ecommerce-platform"
+      ? { ...project, featured: true }
+      : project,
+  );
   expect(
-    createHash("sha256").update(JSON.stringify(PROJECTS)).digest("hex"),
+    createHash("sha256")
+      .update(JSON.stringify(mockParityProjection))
+      .digest("hex"),
   ).toBe(LEGACY_PROJECTS_SHA256);
+  expect(PROJECTS.filter((project) => project.featured).map((project) => project.slug)).toEqual([
+    COUNCIL_SLUG,
+    "seo-portfolio-platform",
+  ]);
+  expect(PROJECTS.filter((project) => !project.featured)).toHaveLength(11);
+  expect(PROJECTS.filter((project) => !project.featured)[0]?.slug).toBe(
+    "nextjs-ecommerce-platform",
+  );
+});
+
+test("registers Council with only approved skill evidence and no public links", () => {
+  const council = PROJECT_CONTENT.find(
+    (project) => project.slug === COUNCIL_SLUG,
+  );
+
+  expect(council).toMatchObject({
+    id: 13,
+    featured: true,
+    order: 1,
+    title: "Council Digital Platforms Mini Lab",
+    links: { live: null, github: null },
+    media: { cover: null, gallery: [] },
+    seo: {
+      title: "Council Digital Platforms Mini Lab",
+      description:
+        "A council-style digital-service prototype using Drupal Webform, conditional logic, PHP postcode validation and structured JSON data.",
+    },
+  });
+  expect(council?.skillIds.every((skillId) => SKILL_IDS.has(skillId))).toBe(
+    true,
+  );
+  expect(council?.skillIds).not.toContain("twig");
+  expect(council?.technologies).not.toContain("Twig");
+  expect(council?.caseStudy.technicalImplementation).not.toContain("Twig");
+  expect(PROJECTS[0]).toMatchObject({
+    slug: COUNCIL_SLUG,
+    links: {},
+    images: [],
+  });
 });
 
 test("keeps every project consumer on the same normalized objects", async () => {
   expect(STABLE_PROJECTS).toBe(PROJECTS);
   await expect(getProjects()).resolves.toBe(PROJECTS);
-  await expect(getProjectBySlug(EXPECTED_SLUGS[0])).resolves.toBe(PROJECTS[0]);
+  await expect(getProjectBySlug(COUNCIL_SLUG)).resolves.toBe(PROJECTS[0]);
 });
 
 test("rejects missing required fields and unknown skill IDs", () => {
@@ -181,7 +236,7 @@ test("keeps templates out of runtime registries and future additions at the data
   );
   const templateDirectory = path.join(process.cwd(), "content", "templates");
 
-  expect(runtimeJsonFiles).toHaveLength(12);
+  expect(runtimeJsonFiles).toHaveLength(13);
   expect(runtimeJsonFiles.some((file) => file.includes(".template."))).toBe(
     false,
   );

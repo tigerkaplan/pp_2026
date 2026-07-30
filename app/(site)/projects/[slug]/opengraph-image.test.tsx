@@ -11,7 +11,9 @@ jest.mock("next/og", () => ({
 }));
 
 test("builds Open Graph content from the normalized project object", async () => {
-  const project = PROJECTS[0];
+  const project = PROJECTS.find(
+    (candidate) => candidate.slug === "council-digital-platforms-mini-lab",
+  )!;
   const response = (await OpenGraphImage({
     params: Promise.resolve({ slug: project.slug }),
   })) as unknown as { element: React.ReactElement };

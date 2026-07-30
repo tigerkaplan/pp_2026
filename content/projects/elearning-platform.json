@@ -6,7 +6,7 @@
   "year": 2023,
   "role": "Full-stack Developer",
   "tags": ["Education", "Platform"],
-  "order": 9,
+  "order": 10,
   "card": {
     "summary": "Online learning platform with progress tracking.",
     "highlights": ["Course management", "Progress tracking"]

@@ -6,7 +6,7 @@
   "year": 2025,
   "role": "Backend Developer",
   "tags": ["API", ".NET"],
-  "order": 3,
+  "order": 4,
   "card": {
     "summary": "A RESTful API for managing inventory and stock movements.",
     "highlights": ["CRUD endpoints", "Role-based access", "Structured logging"]
