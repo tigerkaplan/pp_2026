@@ -15,4 +15,7 @@ test("resolves the real Preview targets and rejects unavailable slugs", async ()
     title: "Personal Portfolio 2026",
     slug: "seo-portfolio-platform",
   });
+  await expect(
+    getProjectBySlug("nextjs-ecommerce-platform"),
+  ).resolves.toBeUndefined();
 });

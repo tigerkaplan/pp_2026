@@ -49,13 +49,14 @@ const project: Project = {
   display: { showLiveLink: false, showGithubLink: false, showPreview: true, showFullProject: true },
 };
 
-test("prebuilds the thirteen registered project routes", async () => {
+test("prebuilds only the project routes with approved evidence", async () => {
   const params = await generateStaticParams();
 
   expect(dynamicParams).toBe(false);
-  expect(params).toHaveLength(13);
+  expect(params).toHaveLength(2);
   expect(params).toContainEqual({ slug: "council-digital-platforms-mini-lab" });
   expect(params).toContainEqual({ slug: "seo-portfolio-platform" });
+  expect(params).not.toContainEqual({ slug: "nextjs-ecommerce-platform" });
   expect(params).not.toContainEqual({ slug: "not-a-real-project" });
 });
 

@@ -1,4 +1,4 @@
-import { getProjects } from "./_lib/getProjects";
+import { getPublishedProjects } from "./_lib/getProjects";
 import ProjectGrid from "./_components/ProjectGrid";
 import OnThisPageProjects from "@/components/navigation/OnThisPage";
 
@@ -9,8 +9,9 @@ export const metadata = {
 };
 
 export default async function ProjectsPage() {
-  const projects = await getProjects();
+  const projects = await getPublishedProjects();
   const featured = projects.filter((p) => p.featured);
+  const additionalProjects = projects.filter((p) => !p.featured);
 
   return (
     <div className="relative" data-projects-page>
@@ -23,6 +24,9 @@ export default async function ProjectsPage() {
           <p className="max-w-3xl text-base leading-7 text-[rgb(var(--color-fg-muted))] lg:text-[17px]">
             A selection of projects showcasing a variety of technologies and
             solutions I’ve worked on.
+          </p>
+          <p className="max-w-3xl text-sm leading-6 text-[rgb(var(--color-fg-muted))]">
+            Only records with approved portfolio evidence are published here.
           </p>
         </header>
 
@@ -38,18 +42,17 @@ export default async function ProjectsPage() {
           </section>
         )}
 
-        <section className="space-y-4">
-          <h2
-            id="all-projects"
-            className="scroll-mt-28 text-2xl font-semibold tracking-tight sm:text-3xl"
-          >
-            All Projects
-          </h2>
-          <ProjectGrid
-            projects={projects.filter((p) => !p.featured)}
-            variant="all"
-          />
-        </section>
+        {additionalProjects.length > 0 ? (
+          <section className="space-y-4">
+            <h2
+              id="all-projects"
+              className="scroll-mt-28 text-2xl font-semibold tracking-tight sm:text-3xl"
+            >
+              All Projects
+            </h2>
+            <ProjectGrid projects={additionalProjects} variant="all" />
+          </section>
+        ) : null}
       </section>
     </div>
   );

@@ -56,7 +56,7 @@ test("traps focus, closes with Escape, restores focus and scroll", async () => {
   expect(closeButton).toHaveFocus();
   expect(container).toHaveProperty("inert", true);
   expect(screen.getByRole("navigation", { name: "Primary navigation" })).toBeVisible();
-  expect(screen.getAllByRole("link")).toHaveLength(6);
+  expect(screen.getAllByRole("link")).toHaveLength(5);
   expect(document.body.style.overflow).toBe("hidden");
 
   await user.tab({ shift: true });

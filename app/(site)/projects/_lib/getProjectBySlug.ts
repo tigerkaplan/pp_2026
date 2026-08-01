@@ -1,8 +1,8 @@
 import type { Project } from "../_types/project";
-import { PROJECTS } from "./projects.data";
+import { getPublishedProjects } from "./getProjects";
 
 export async function getProjectBySlug(
   slug: string
 ): Promise<Project | undefined> {
-  return PROJECTS.find((p) => p.slug === slug);
+  return (await getPublishedProjects()).find((p) => p.slug === slug);
 }

@@ -35,22 +35,16 @@ test("renders the real projects page with explicit grid contracts and offsets", 
     "data-count",
     "2",
   );
-  expect(screen.getByTestId("all-projects-grid")).toHaveAttribute(
-    "data-count",
-    "11",
-  );
+  expect(screen.queryByTestId("all-projects-grid")).not.toBeInTheDocument();
   expect(screen.getByTestId("on-this-page")).toHaveAttribute(
     "data-count",
-    "13",
+    "2",
   );
   expect(screen.getByTestId("featured-projects-grid")).toHaveAttribute(
     "data-first-project",
     "council-digital-platforms-mini-lab",
   );
-  expect(screen.getByTestId("all-projects-grid")).toHaveAttribute(
-    "data-first-project",
-    "nextjs-ecommerce-platform",
-  );
+  expect(screen.getByText(/only records with approved portfolio evidence/i)).toBeInTheDocument();
 
   const projectsRoot = container.querySelector("[data-projects-page]");
   expect(projectsRoot).toHaveClass("relative");
@@ -58,9 +52,7 @@ test("renders the real projects page with explicit grid contracts and offsets", 
   expect(
     screen.getByRole("heading", { name: "Featured Projects" }),
   ).toHaveClass("scroll-mt-28");
-  expect(screen.getByRole("heading", { name: "All Projects" })).toHaveClass(
-    "scroll-mt-28",
-  );
+  expect(screen.queryByRole("heading", { name: "All Projects" })).not.toBeInTheDocument();
 
   const contentSection = container.querySelector(
     "[data-projects-page] > section",

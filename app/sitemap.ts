@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { getProjects } from "@/app/(site)/projects/_lib/getProjects";
+import { getPublishedProjects } from "@/app/(site)/projects/_lib/getProjects";
 
 function getSiteUrl() {
   const url =
@@ -20,7 +20,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${siteUrl}/contact`, changeFrequency: "yearly", priority: 0.4 },
   ];
 
-  const projects = await getProjects();
+  const projects = await getPublishedProjects();
 
   const projectUrls: MetadataRoute.Sitemap = projects.map((p) => ({
     url: `${siteUrl}/projects/${p.slug}`,
