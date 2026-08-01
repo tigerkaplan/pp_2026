@@ -1,4 +1,5 @@
 import { render, screen, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import HomePage from "./page";
 import AboutPage from "./about/page";
 import ContactPage from "./contact/page";
@@ -28,16 +29,45 @@ test("keeps About evidence-led and links to the Skills route", () => {
   expect(screen.getByRole("link", { name: "View skills and evidence levels" })).toHaveAttribute("href", "/skills");
 });
 
-test("renders skills in validated evidence groups", () => {
+test("renders skills in validated evidence groups and filters them by evidence level", async () => {
+  const user = userEvent.setup();
   render(<SkillsPage />);
 
   expect(screen.getByRole("heading", { name: "Skills", level: 1 })).toBeInTheDocument();
+  const allSkills = screen.getByRole("button", { name: "All" });
+  const demonstrated = screen.getByRole("button", { name: "Demonstrated" });
+  const developingKnowledge = screen.getByRole("button", { name: "Developing knowledge" });
+  expect(allSkills).toHaveAttribute("aria-pressed", "true");
+  expect(demonstrated).toHaveAttribute("aria-pressed", "false");
+  expect(developingKnowledge).toHaveAttribute("aria-pressed", "false");
+
   const accessibleGroup = screen.getByRole("heading", {
     name: "Accessible Digital Services",
     level: 2,
   }).parentElement!;
   expect(within(accessibleGroup).getByText("Accessible form design")).toBeInTheDocument();
   expect(within(accessibleGroup).getByText("Developing knowledge")).toBeInTheDocument();
+
+  demonstrated.focus();
+  await user.keyboard("{Enter}");
+  expect(demonstrated).toHaveAttribute("aria-pressed", "true");
+  expect(allSkills).toHaveAttribute("aria-pressed", "false");
+  expect(screen.getByText("Technical documentation")).toBeInTheDocument();
+  expect(screen.queryByText("Keyboard accessibility")).not.toBeInTheDocument();
+  expect(screen.queryByText("Twig")).not.toBeInTheDocument();
+
+  await user.click(developingKnowledge);
+  expect(developingKnowledge).toHaveAttribute("aria-pressed", "true");
+  expect(screen.getByText("Keyboard accessibility")).toBeInTheDocument();
+  expect(screen.getByText("Twig")).toBeInTheDocument();
+  expect(screen.queryByRole("heading", { name: "Data & Integration", level: 2 })).not.toBeInTheDocument();
+  expect(screen.queryByRole("heading", { name: "Testing & Delivery", level: 2 })).not.toBeInTheDocument();
+  expect(screen.queryByRole("heading", { name: "Front-end Development", level: 2 })).not.toBeInTheDocument();
+
+  await user.click(allSkills);
+  expect(allSkills).toHaveAttribute("aria-pressed", "true");
+  expect(screen.getByText("Keyboard accessibility")).toBeInTheDocument();
+  expect(screen.getByText("Technical documentation")).toBeInTheDocument();
 });
 
 test("publishes only the verified GitHub contact action", () => {
