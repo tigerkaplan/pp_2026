@@ -1,0 +1,36 @@
+{
+  "id": 9,
+  "slug": "elearning-platform",
+  "title": "E-Learning Platform",
+  "featured": false,
+  "year": 2023,
+  "role": "Full-stack Developer",
+  "tags": ["Education", "Platform"],
+  "order": 10,
+  "card": {
+    "summary": "Online learning platform with progress tracking.",
+    "highlights": ["Course management", "Progress tracking"]
+  },
+  "technologies": ["Next.js", ".NET Web API"],
+  "skillIds": [],
+  "links": {
+    "live": null,
+    "github": null
+  },
+  "media": {
+    "cover": null,
+    "coverAlt": "",
+    "gallery": []
+  },
+  "caseStudy": {
+    "problem": "Need for a structured online learning solution.",
+    "solution": "Developed course modules with progress tracking.",
+    "result": "Improved learner engagement."
+  },
+  "display": {
+    "showLiveLink": false,
+    "showGithubLink": false,
+    "showPreview": true,
+    "showFullProject": true
+  }
+}

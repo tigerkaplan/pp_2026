@@ -8,13 +8,16 @@
   /* --- Surfaces --- */
   --color-surface:        156 175 136;   /* #9CAF88 */
   --color-surface-weak:   190 200 180;   /* #BEC8B4 */
+  --color-card-surface:   183 197 168;   /* #B7C5A8 */
+  --color-card-surface-hover: 169 185 150; /* #A9B996 */
+  --color-card-border:    117 131 98;    /* #758362 */
 
   /* --- Borders --- */
-  --color-border:         190 200 180;   /* #BEC8B4 */
+  --color-border:         80 92 68;      /* #505C44 */
 
   /* --- Text --- */
   --color-fg:             22 32 42;      /* #16202A */
-  --color-fg-muted:       62 74 86;      /* #3E4A56 */
+  --color-fg-muted:       46 58 66;      /* #2E3A42 */
   --color-focus:          20 72 120;
   --color-topbar-bg:      190 200 180;
   --color-surface-strong: 130 148 112;
@@ -30,9 +33,9 @@
   /* --- Modal --- */
   --color-overlay:        18 26 34;
   --color-modal-bg:       206 214 198;   /* #CED6C6 */
-  --color-modal-border:   130 140 120;   /* #828C78 */
+  --color-modal-border:   80 92 68;      /* #505C44 */
   --color-modal-fg:       22 32 42;      /* #16202A */
-  --color-modal-fg-muted: 62 74 86;      /* #3E4A56 */
+  --color-modal-fg-muted: 46 58 66;      /* #2E3A42 */
 }
 
 /* =========================================================
@@ -47,13 +50,16 @@
   /* --- Surfaces --- */
   --color-surface:        100 104 132;   /* #646884 */
   --color-surface-weak:   76 80 110;     /* #4C506E */
+  --color-card-surface:   82 87 119;     /* #525777 */
+  --color-card-surface-hover: 96 102 136; /* #606688 */
+  --color-card-border:    132 139 174;   /* #848BAE */
 
   /* --- Borders --- */
-  --color-border:         76 80 110;     /* #4C506E */
+  --color-border:         193 195 214;   /* #C1C3D6 */
 
   /* --- Text --- */
-  --color-fg:             176 176 193;   /* #B0B0C1 */
-  --color-fg-muted:       154 156 178;   /* #9A9CB2 */
+  --color-fg:             240 240 248;   /* #F0F0F8 */
+  --color-fg-muted:       232 234 246;   /* #E8EAF6 */
   --color-focus:          193 214 242;
   --color-topbar-bg:      56 60 90;
   --color-surface-strong: 50 54 82;
@@ -65,13 +71,13 @@
   --color-glass-hover:    100 104 132;
 
   /* --- Navigation --- */
-  --color-nav-active:     50 54 82;      /* #323652 */
-  --color-nav-active-fg:  176 176 193;   /* #B0B0C1 */
+  --color-nav-active:     34 38 66;      /* #222642 */
+  --color-nav-active-fg:  240 240 248;   /* #F0F0F8 */
 
   /* --- Modal --- */
   --color-overlay:        0 0 0;
   --color-modal-bg:       44 47 74;      /* bg-2 */
-  --color-modal-border:   120 122 150;
+  --color-modal-border:   193 195 214;
   --color-modal-fg:       210 210 225;
-  --color-modal-fg-muted: 170 172 194;
+  --color-modal-fg-muted: 232 234 246;
 }

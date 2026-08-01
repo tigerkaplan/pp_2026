@@ -10,9 +10,14 @@ import React, {
   useState,
   useSyncExternalStore,
 } from "react";
-
-type Theme = "light" | "dark";
-type ThemeSetting = Theme | "system";
+import {
+  applyThemeToRoot,
+  readStoredThemeSetting,
+  resolveTheme,
+  THEME_STORAGE_KEY,
+  type Theme,
+  type ThemeSetting,
+} from "./theme";
 
 type ThemeContextValue = {
   /** resolved theme (light/dark) */
@@ -23,8 +28,6 @@ type ThemeContextValue = {
   toggleTheme: () => void; // toggles light<->dark (exits system)
   cycleSetting: () => void; // cycles system -> light -> dark
 };
-
-const STORAGE_KEY = "theme";
 
 const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
 
@@ -52,10 +55,21 @@ function subscribeToSystemTheme(cb: () => void) {
 
 function getSystemSnapshot(): Theme {
   if (typeof window === "undefined") return "light";
-  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  try {
+    return window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark"
+      : "light";
+  } catch {
+    return "light";
+  }
 }
 
 function getServerSnapshot(): Theme {
+  if (typeof document !== "undefined") {
+    return document.documentElement.classList.contains("dark")
+      ? "dark"
+      : "light";
+  }
   return "light";
 }
 
@@ -63,28 +77,22 @@ function getServerSnapshot(): Theme {
 function readStoredSetting(): ThemeSetting | null {
   if (typeof window === "undefined") return null;
   try {
-    const v = window.localStorage.getItem(STORAGE_KEY);
-    if (v === "light" || v === "dark" || v === "system") return v;
+    return readStoredThemeSetting(window.localStorage);
   } catch {
     return null;
   }
-  return null;
 }
 
 function writeStoredSetting(setting: ThemeSetting) {
   try {
-    window.localStorage.setItem(STORAGE_KEY, setting);
+    window.localStorage.setItem(THEME_STORAGE_KEY, setting);
   } catch {
     // Storage can be unavailable in privacy modes; the in-memory choice still works.
   }
 }
 
-function resolveTheme(setting: ThemeSetting, systemTheme: Theme): Theme {
-  return setting === "system" ? systemTheme : setting;
-}
-
 function applyHtmlThemeClass(theme: Theme) {
-  document.documentElement.classList.toggle("dark", theme === "dark");
+  applyThemeToRoot(document.documentElement, theme);
 }
 
 export function ThemeProvider({
@@ -102,13 +110,8 @@ export function ThemeProvider({
   );
 
   const [setting, _setSetting] = useState<ThemeSetting>(() => {
-    return defaultSetting;
+    return readStoredSetting() ?? defaultSetting;
   });
-
-  useEffect(() => {
-    const saved = readStoredSetting();
-    if (saved) queueMicrotask(() => _setSetting(saved));
-  }, []);
 
   const setSetting = useCallback((s: ThemeSetting) => {
     _setSetting(s);

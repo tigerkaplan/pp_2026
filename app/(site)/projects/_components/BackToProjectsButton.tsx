@@ -14,7 +14,7 @@ export default function BackToProjectsButton() {
         "text-[rgb(var(--color-modal-fg-muted))]",
         "hover:text-[rgb(var(--color-modal-fg))]",
         "focus-visible:outline-none focus-visible:ring-2",
-        "focus-visible:ring-[rgb(var(--color-nav-active))]/40",
+        "focus-visible:ring-[rgb(var(--color-focus))]",
       ].join(" ")}
     >
       ← Back to projects

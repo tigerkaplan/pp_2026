@@ -50,7 +50,7 @@ export default function ModalShell({
   }, [pathname]);
 
   return (
-    <div className="fixed inset-0 z-1000 flex items-center justify-center p-3 sm:p-6">
+    <div className="fixed inset-0 z-1000 flex items-center justify-center p-4 sm:p-6">
       {/* Overlay */}
       <div
         className="absolute inset-0 bg-[rgb(var(--color-overlay)/0.55)]"
@@ -59,7 +59,7 @@ export default function ModalShell({
       />
 
       {/* Panel */}
-      <div className="relative z-10 flex max-h-full w-full max-w-980px">
+      <div className="relative z-10 flex w-[calc(100vw-2rem)] max-h-[calc(100dvh-2rem)] max-w-[900px] sm:max-h-[calc(100dvh-3rem)]">
         <div
           ref={dialogRef}
           className={[
@@ -77,24 +77,24 @@ export default function ModalShell({
           {/* Header */}
           <div
             className={[
-              "flex items-start justify-between gap-3 border-b px-5 py-4",
+              "flex flex-col gap-3 border-b px-5 py-4 sm:flex-row sm:items-start sm:justify-between",
               "border-[rgb(var(--color-modal-border))]",
             ].join(" ")}
           >
             <div className="min-w-0">
-              <h2 id="project-dialog-title" className="text-base font-semibold text-[rgb(var(--color-modal-fg))]">
+              <h2 id="project-dialog-title" className="text-xl font-semibold leading-7 text-[rgb(var(--color-modal-fg))] sm:text-2xl sm:leading-8">
                 {title}
               </h2>
 
               {subtitle ? (
-                <p className="mt-1 text-sm text-[rgb(var(--color-modal-fg-muted))]">
+                <p className="mt-1 text-sm leading-6 text-[rgb(var(--color-modal-fg-muted))] sm:text-base">
                   {subtitle}
                 </p>
               ) : null}
             </div>
 
             {/* ACTIONS */}
-            <div className="flex items-center gap-2">
+            <div className="flex w-full flex-wrap items-center gap-2 sm:w-auto sm:justify-end">
               {actions}
 
               <CopyLinkButton url={copyUrl} />
@@ -104,12 +104,12 @@ export default function ModalShell({
                 type="button"
                 onClick={close}
                 className={[
-                  "rounded-md border px-3 py-2 text-sm transition",
+                  "rounded-md border px-3 py-2 text-sm transition sm:text-base",
                   "border-[rgb(var(--color-modal-border))]",
                   "text-[rgb(var(--color-modal-fg))]",
                   "hover:bg-[rgb(var(--color-surface)/0.25)]",
                   "focus-visible:outline-none focus-visible:ring-2",
-                  "focus-visible:ring-[rgb(var(--color-nav-active))]/40",
+                  "focus-visible:ring-[rgb(var(--color-focus))]",
                 ].join(" ")}
                 aria-label="Close"
                 title="Close"
@@ -122,11 +122,11 @@ export default function ModalShell({
           {/* Content */}
           <div
             className={[
-              "min-h-0 overflow-auto px-5 py-4",
+              "min-h-0 overflow-y-auto px-5 py-4 sm:px-6 sm:py-5",
               // IMPORTANT: do NOT force buttons in content to become white.
               // Only normalize common text nodes:
-              "[&_p]:text-[rgb(var(--color-modal-fg))]",
-              "[&_li]:text-[rgb(var(--color-modal-fg))]",
+              "[&_p]:text-[rgb(var(--color-modal-fg))] [&_p]:leading-7",
+              "[&_li]:text-[rgb(var(--color-modal-fg))] [&_li]:leading-6",
               "[&_span]:text-[rgb(var(--color-modal-fg))]",
               "[&_h1]:text-[rgb(var(--color-modal-fg))]",
               "[&_h2]:text-[rgb(var(--color-modal-fg))]",

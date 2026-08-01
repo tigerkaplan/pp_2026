@@ -7,19 +7,50 @@ const FOCUSABLE = [
   "select:not([disabled])", "textarea:not([disabled])", "[tabindex]:not([tabindex='-1'])",
 ].join(",");
 
+type ManagedInertState = {
+  count: number;
+  wasInert: boolean;
+};
+
+const managedInert = new WeakMap<HTMLElement, ManagedInertState>();
+
+function acquireInert(element: HTMLElement) {
+  const state = managedInert.get(element);
+  if (state) {
+    state.count += 1;
+  } else {
+    managedInert.set(element, {
+      count: 1,
+      wasInert: Boolean(element.inert),
+    });
+  }
+  element.inert = true;
+}
+
+function releaseInert(element: HTMLElement) {
+  const state = managedInert.get(element);
+  if (!state) return;
+  state.count -= 1;
+  if (state.count > 0) return;
+  element.inert = state.wasInert;
+  managedInert.delete(element);
+}
+
 function setOutsideInert(dialog: HTMLElement) {
-  const changed: Array<{ element: HTMLElement; wasInert: boolean }> = [];
+  const changed: HTMLElement[] = [];
   let branch: HTMLElement | null = dialog;
-  while (branch?.parentElement && branch.parentElement !== document.body) {
-    for (const sibling of Array.from(branch.parentElement.children)) {
+  while (branch?.parentElement) {
+    const parentElement: HTMLElement = branch.parentElement;
+    for (const sibling of Array.from(parentElement.children)) {
       if (sibling !== branch && sibling instanceof HTMLElement) {
-        changed.push({ element: sibling, wasInert: sibling.inert });
-        sibling.inert = true;
+        changed.push(sibling);
+        acquireInert(sibling);
       }
     }
-    branch = branch.parentElement;
+    if (parentElement === document.body) break;
+    branch = parentElement;
   }
-  return () => changed.forEach(({ element, wasInert }) => { element.inert = wasInert; });
+  return () => changed.forEach(releaseInert);
 }
 
 export function useDialogFocus(

@@ -48,23 +48,23 @@ export default function OnThisPageProjects({ projects }: { projects: Project[] }
     open ? "max-h-[70vh]" : "max-h-12",
   ].join(" ");
 
-  const headerText = "text-sm font-semibold text-[rgb(var(--color-fg))]";
-  const subText = "text-xs text-[rgb(var(--color-fg-muted))]";
+  const headerText = "text-base font-semibold text-[rgb(var(--color-fg))]";
+  const subText = "text-sm text-[rgb(var(--color-fg-muted))]";
 
-  const sectionLabel = "mb-2 text-xs font-medium text-[rgb(var(--color-fg-muted))]";
+  const sectionLabel = "mb-2 text-sm font-medium text-[rgb(var(--color-fg-muted))]";
 
   const anchorClass =
-    "block rounded-md px-2 py-1 text-sm text-[rgb(var(--color-fg-muted))] " +
+    "block rounded-md px-2 py-2 text-sm text-[rgb(var(--color-fg-muted))] lg:text-[15px] " +
     "hover:bg-[rgb(var(--color-surface)/0.35)] hover:text-[rgb(var(--color-fg))]";
 
   const dividerClass = "my-3 border-t border-[rgb(var(--color-border))]";
 
   const linkClass =
-    "block rounded-md px-2 py-1 text-sm text-[rgb(var(--color-fg-muted))] " +
+    "block rounded-md px-2 py-2 text-sm text-[rgb(var(--color-fg-muted))] lg:text-[15px] " +
     "hover:bg-[rgb(var(--color-surface)/0.35)] hover:text-[rgb(var(--color-fg))]";
 
   return (
-    <aside className="fixed right-6 top-24 z-40 hidden w-72 lg:block">
+    <aside className="fixed right-6 top-24 z-40 hidden w-72 min-[1800px]:block">
       <div className={panelClass}>
         {/* Header / Toggle */}
         <button

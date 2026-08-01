@@ -1,0 +1,8 @@
+{
+  "id": "skill-id",
+  "name": "Skill name",
+  "group": "approved-group-id",
+  "status": "developing-knowledge",
+  "summary": "",
+  "order": 0
+}

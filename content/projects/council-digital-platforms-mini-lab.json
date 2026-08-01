@@ -1,0 +1,124 @@
+{
+  "id": 13,
+  "slug": "council-digital-platforms-mini-lab",
+  "title": "Council Digital Platforms Mini Lab",
+  "shortTitle": "Council Digital Platforms Mini Lab",
+  "featured": true,
+  "status": "In progress",
+  "category": "Accessible Digital Service",
+  "year": 2026,
+  "role": "Digital Developer",
+  "tags": ["Drupal", "Accessible Digital Service", "JSON"],
+  "order": 1,
+  "card": {
+    "summary": "A public-service prototype demonstrating accessible form design, conditional logic, custom PHP postcode validation and structured JSON service data.",
+    "highlights": [
+      "Drupal Webform with conditional logic",
+      "Custom PHP postcode validation",
+      "Structured JSON demo endpoint"
+    ]
+  },
+  "technologies": ["Drupal", "PHP", "YAML", "JSON"],
+  "skillIds": [
+    "accessible-form-design",
+    "conditional-form-logic",
+    "server-side-validation",
+    "plain-language-form-design",
+    "keyboard-accessibility",
+    "structured-data-capture",
+    "json",
+    "rest-style-endpoints",
+    "technical-documentation",
+    "drupal",
+    "drupal-webform",
+    "php",
+    "yaml-configuration"
+  ],
+  "links": {
+    "live": null,
+    "github": null
+  },
+  "media": {
+    "cover": null,
+    "coverAlt": "",
+    "gallery": []
+  },
+  "caseStudy": {
+    "overview": "A portfolio mini lab exploring how a council-style digital service can collect meaningful information, validate submissions and expose structured data for internal use.",
+    "context": "Created as practical evidence for a Digital Developer application, using fictional service data rather than a live council service.",
+    "problem": "Design a clear public reporting journey that supports conditional questions, reliable postcode validation and structured downstream data.",
+    "challenge": "Design a clear public reporting journey that supports conditional questions, reliable postcode validation and structured downstream data.",
+    "objectives": [
+      "Create a structured public-service request form",
+      "Use conditional logic to reduce unnecessary questions",
+      "Validate postcode data on the server",
+      "Expose a fictional service-request record as structured JSON"
+    ],
+    "approach": [
+      "Built the public form with Drupal Webform",
+      "Used conditional logic to tailor the journey",
+      "Added a custom PHP postcode-validation module",
+      "Created a custom JSON endpoint for a fictional service request"
+    ],
+    "solution": "The prototype combines a conditional Drupal Webform, focused server-side validation and a structured JSON response so the same service request can support both public interaction and downstream internal processing.",
+    "accessibility": [
+      "Used structured form fields and task-focused labels",
+      "Considered mobile, keyboard, low-digital-confidence and internal-staff personas",
+      "Final browser-based accessibility evidence is still being completed"
+    ],
+    "testing": [
+      "Verified valid and invalid postcode examples",
+      "Exported and reviewed Drupal configuration",
+      "Final WAVE, axe and keyboard evidence remains in progress"
+    ],
+    "technicalImplementation": [
+      "Drupal Webform",
+      "Custom PHP validation module",
+      "YAML configuration export",
+      "Custom JSON endpoint",
+      "DDEV local development environment"
+    ],
+    "result": "Working conditional service-request form, verified server-side postcode validation and structured fictional JSON response.",
+    "outcomes": [
+      "Working conditional service-request form",
+      "Verified server-side postcode validation",
+      "Structured fictional JSON response",
+      "Reusable portfolio evidence for digital-service development"
+    ],
+    "limitations": [
+      "Fictional portfolio prototype rather than a live council service",
+      "Not connected to a production case-management workflow",
+      "Final internal staff view and accessibility evidence are still being completed"
+    ],
+    "nextSteps": [
+      "Complete the internal staff case view",
+      "Record final accessibility evidence",
+      "Refine the case study as the project is completed"
+    ]
+  },
+  "evidence": {
+    "accessibility": [
+      "Structured form fields and task-focused labels; final browser-based accessibility evidence remains in progress."
+    ],
+    "testing": [
+      "Verified valid and invalid postcode examples; final WAVE, axe and keyboard evidence remains in progress."
+    ],
+    "integration": [
+      "Structured fictional JSON service-request response for internal use."
+    ],
+    "delivery": [
+      "Drupal configuration exported and reviewed."
+    ]
+  },
+  "seo": {
+    "title": "Council Digital Platforms Mini Lab",
+    "description": "A council-style digital-service prototype using Drupal Webform, conditional logic, PHP postcode validation and structured JSON data.",
+    "ogImage": null
+  },
+  "display": {
+    "showLiveLink": false,
+    "showGithubLink": false,
+    "showPreview": true,
+    "showFullProject": true
+  }
+}

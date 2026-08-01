@@ -1,0 +1,27 @@
+[
+  {
+    "id": "front-end-development",
+    "label": "Front-end Development",
+    "order": 1
+  },
+  {
+    "id": "accessible-digital-services",
+    "label": "Accessible Digital Services",
+    "order": 2
+  },
+  {
+    "id": "data-integration",
+    "label": "Data & Integration",
+    "order": 3
+  },
+  {
+    "id": "testing-delivery",
+    "label": "Testing & Delivery",
+    "order": 4
+  },
+  {
+    "id": "platforms-interoperability",
+    "label": "Platforms & Interoperability Knowledge",
+    "order": 5
+  }
+]

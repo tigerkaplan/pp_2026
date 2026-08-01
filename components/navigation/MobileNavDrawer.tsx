@@ -2,6 +2,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { MainNav } from "@/components/navigation/MainNav";
 import { useDialogFocus } from "@/components/accessibility/useDialogFocus";
 
@@ -9,7 +10,7 @@ function HamburgerIcon() {
   return (
     <span
       className="
-        inline-flex w-10 items-center justify-center rounded-md
+        inline-flex h-11 w-11 items-center justify-center rounded-md
         bg-[rgb(var(--color-surface-weak)_/_0.6)]
         hover:bg-[rgb(var(--color-surface-weak)_/_0.75)]
       "
@@ -57,20 +58,25 @@ export default function MobileNavDrawer() {
         aria-expanded={open}
         aria-controls="mobile-navigation-dialog"
         onClick={() => setOpen(true)}
-        className="lg:hidden text-[rgb(var(--color-fg))] focus:outline-none focus:ring-2 focus:ring-[rgb(var(--color-border))] rounded-md"
+        className="inline-flex min-h-11 min-w-11 rounded-md text-[rgb(var(--color-fg))] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgb(var(--color-focus))] lg:hidden"
       >
         <HamburgerIcon />
       </button>
 
-      {open && (
-        <div className="lg:hidden fixed inset-0 z-[60]">
+      {open
+        ? createPortal(
+            <div
+              className="fixed inset-0 z-[60] isolate overflow-hidden lg:hidden"
+              data-mobile-drawer-root
+            >
           {/* Backdrop (blurred) */}
           <button
             type="button"
             aria-label="Close menu"
             onClick={() => setOpen(false)}
+            data-mobile-drawer-backdrop
             className="
-              absolute inset-0
+              absolute inset-0 z-0
               bg-black/40
               backdrop-blur-md
             "
@@ -84,16 +90,18 @@ export default function MobileNavDrawer() {
             aria-modal="true"
             aria-labelledby="mobile-navigation-title"
             tabIndex={-1}
+            data-mobile-drawer-panel
             className="
-              absolute inset-x-0 top-0
-              mt-16
-              max-h-[calc(100dvh-4rem)]
-              px-4 pb-6
+              absolute inset-x-0 bottom-0 z-10
+              top-[max(4rem,env(safe-area-inset-top))]
+              min-h-0
+              pointer-events-auto
+              px-4 pt-4 pb-[max(1rem,env(safe-area-inset-bottom))]
             "
           >
             <div
               className="
-                h-full
+                flex h-full min-h-0 flex-col
                 rounded-2xl
                 border border-[rgb(var(--color-border))]
                 bg-[rgb(var(--color-bg)_/_0.85)]
@@ -123,11 +131,11 @@ export default function MobileNavDrawer() {
                   aria-label="Close"
                   onClick={() => setOpen(false)}
                   className="
-                    inline-flex h-9 w-9 items-center justify-center rounded-md
+                    inline-flex h-11 w-11 items-center justify-center rounded-md
                     border border-[rgb(var(--color-border))]
                     bg-[rgb(var(--color-surface-weak)_/_0.65)]
                     hover:bg-[rgb(var(--color-surface-weak))]
-                    focus:outline-none focus:ring-2 focus:ring-[rgb(var(--color-border))]
+                    focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgb(var(--color-focus))]
                   "
                 >
                   ✕
@@ -135,13 +143,18 @@ export default function MobileNavDrawer() {
               </div>
 
               {/* Links */}
-              <div className="min-h-0 overflow-y-auto px-5 py-6 text-2xl">
+              <div
+                className="min-h-0 flex-1 overflow-y-auto px-5 py-6 text-2xl [&_nav>div]:mt-0"
+                data-drawer-navigation
+              >
                   <MainNav onNavigate={() => setOpen(false)} />
               </div>
             </div>
           </div>
-        </div>
-      )}
+            </div>,
+            document.body,
+          )
+        : null}
     </>
   );
 }

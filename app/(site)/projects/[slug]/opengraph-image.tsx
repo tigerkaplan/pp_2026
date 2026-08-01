@@ -7,9 +7,10 @@ export const contentType = "image/png";
 export default async function OpenGraphImage({
     params,
 }: {
-    params: { slug: string };
+    params: Promise<{ slug: string }>;
 }) {
-    const project = await getProjectBySlug(params.slug);
+    const { slug } = await params;
+    const project = await getProjectBySlug(slug);
 
     const title = project?.title ?? "Project";
     const summary = project?.summary ?? "";
@@ -30,8 +31,15 @@ export default async function OpenGraphImage({
                         'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial',
                 }}
             >
-                <div style={{ fontSize: 18, opacity: 0.75, marginBottom: 18 }}>
-                    /projects/{params.slug}
+                <div
+                    style={{
+                        display: "flex",
+                        fontSize: 18,
+                        opacity: 0.75,
+                        marginBottom: 18,
+                    }}
+                >
+                    /projects/{slug}
                 </div>
 
                 <div style={{ fontSize: 64, fontWeight: 800, lineHeight: 1.05 }}>
