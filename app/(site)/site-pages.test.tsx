@@ -70,10 +70,13 @@ test("renders skills in validated evidence groups and filters them by evidence l
   expect(screen.getByText("Technical documentation")).toBeInTheDocument();
 });
 
-test("publishes only the verified GitHub contact action", () => {
+test("renders the Contact form and keeps the verified GitHub alternative", () => {
   render(<ContactPage />);
 
   expect(screen.getByRole("heading", { name: "Contact", level: 1 })).toBeInTheDocument();
+  expect(screen.getByRole("heading", { name: "Send a message", level: 2 })).toBeInTheDocument();
+  expect(screen.getByRole("button", { name: "Send message" })).toBeDisabled();
+  expect(screen.getByRole("status")).toHaveTextContent("Online messaging is temporarily unavailable.");
   expect(screen.getByRole("link", { name: "Open the portfolio repository on GitHub" })).toHaveAttribute(
     "href",
     "https://github.com/tigerkaplan/pp_2026",
