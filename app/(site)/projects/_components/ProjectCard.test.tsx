@@ -1,5 +1,6 @@
 import { render, screen, within } from "@testing-library/react";
 import { axe } from "jest-axe";
+import { existsSync } from "node:fs";
 import ProjectCard from "./ProjectCard";
 import type { Project } from "../_types/project";
 import { PROJECTS } from "../_lib/projects.data";
@@ -23,6 +24,14 @@ jest.mock("next/link", () => ({
   ),
 }));
 
+jest.mock("node:fs", () => ({
+  existsSync: jest.fn(),
+}));
+
+afterEach(() => {
+  jest.mocked(existsSync).mockReset();
+});
+
 const project: Project = {
   id: 1,
   slug: "accessible-project",
@@ -44,14 +53,14 @@ const project: Project = {
   display: { showLiveLink: false, showGithubLink: false, showPreview: true, showFullProject: true },
 };
 
-const validImageProject: Project = {
-  ...project,
-  images: ["/globe.svg"],
-};
-
 const missingImageProject: Project = {
   ...project,
   images: ["/images/projects/missing-image.jpg"],
+};
+
+const validImageProject: Project = {
+  ...project,
+  images: ["/images/projects/test-valid-media.png"],
 };
 
 const denseProject: Project = {
@@ -64,10 +73,17 @@ const denseProject: Project = {
   },
 };
 
-test("renders a valid image asset when it exists", () => {
+test("renders valid safe project media when the local asset is available", () => {
+  jest.mocked(existsSync).mockReturnValue(true);
+
   const { container } = render(<ProjectCard project={validImageProject} />);
 
-  expect(container.querySelector("img")).toHaveAttribute("src", "/globe.svg");
+  expect(container.querySelector("img")).toHaveAttribute(
+    "src",
+    "/images/projects/test-valid-media.png",
+  );
+  expect(screen.queryByText(/preview unavailable/i)).not.toBeInTheDocument();
+  expect(jest.mocked(existsSync)).toHaveBeenCalled();
 });
 
 test("keeps the missing-media fallback inside media and its content below", () => {
@@ -130,12 +146,38 @@ test("renders Council Preview and full-project actions without Live or GitHub", 
     (candidate) => candidate.slug === "council-digital-platforms-mini-lab",
   )!;
   render(<ProjectCard project={council} variant="featured" />);
+  const preview = screen.getByRole("link", { name: /preview council/i });
 
   expect(screen.getByText("Preview unavailable")).toBeInTheDocument();
-  expect(screen.getByRole("link", { name: /preview council/i })).toBeInTheDocument();
+  expect(preview).toHaveAttribute("href", `/projects/${council.slug}`);
+  expect(preview).toHaveAttribute("data-next-link", "true");
   expect(screen.getByRole("link", { name: /view full project/i })).toBeInTheDocument();
   expect(screen.queryByRole("link", { name: "Live" })).not.toBeInTheDocument();
   expect(screen.queryByRole("link", { name: "GitHub" })).not.toBeInTheDocument();
+});
+
+test("renders the V9 Personal Portfolio card with only verified safe actions", () => {
+  const portfolio = PROJECTS.find(
+    (candidate) => candidate.slug === "seo-portfolio-platform",
+  )!;
+  render(<ProjectCard project={portfolio} variant="featured" />);
+
+  const preview = screen.getByRole("link", {
+    name: "Preview Personal Portfolio 2026",
+  });
+  expect(screen.getAllByText("Personal Portfolio 2026")).toHaveLength(2);
+  expect(screen.getByText(portfolio.summary)).toBeInTheDocument();
+  expect(preview).toHaveAttribute("href", `/projects/${portfolio.slug}`);
+  expect(preview).toHaveAttribute("data-next-link", "true");
+  expect(screen.getByRole("link", { name: "GitHub" })).toHaveAttribute(
+    "href",
+    "https://github.com/tigerkaplan/pp_2026",
+  );
+  expect(screen.queryByRole("link", { name: "Live" })).not.toBeInTheDocument();
+  expect(screen.getByRole("link", { name: /view full project/i })).toHaveAttribute(
+    "href",
+    `/projects/${portfolio.slug}`,
+  );
 });
 
 test("renders the full-project action as a native anchor for hard navigation", () => {

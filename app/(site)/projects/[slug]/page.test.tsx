@@ -84,6 +84,7 @@ test("renders Council as a standalone project without public links", async () =>
     await ProjectPage({ params: Promise.resolve({ slug: council.slug }) }),
   );
 
+  expect(getProjectBySlug).toHaveBeenCalledWith(council.slug);
   expect(screen.getByRole("heading", { name: council.title, level: 1 })).toBeInTheDocument();
   expect(screen.getByText("In progress")).toBeInTheDocument();
   expect(screen.getByText("Accessible Digital Service")).toBeInTheDocument();
@@ -99,6 +100,28 @@ test("renders Council as a standalone project without public links", async () =>
   expect(screen.queryByRole("link", { name: "Live demo" })).not.toBeInTheDocument();
   expect(screen.queryByRole("link", { name: "GitHub" })).not.toBeInTheDocument();
   expect(container.querySelector("img")).not.toBeInTheDocument();
+});
+
+test("renders the V9 Personal Portfolio as a standalone Full Project", async () => {
+  const portfolio = PROJECTS.find(
+    (candidate) => candidate.slug === "seo-portfolio-platform",
+  ) as Project;
+  jest.mocked(getProjectBySlug).mockResolvedValue(portfolio);
+
+  const { container } = render(
+    await ProjectPage({ params: Promise.resolve({ slug: portfolio.slug }) }),
+  );
+
+  expect(getProjectBySlug).toHaveBeenCalledWith(portfolio.slug);
+  expect(screen.getByRole("heading", { name: "Personal Portfolio 2026", level: 1 })).toBeInTheDocument();
+  expect(screen.getByText("Personal Product")).toBeInTheDocument();
+  expect(screen.getByRole("heading", { name: "Case study", level: 2 })).toBeInTheDocument();
+  expect(screen.getByRole("link", { name: "GitHub" })).toHaveAttribute(
+    "href",
+    "https://github.com/tigerkaplan/pp_2026",
+  );
+  expect(screen.queryByRole("link", { name: "Live demo" })).not.toBeInTheDocument();
+  expect(container.querySelector('[data-project-media="fallback"]')).toBeInTheDocument();
 });
 
 test("maps normalized project fields into route metadata", async () => {
@@ -121,7 +144,7 @@ test("keeps the large media structure for a project with a cover path", async ()
   const projectWithCover: Project = {
     ...project,
     slug: "project-with-cover",
-    media: { cover: "/window.svg", coverAlt: "Project window" , gallery: [] },
+    media: { cover: "/images/projects/test-cover.png", coverAlt: "Test project cover" , gallery: [] },
   };
   jest.mocked(getProjectBySlug).mockResolvedValue(projectWithCover);
 

@@ -1,12 +1,18 @@
 import { getProjectBySlug } from "./getProjectBySlug";
 
-test("resolves valid project slugs and rejects invalid ones", async () => {
+test("resolves the real Preview targets and rejects unavailable slugs", async () => {
   await expect(
-    getProjectBySlug("seo-portfolio-platform"),
+    getProjectBySlug("council-digital-platforms-mini-lab"),
   ).resolves.toMatchObject({
-    slug: "seo-portfolio-platform",
+    slug: "council-digital-platforms-mini-lab",
   });
   await expect(
     getProjectBySlug("not-a-real-project"),
   ).resolves.toBeUndefined();
+  await expect(
+    getProjectBySlug("seo-portfolio-platform"),
+  ).resolves.toMatchObject({
+    title: "Personal Portfolio 2026",
+    slug: "seo-portfolio-platform",
+  });
 });

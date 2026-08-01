@@ -1,39 +1,63 @@
 {
   "id": 1,
   "slug": "seo-portfolio-platform",
-  "title": "SEO-Friendly Personal Portfolio Platform",
+  "title": "Personal Portfolio 2026",
+  "shortTitle": "Personal Portfolio 2026",
   "featured": true,
+  "status": "in-progress",
+  "category": "Personal Product",
   "year": 2026,
-  "role": "Full-stack Developer",
-  "tags": ["Portfolio", "SEO", "Next.js"],
+  "role": "Frontend developer",
+  "tags": ["Portfolio Platform", "Personal Product", "Accessibility"],
   "order": 2,
   "card": {
-    "summary": "A fast, SEO-optimized software developer portfolio built with Next.js 16 and .NET Web API.",
+    "summary": "A responsive, data-driven portfolio platform that presents project summaries, accessible previews and detailed case studies through reusable Next.js routes and content records.",
     "highlights": [
-      "Intercept modal + full page architecture",
-      "Dynamic metadata and sitemap",
-      "Filtering and search",
-      "Reusable case study layout"
+      "Data-driven Project Cards and case studies",
+      "Intercepted previews with standalone project routes",
+      "Responsive, keyboard-aware interaction patterns"
     ]
   },
-  "technologies": ["Next.js 16", "React", ".NET Web API", "MS SQL Server", "Tailwind"],
-  "skillIds": [],
+  "technologies": ["Next.js 16", "React 19", "TypeScript", "Tailwind CSS 4", "Jest", "React Testing Library", "jest-axe"],
+  "skillIds": ["json", "keyboard-accessibility", "technical-documentation"],
   "links": {
-    "live": "https://example.com",
-    "github": "https://github.com/username/portfolio"
+    "live": null,
+    "github": "https://github.com/tigerkaplan/pp_2026"
   },
   "media": {
     "cover": null,
-    "coverAlt": "",
+    "coverAlt": "Personal Portfolio project media is pending approval.",
     "gallery": []
   },
   "caseStudy": {
-    "problem": "Traditional portfolios lacked SEO-friendly project pages and smooth project navigation.",
-    "solution": "Implemented App Router, intercepting routes, and modal project details with SEO-friendly full pages.",
-    "result": "Achieved Lighthouse SEO scores above 95 and improved project exploration UX."
+    "overview": "Personal Portfolio 2026 is a Next.js portfolio platform for presenting project work through concise Cards, optional previews and crawlable full-project case studies. A validated content registry supplies the Projects page, routes, metadata and sitemap from one source.",
+    "context": "The platform is in active development. Its Projects experience and content boundary are implemented, while owner content review, approved evidence media and the remaining manual accessibility checks are still pending.",
+    "problem": "A portfolio needs to support quick project comparison without reducing substantial work to a short Card. It also needs stable, shareable project routes, resilient local media handling and interaction patterns that remain usable across screen sizes and input methods.",
+    "challenge": "A portfolio needs to support quick project comparison without reducing substantial work to a short Card. It also needs stable, shareable project routes, resilient local media handling and interaction patterns that remain usable across screen sizes and input methods.",
+    "objectives": ["Keep project content in validated, reusable records.", "Provide Card, preview and full-project presentation from the same content source.", "Preserve crawlable project routes and project-level metadata.", "Handle absent or unsafe local media paths without broken image output.", "Document automated evidence separately from pending manual checks."],
+    "approach": ["Validated JSON project registry with stable IDs, slugs and display order.", "Responsive Featured and All Projects grids with capacity-aware actions and technology overflow.", "Intercepted project preview modal with a separate full-project action.", "Static full-project routes with reusable case-study sections.", "Semantic local-media fallback for missing or invalid assets.", "Dialog focus management, Escape handling, skip link and visible focus styles.", "Project metadata, canonical paths, Open Graph presentation and sitemap entries."],
+    "solution": "The Projects experience separates three levels of detail while retaining one data source. Cards provide comparison-friendly summaries and actions; preview navigation uses an intercepted modal; and native links expose standalone case-study routes. The content boundary validates records before normalising them for all consumers, while shared media checks provide a contained fallback when a local asset is unavailable.",
+    "technicalImplementation": ["Next.js App Router with an intercepted parallel route for previews.", "Repository JSON records validated and normalised at the content boundary.", "Shared project objects consumed by Cards, previews, case studies and discovery routes.", "Tailwind CSS responsive and container-query layouts.", "Shared path validation and filesystem containment before rendering local project media.", "Jest, React Testing Library, user-event and jest-axe component coverage.", "Continuous integration steps for lint, typecheck, coverage and production build."],
+    "accessibility": ["Preview and mobile-navigation panels use named modal dialog semantics.", "A shared focus hook contains focus, makes background branches inert and restores prior inert state.", "Escape handling and close controls are implemented for dialog experiences.", "A skip link targets the focusable main landmark and global focus-visible styling is present.", "Reduced-motion styles and automated axe checks cover representative components."],
+    "testing": ["Lint passed with zero errors and one warning in existing coverage output on 1 August 2026.", "TypeScript typecheck passed on 1 August 2026.", "The production build passed and produced 25 routes on 1 August 2026.", "The current full test suite passed 24 of 24 suites and 93 of 93 tests after adding controlled positive-path coverage for valid safe media.", "Source and test inspection confirmed the content registry, preview route, full-project route, media fallback and accessibility interaction decisions."],
+    "result": "The repository now has a reusable Projects architecture spanning summary Cards, intercepted previews and full case studies, backed by validated content and automated checks. The platform remains partially verified because one fixture-dependent test and the broader manual accessibility programme are outstanding.",
+    "outcomes": ["Thirteen registered projects feed the Projects page and static project routes.", "Project consumers share a single normalised content model.", "Missing project media presents a semantic fallback instead of a broken asset.", "The current production build completes successfully at the recorded commit."],
+    "limitations": ["The full manual WCAG 2.2 Level AA checklist, assistive-technology review and final contrast checks are incomplete; full compliance is not claimed.", "The build reports that metadataBase is not set and falls back to localhost for social-image resolution.", "The canonical self-referential project record still contains legacy placeholder copy and action URLs; this candidate does not change it.", "No approved project screenshots or other evidence media are included yet.", "The valid-image branch has no current public media asset to exercise until approved project media is available."],
+    "nextSteps": ["Complete owner content review and approve a runtime adapter change.", "Capture, redact and approve a small set of evidence-led screenshots.", "Complete manual keyboard, reflow, contrast and assistive-technology verification.", "Add approved project media and a corresponding valid-image rendering check.", "Set an authoritative deployment URL for metadata resolution."]
+  },
+  "evidence": {
+    "accessibility": ["Keyboard-aware dialog, focus, skip-link and reduced-motion decisions are built into the interface."],
+    "testing": ["Current lint, typecheck, automated tests and production build pass."],
+    "integration": ["Project Cards, previews and case studies share a validated, data-driven content model."],
+    "delivery": ["Shareable project routes include project-level metadata, canonical paths and sitemap discovery."]
+  },
+  "seo": {
+    "title": "Personal Portfolio 2026 | Portfolio Platform",
+    "description": "A responsive Next.js portfolio platform with data-driven Project Cards, accessible previews, full case studies and validated content architecture.",
+    "ogImage": null
   },
   "display": {
-    "showLiveLink": true,
+    "showLiveLink": false,
     "showGithubLink": true,
     "showPreview": true,
     "showFullProject": true

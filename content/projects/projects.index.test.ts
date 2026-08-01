@@ -34,11 +34,13 @@ const MOCK_SLUGS = [
   "api-integration-service",
 ];
 
-const LEGACY_PROJECTS_SHA256 =
-  "cb220176f4f6fb03376cb4189a69d2ed6e9165b5d4267c32076c31fef9cff09e";
+const UNCHANGED_PROJECTS_SHA256 =
+  "b2b0a598cfb846f3feebf0f69b47dfa538741ed5183902afb37ec10ab055664d";
 
 function cloneSource(): Record<string, unknown> {
-  return JSON.parse(JSON.stringify(sourceProject)) as Record<string, unknown>;
+  const clone = JSON.parse(JSON.stringify(sourceProject)) as Record<string, unknown>;
+  clone.skillIds = [];
+  return clone;
 }
 
 function registration(
@@ -48,7 +50,7 @@ function registration(
   return { source, content };
 }
 
-test("adds Council first while preserving all twelve mock fixtures", () => {
+test("keeps Council first and restores the V9 self-project at its stable order", () => {
   expect(PROJECTS).toHaveLength(13);
   expect(PROJECTS.map((project) => project.slug)).toEqual([
     COUNCIL_SLUG,
@@ -72,18 +74,24 @@ test("adds Council first while preserving all twelve mock fixtures", () => {
   expect(PROJECT_CONTENT.map((project) => project.order)).toEqual(
     Array.from({ length: 13 }, (_, index) => index + 1),
   );
+  expect(PROJECTS.map((project) => project.id)).toEqual(
+    [13, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+  );
   const mockProjects = PROJECTS.filter((project) => project.slug !== COUNCIL_SLUG);
   expect(mockProjects.map((project) => project.slug)).toEqual(MOCK_SLUGS);
-  const mockParityProjection = mockProjects.map((project) =>
+  const unchangedProjects = mockProjects.filter(
+    (project) => project.slug !== "seo-portfolio-platform",
+  );
+  const unchangedParityProjection = unchangedProjects.map((project) =>
     project.slug === "nextjs-ecommerce-platform"
       ? { ...project, featured: true }
       : project,
   );
   expect(
     createHash("sha256")
-      .update(JSON.stringify(mockParityProjection))
+      .update(JSON.stringify(unchangedParityProjection))
       .digest("hex"),
-  ).toBe(LEGACY_PROJECTS_SHA256);
+  ).toBe(UNCHANGED_PROJECTS_SHA256);
   expect(PROJECTS.filter((project) => project.featured).map((project) => project.slug)).toEqual([
     COUNCIL_SLUG,
     "seo-portfolio-platform",
@@ -92,6 +100,29 @@ test("adds Council first while preserving all twelve mock fixtures", () => {
   expect(PROJECTS.filter((project) => !project.featured)[0]?.slug).toBe(
     "nextjs-ecommerce-platform",
   );
+  expect(PROJECT_CONTENT.filter((project) => project.slug === "seo-portfolio-platform")).toEqual([
+    expect.objectContaining({
+      id: 1,
+      title: "Personal Portfolio 2026",
+      category: "Personal Product",
+      order: 2,
+      featured: true,
+      card: expect.objectContaining({
+        highlights: [
+          "Data-driven Project Cards and case studies",
+          "Intercepted previews with standalone project routes",
+          "Responsive, keyboard-aware interaction patterns",
+        ],
+      }),
+      links: { live: null, github: "https://github.com/tigerkaplan/pp_2026" },
+      display: {
+        showLiveLink: false,
+        showGithubLink: true,
+        showPreview: true,
+        showFullProject: true,
+      },
+    }),
+  ]);
 });
 
 test("registers Council with only approved skill evidence and no public links", () => {
@@ -146,7 +177,11 @@ test("keeps every registered media path inside the real public directory", () =>
   );
   expect(PROJECT_CONTENT.find((project) => project.slug === "nextjs-ecommerce-platform")?.media.cover).toBeNull();
   expect(PROJECT_CONTENT.find((project) => project.slug === "seo-portfolio-platform")?.media).toEqual(
-    { cover: null, coverAlt: "", gallery: [] },
+    {
+      cover: null,
+      coverAlt: "Personal Portfolio project media is pending approval.",
+      gallery: [],
+    },
   );
 });
 
@@ -221,9 +256,9 @@ test("rejects invalid links, media, display combinations and templates", () => {
     "http://example.com/image.png",
     "//example.com/image.png",
     "/../package.json",
-    "/images/../window.svg",
-    "/./window.svg",
-    "\\images\\window.svg",
+    "/images/../outside.svg",
+    "/./outside.svg",
+    "\\images\\outside.svg",
   ]) {
     const invalidPath = cloneSource();
     (invalidPath.media as Record<string, unknown>).cover = path;
@@ -233,7 +268,7 @@ test("rejects invalid links, media, display combinations and templates", () => {
   }
 
   const validLocalMedia = cloneSource();
-  (validLocalMedia.media as Record<string, unknown>).cover = "/window.svg";
+  (validLocalMedia.media as Record<string, unknown>).cover = "/images/projects/test-cover.png";
   expect(() =>
     validateProjectContent(validLocalMedia, "local-media.json", new Set()),
   ).not.toThrow();

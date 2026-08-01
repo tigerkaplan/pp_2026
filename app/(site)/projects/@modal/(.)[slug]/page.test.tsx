@@ -87,6 +87,7 @@ test("keeps Council Preview content available without public action links", asyn
     await ProjectModal({ params: Promise.resolve({ slug: council.slug }) }),
   );
 
+  expect(getProjectBySlug).toHaveBeenCalledWith(council.slug);
   expect(screen.getByRole("dialog", { name: council.title })).toBeInTheDocument();
   expect(screen.getByText("Preview unavailable")).toBeInTheDocument();
   expect(screen.getByRole("link", { name: /view full project/i })).toHaveAttribute(
@@ -96,4 +97,28 @@ test("keeps Council Preview content available without public action links", asyn
   expect(screen.queryByRole("link", { name: "Live" })).not.toBeInTheDocument();
   expect(screen.queryByRole("link", { name: "GitHub" })).not.toBeInTheDocument();
   expect(container.querySelector("img")).not.toBeInTheDocument();
+});
+
+test("resolves the V9 Personal Portfolio through the existing Preview modal", async () => {
+  const portfolio = PROJECTS.find(
+    (candidate) => candidate.slug === "seo-portfolio-platform",
+  )!;
+  jest.mocked(getProjectBySlug).mockResolvedValue(portfolio);
+
+  render(
+    await ProjectModal({ params: Promise.resolve({ slug: portfolio.slug }) }),
+  );
+
+  expect(getProjectBySlug).toHaveBeenCalledWith(portfolio.slug);
+  expect(screen.getByRole("dialog", { name: "Personal Portfolio 2026" })).toBeInTheDocument();
+  expect(screen.getByText(portfolio.summary)).toBeInTheDocument();
+  expect(screen.getByRole("link", { name: /view full project/i })).toHaveAttribute(
+    "href",
+    `/projects/${portfolio.slug}`,
+  );
+  expect(screen.getByRole("link", { name: "GitHub" })).toHaveAttribute(
+    "href",
+    "https://github.com/tigerkaplan/pp_2026",
+  );
+  expect(screen.queryByRole("link", { name: "Live" })).not.toBeInTheDocument();
 });
