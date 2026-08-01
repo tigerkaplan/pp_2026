@@ -161,7 +161,7 @@ function ContactFormView({
         {statusMessage}
       </div>
 
-      <form className="space-y-5" noValidate onSubmit={handleSubmit} ref={formRef}>
+      <form className="contact-message-form space-y-5" noValidate onSubmit={handleSubmit} ref={formRef}>
         <div>
           <label className="font-medium text-[rgb(var(--color-fg))]" htmlFor="name">
             Name <span aria-hidden="true">*</span>

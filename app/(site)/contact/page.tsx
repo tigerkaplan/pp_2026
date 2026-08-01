@@ -25,8 +25,8 @@ export default function ContactPage() {
       </section>
       <section className="rounded-2xl border border-[rgb(var(--color-border))] bg-[rgb(var(--color-surface)/0.18)] p-5" aria-labelledby="source-heading">
         <h2 id="source-heading" className="text-xl font-semibold text-[rgb(var(--color-fg))]">Portfolio source</h2>
-        <p className="mt-2 text-[rgb(var(--color-fg-muted))]">If online messaging is unavailable, the public repository remains the verified alternative contact route.</p>
-        <a href="https://github.com/tigerkaplan/pp_2026" target="_blank" rel="noreferrer" className="mt-4 inline-flex min-h-11 items-center rounded-md border border-[rgb(var(--color-border))] px-4 py-2 text-sm font-medium text-[rgb(var(--color-fg))] transition hover:bg-[rgb(var(--color-surface-weak))]">Open the portfolio repository on GitHub</a>
+        <p className="mt-2 text-[rgb(var(--color-fg-muted))]">You can also explore the portfolio source code and development approach on GitHub.</p>
+        <a href="https://github.com/tigerkaplan/pp_2026" target="_blank" rel="noreferrer" className="mt-4 inline-flex min-h-11 items-center rounded-md border border-[rgb(var(--color-border))] px-4 py-2 text-sm font-medium text-[rgb(var(--color-fg))] transition hover:bg-[rgb(var(--color-surface-weak))]">View the portfolio on GitHub</a>
       </section>
     </div>
   );

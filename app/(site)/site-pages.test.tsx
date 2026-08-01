@@ -70,16 +70,40 @@ test("renders skills in validated evidence groups and filters them by evidence l
   expect(screen.getByText("Technical documentation")).toBeInTheDocument();
 });
 
-test("renders the Contact form and keeps the verified GitHub alternative", () => {
+test("renders the Contact form and presents GitHub as an additional source route", () => {
   render(<ContactPage />);
 
   expect(screen.getByRole("heading", { name: "Contact", level: 1 })).toBeInTheDocument();
   expect(screen.getByRole("heading", { name: "Send a message", level: 2 })).toBeInTheDocument();
   expect(screen.getByRole("button", { name: "Send message" })).toBeDisabled();
   expect(screen.getByRole("status")).toHaveTextContent("Online messaging is temporarily unavailable.");
-  expect(screen.getByRole("link", { name: "Open the portfolio repository on GitHub" })).toHaveAttribute(
+  expect(screen.getByText("You can also explore the portfolio source code and development approach on GitHub.")).toBeInTheDocument();
+  expect(screen.getByRole("link", { name: "View the portfolio on GitHub" })).toHaveAttribute(
     "href",
     "https://github.com/tigerkaplan/pp_2026",
   );
+  expect(screen.queryByText(/if online messaging is unavailable/i)).not.toBeInTheDocument();
   expect(screen.queryByRole("link", { name: /email|linkedin|cv/i })).not.toBeInTheDocument();
+});
+
+test("does not restore stale source wording when the Contact form is configured", () => {
+  const previousFormId = process.env.NEXT_PUBLIC_FORMSPREE_FORM_ID;
+  process.env.NEXT_PUBLIC_FORMSPREE_FORM_ID = "configured-test-form";
+
+  try {
+    render(<ContactPage />);
+
+    expect(screen.getByRole("button", { name: "Send message" })).toBeEnabled();
+    expect(screen.queryByText(/if online messaging is unavailable/i)).not.toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "View the portfolio on GitHub" })).toHaveAttribute(
+      "href",
+      "https://github.com/tigerkaplan/pp_2026",
+    );
+  } finally {
+    if (previousFormId === undefined) {
+      delete process.env.NEXT_PUBLIC_FORMSPREE_FORM_ID;
+    } else {
+      process.env.NEXT_PUBLIC_FORMSPREE_FORM_ID = previousFormId;
+    }
+  }
 });

@@ -30,6 +30,26 @@
   }
 }
 
+@layer components {
+  .contact-message-form input:-webkit-autofill,
+  .contact-message-form input:-webkit-autofill:hover,
+  .contact-message-form input:-webkit-autofill:focus,
+  .contact-message-form input:-webkit-autofill:active {
+    background-color: rgb(var(--color-bg));
+    -webkit-box-shadow: 0 0 0 1000px rgb(var(--color-bg)) inset;
+    box-shadow: 0 0 0 1000px rgb(var(--color-bg)) inset;
+    caret-color: rgb(var(--color-fg));
+    -webkit-text-fill-color: rgb(var(--color-fg));
+  }
+
+  .contact-message-form input:-moz-autofill {
+    background-color: rgb(var(--color-bg));
+    box-shadow: 0 0 0 1000px rgb(var(--color-bg)) inset;
+    caret-color: rgb(var(--color-fg));
+    color: rgb(var(--color-fg));
+  }
+}
+
 @media (min-width: 64rem) {
   body {
     font-size: 1.0625rem;
