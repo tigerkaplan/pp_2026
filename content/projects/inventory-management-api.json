@@ -15,7 +15,7 @@
   "skillIds": [],
   "links": {
     "live": null,
-    "github": "https://github.com/username/inventory-api"
+    "github": null
   },
   "media": {
     "cover": null,
@@ -29,7 +29,7 @@
   },
   "display": {
     "showLiveLink": false,
-    "showGithubLink": true,
+    "showGithubLink": false,
     "showPreview": true,
     "showFullProject": true
   }

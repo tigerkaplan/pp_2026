@@ -35,7 +35,7 @@ const MOCK_SLUGS = [
 ];
 
 const UNCHANGED_PROJECTS_SHA256 =
-  "b2b0a598cfb846f3feebf0f69b47dfa538741ed5183902afb37ec10ab055664d";
+  "3a6cef1c2ace03c7e38d668c176563a6b92d6b78fc807dcbd79103c3b1ef8543";
 
 function cloneSource(): Record<string, unknown> {
   const clone = JSON.parse(JSON.stringify(sourceProject)) as Record<string, unknown>;
