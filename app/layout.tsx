@@ -11,8 +11,12 @@ import SkipLink from "@/components/accessibility/SkipLink";
 import { THEME_BOOTSTRAP_SCRIPT } from "@/components/providers/theme";
 
 export const metadata: Metadata = {
-  title: "Portfolio",
-  description: "Personal portfolio",
+  title: {
+    default: "Personal Portfolio 2026",
+    template: "%s | Personal Portfolio 2026",
+  },
+  description:
+    "A portfolio of front-end development, accessible interaction patterns and evidence-led project work.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

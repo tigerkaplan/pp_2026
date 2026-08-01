@@ -32,7 +32,8 @@ test("uses one symmetric, internally scrollable spacing rule for desktop", () =>
     "px-1",
   );
   expect(scrollRegion).not.toHaveClass("mt-4");
-  expect(screen.getAllByRole("link")).toHaveLength(6);
+  expect(screen.getAllByRole("link")).toHaveLength(5);
   expect(screen.getByRole("link", { name: "Home" })).toBeInTheDocument();
+  expect(screen.getByRole("link", { name: "Skills" })).toHaveAttribute("href", "/skills");
   expect(screen.getByRole("link", { name: "Contact" })).toBeInTheDocument();
 });
