@@ -49,14 +49,14 @@ const project: Project = {
   display: { showLiveLink: false, showGithubLink: false, showPreview: true, showFullProject: true },
 };
 
-test("prebuilds only the project routes with approved evidence", async () => {
+test("prebuilds every valid registered project route", async () => {
   const params = await generateStaticParams();
 
   expect(dynamicParams).toBe(false);
-  expect(params).toHaveLength(2);
+  expect(params).toHaveLength(13);
   expect(params).toContainEqual({ slug: "council-digital-platforms-mini-lab" });
   expect(params).toContainEqual({ slug: "seo-portfolio-platform" });
-  expect(params).not.toContainEqual({ slug: "nextjs-ecommerce-platform" });
+  expect(params).toContainEqual({ slug: "nextjs-ecommerce-platform" });
   expect(params).not.toContainEqual({ slug: "not-a-real-project" });
 });
 
@@ -101,6 +101,24 @@ test("renders Council as a standalone project without public links", async () =>
   expect(screen.queryByRole("link", { name: "Live demo" })).not.toBeInTheDocument();
   expect(screen.queryByRole("link", { name: "GitHub" })).not.toBeInTheDocument();
   expect(container.querySelector("img")).not.toBeInTheDocument();
+});
+
+test("renders a non-featured media-less registry record as a standalone project", async () => {
+  const ecommerce = PROJECTS.find(
+    (candidate) => candidate.slug === "nextjs-ecommerce-platform",
+  ) as Project;
+  jest.mocked(getProjectBySlug).mockResolvedValue(ecommerce);
+
+  const { container } = render(
+    await ProjectPage({ params: Promise.resolve({ slug: ecommerce.slug }) }),
+  );
+
+  expect(screen.getByRole("heading", { name: ecommerce.title, level: 1 })).toBeInTheDocument();
+  expect(screen.getByText("Preview unavailable")).toBeInTheDocument();
+  expect(screen.getByRole("heading", { name: "Case study", level: 2 })).toBeInTheDocument();
+  expect(screen.queryByRole("link", { name: "Live demo" })).not.toBeInTheDocument();
+  expect(screen.queryByRole("link", { name: "GitHub" })).not.toBeInTheDocument();
+  expect(container.querySelector('[data-project-media="fallback"]')).toBeInTheDocument();
 });
 
 test("renders the V9 Personal Portfolio as a standalone Full Project", async () => {

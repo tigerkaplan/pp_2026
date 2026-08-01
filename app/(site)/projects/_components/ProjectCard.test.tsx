@@ -156,6 +156,26 @@ test("renders Council Preview and full-project actions without Live or GitHub", 
   expect(screen.queryByRole("link", { name: "GitHub" })).not.toBeInTheDocument();
 });
 
+test("keeps a visible generic registry card when its media and external actions are unavailable", () => {
+  const ecommerce = PROJECTS.find(
+    (candidate) => candidate.slug === "nextjs-ecommerce-platform",
+  )!;
+  render(<ProjectCard project={ecommerce} />);
+
+  expect(screen.getAllByText(ecommerce.title)).toHaveLength(2);
+  expect(screen.getByText("Preview unavailable")).toBeInTheDocument();
+  expect(screen.getByRole("link", { name: `Preview ${ecommerce.title}` })).toHaveAttribute(
+    "href",
+    `/projects/${ecommerce.slug}`,
+  );
+  expect(screen.getByRole("link", { name: /view full project/i })).toHaveAttribute(
+    "href",
+    `/projects/${ecommerce.slug}`,
+  );
+  expect(screen.queryByRole("link", { name: "Live" })).not.toBeInTheDocument();
+  expect(screen.queryByRole("link", { name: "GitHub" })).not.toBeInTheDocument();
+});
+
 test("renders the V9 Personal Portfolio card with only verified safe actions", () => {
   const portfolio = PROJECTS.find(
     (candidate) => candidate.slug === "seo-portfolio-platform",

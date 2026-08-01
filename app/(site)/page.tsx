@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getPublishedProjects } from "./projects/_lib/getProjects";
+import { getProjects } from "./projects/_lib/getProjects";
 import { SKILL_GROUPS, SKILLS } from "@/content/skills/skills.index";
 
 export const metadata: Metadata = {
@@ -13,7 +13,7 @@ const actionClass =
   "inline-flex min-h-11 items-center justify-center rounded-md border border-[rgb(var(--color-border))] px-4 py-2 text-sm font-medium text-[rgb(var(--color-fg))] transition hover:bg-[rgb(var(--color-surface-weak))]";
 
 export default async function HomePage() {
-  const projects = await getPublishedProjects();
+  const projects = await getProjects();
   const featuredProjects = projects.filter((project) => project.featured);
 
   return (

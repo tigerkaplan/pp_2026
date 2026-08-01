@@ -17,5 +17,10 @@ test("resolves the real Preview targets and rejects unavailable slugs", async ()
   });
   await expect(
     getProjectBySlug("nextjs-ecommerce-platform"),
-  ).resolves.toBeUndefined();
+  ).resolves.toMatchObject({
+    slug: "nextjs-ecommerce-platform",
+    title: "Next.js eCommerce Platform",
+    media: { cover: null },
+    links: {},
+  });
 });

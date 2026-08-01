@@ -1,4 +1,4 @@
-import { getPublishedProjects } from "./_lib/getProjects";
+import { getProjects } from "./_lib/getProjects";
 import ProjectGrid from "./_components/ProjectGrid";
 import OnThisPageProjects from "@/components/navigation/OnThisPage";
 
@@ -9,7 +9,7 @@ export const metadata = {
 };
 
 export default async function ProjectsPage() {
-  const projects = await getPublishedProjects();
+  const projects = await getProjects();
   const featured = projects.filter((p) => p.featured);
   const additionalProjects = projects.filter((p) => !p.featured);
 
@@ -24,9 +24,6 @@ export default async function ProjectsPage() {
           <p className="max-w-3xl text-base leading-7 text-[rgb(var(--color-fg-muted))] lg:text-[17px]">
             A selection of projects showcasing a variety of technologies and
             solutions I’ve worked on.
-          </p>
-          <p className="max-w-3xl text-sm leading-6 text-[rgb(var(--color-fg-muted))]">
-            Only records with approved portfolio evidence are published here.
           </p>
         </header>
 

@@ -1,14 +1,14 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getProjectBySlug } from "../_lib/getProjectBySlug";
-import { getPublishedProjects } from "../_lib/getProjects";
+import { getProjects } from "../_lib/getProjects";
 import { ProjectMedia } from "../_components/ProjectMedia";
 
 type Props = { params: Promise<{ slug: string }> };
 export const dynamicParams = false;
 
 export async function generateStaticParams() {
-  return (await getPublishedProjects()).map(({ slug }) => ({ slug }));
+  return (await getProjects()).map(({ slug }) => ({ slug }));
 }
 
 // Generated Open Graph output is authoritative for this local-assets-only phase.

@@ -99,6 +99,27 @@ test("keeps Council Preview content available without public action links", asyn
   expect(container.querySelector("img")).not.toBeInTheDocument();
 });
 
+test("keeps a media-less generic record visible in its Preview modal", async () => {
+  const ecommerce = PROJECTS.find(
+    (candidate) => candidate.slug === "nextjs-ecommerce-platform",
+  )!;
+  jest.mocked(getProjectBySlug).mockResolvedValue(ecommerce);
+
+  const { container } = render(
+    await ProjectModal({ params: Promise.resolve({ slug: ecommerce.slug }) }),
+  );
+
+  expect(screen.getByRole("dialog", { name: ecommerce.title })).toBeInTheDocument();
+  expect(screen.getByText("Preview unavailable")).toBeInTheDocument();
+  expect(screen.getByRole("link", { name: /view full project/i })).toHaveAttribute(
+    "href",
+    `/projects/${ecommerce.slug}`,
+  );
+  expect(screen.queryByRole("link", { name: "Live" })).not.toBeInTheDocument();
+  expect(screen.queryByRole("link", { name: "GitHub" })).not.toBeInTheDocument();
+  expect(container.querySelector("img")).not.toBeInTheDocument();
+});
+
 test("resolves the V9 Personal Portfolio through the existing Preview modal", async () => {
   const portfolio = PROJECTS.find(
     (candidate) => candidate.slug === "seo-portfolio-platform",
