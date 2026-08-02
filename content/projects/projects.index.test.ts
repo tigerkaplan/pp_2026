@@ -4,7 +4,7 @@ import { getProjectBySlug } from "@/app/(site)/projects/_lib/getProjectBySlug";
 import { getProjects } from "@/app/(site)/projects/_lib/getProjects";
 import { PROJECTS as STABLE_PROJECTS } from "@/app/(site)/projects/_lib/projects.data";
 import { SKILL_IDS } from "@/content/skills/skills.index";
-import sourceProject from "./seo-portfolio-platform.json";
+import sourceProject from "./personal-portfolio-2026.json";
 import {
   normaliseProjectContent,
   PROJECT_CONTENT,
@@ -17,7 +17,7 @@ import {
 } from "./validate-projects";
 
 const COUNCIL_SLUG = "council-digital-platforms-mini-lab";
-const PORTFOLIO_SLUG = "seo-portfolio-platform";
+const PORTFOLIO_SLUG = "personal-portfolio-2026";
 const ACTIVE_SLUGS = [COUNCIL_SLUG, PORTFOLIO_SLUG];
 const REMOVED_SLUGS = [
   "nextjs-ecommerce-platform",

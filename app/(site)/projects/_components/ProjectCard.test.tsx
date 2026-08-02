@@ -175,7 +175,7 @@ test("keeps a visible temporary generic card when its media and external actions
 
 test("renders the V9 Personal Portfolio card with only verified safe actions", () => {
   const portfolio = PROJECTS.find(
-    (candidate) => candidate.slug === "seo-portfolio-platform",
+    (candidate) => candidate.slug === "personal-portfolio-2026",
   )!;
   render(<ProjectCard project={portfolio} variant="featured" />);
 

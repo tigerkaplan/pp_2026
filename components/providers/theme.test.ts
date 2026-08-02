@@ -57,6 +57,7 @@ test("resolves explicit preferences before the system preference", () => {
   expect(resolveTheme("light", "dark")).toBe("light");
   expect(resolveTheme("system", "dark")).toBe("dark");
   expect(resolveTheme(null, "light")).toBe("light");
+  expect(resolveTheme(null, "dark")).toBe("light");
 });
 
 test("handles unavailable storage without inventing another setting", () => {
@@ -112,9 +113,9 @@ test("bootstrap applies stored light before system dark", () => {
 });
 
 test.each([
-  { stored: null, systemDark: true, expected: "dark" },
+  { stored: null, systemDark: true, expected: "light" },
   { stored: "system", systemDark: false, expected: "light" },
-  { stored: "malformed", systemDark: true, expected: "dark" },
+  { stored: "malformed", systemDark: true, expected: "light" },
 ])(
   "bootstrap resolves $stored with systemDark=$systemDark as $expected",
   ({ stored, systemDark, expected }) => {
@@ -126,8 +127,8 @@ test.each([
   },
 );
 
-test("bootstrap safely falls back to the system when storage throws", () => {
+test("bootstrap safely falls back to light when storage throws", () => {
   runBootstrap({ stored: null, systemDark: true, storageThrows: true });
-  expect(document.documentElement).toHaveClass("dark");
-  expect(document.documentElement).toHaveStyle({ colorScheme: "dark" });
+  expect(document.documentElement).not.toHaveClass("dark");
+  expect(document.documentElement).toHaveStyle({ colorScheme: "light" });
 });

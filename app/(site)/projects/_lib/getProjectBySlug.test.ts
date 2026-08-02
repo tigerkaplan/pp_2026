@@ -7,12 +7,13 @@ test("resolves the two real Preview targets and rejects removed slugs", async ()
     slug: "council-digital-platforms-mini-lab",
   });
   await expect(
-    getProjectBySlug("seo-portfolio-platform"),
+    getProjectBySlug("personal-portfolio-2026"),
   ).resolves.toMatchObject({
     title: "Personal Portfolio 2026",
-    slug: "seo-portfolio-platform",
+    slug: "personal-portfolio-2026",
   });
   await expect(getProjectBySlug("nextjs-ecommerce-platform")).resolves.toBeUndefined();
   await expect(getProjectBySlug("api-integration-service")).resolves.toBeUndefined();
+  await expect(getProjectBySlug("seo-portfolio-platform")).resolves.toBeUndefined();
   await expect(getProjectBySlug("not-a-real-project")).resolves.toBeUndefined();
 });

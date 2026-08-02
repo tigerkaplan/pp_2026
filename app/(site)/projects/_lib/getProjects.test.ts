@@ -10,7 +10,7 @@ test("returns every validated registry record without evidence-based withholding
   expect(new Set(slugs).size).toBe(2);
   expect(slugs).toEqual([
     "council-digital-platforms-mini-lab",
-    "seo-portfolio-platform",
+    "personal-portfolio-2026",
   ]);
   expect(projects[0]).toMatchObject({
     media: { cover: null },

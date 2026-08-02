@@ -13,7 +13,8 @@ export function resolveTheme(
   setting: ThemeSetting | null,
   systemTheme: Theme,
 ): Theme {
-  return setting === "dark" || setting === "light" ? setting : systemTheme;
+  if (setting === "dark" || setting === "light") return setting;
+  return setting === "system" ? systemTheme : "light";
 }
 
 export function readStoredThemeSetting(
@@ -36,4 +37,4 @@ export function applyThemeToRoot(root: HTMLElement, theme: Theme) {
  * document head before body content is painted, using the same storage key and
  * resolution order as ThemeProvider.
  */
-export const THEME_BOOTSTRAP_SCRIPT = `(()=>{let s=null;try{s=localStorage.getItem("${THEME_STORAGE_KEY}")}catch{}let d=s==="dark";if(s!=="dark"&&s!=="light"){try{d=window.matchMedia("(prefers-color-scheme: dark)").matches}catch{d=false}}const r=document.documentElement;r.classList.toggle("dark",d);r.style.colorScheme=d?"dark":"light"})()`;
+export const THEME_BOOTSTRAP_SCRIPT = `(()=>{let s=null;try{s=localStorage.getItem("${THEME_STORAGE_KEY}")}catch{}let d=s==="dark";if(s==="system"){try{d=window.matchMedia("(prefers-color-scheme: dark)").matches}catch{d=false}}const r=document.documentElement;r.classList.toggle("dark",d);r.style.colorScheme=d?"dark":"light"})()`;

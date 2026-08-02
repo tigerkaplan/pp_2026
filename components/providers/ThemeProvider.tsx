@@ -97,7 +97,7 @@ function applyHtmlThemeClass(theme: Theme) {
 
 export function ThemeProvider({
   children,
-  defaultSetting = "system",
+  defaultSetting = "light",
 }: {
   children: React.ReactNode;
   /** first-load default if nothing in localStorage */

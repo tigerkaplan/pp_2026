@@ -132,18 +132,18 @@ test("keeps a temporary generic record visible in its Preview modal", async () =
   expect(container.querySelector("img")).not.toBeInTheDocument();
 });
 
-test("uses the normal not-found behaviour for a removed Preview slug", async () => {
+test("uses the normal not-found behaviour for the previous Personal Portfolio Preview slug", async () => {
   jest.mocked(getProjectBySlug).mockResolvedValue(undefined);
 
   await expect(
-    ProjectModal({ params: Promise.resolve({ slug: "nextjs-ecommerce-platform" }) }),
+    ProjectModal({ params: Promise.resolve({ slug: "seo-portfolio-platform" }) }),
   ).rejects.toThrow("NEXT_NOT_FOUND");
   expect(notFound).toHaveBeenCalled();
 });
 
 test("resolves the V9 Personal Portfolio through the existing Preview modal", async () => {
   const portfolio = PROJECTS.find(
-    (candidate) => candidate.slug === "seo-portfolio-platform",
+    (candidate) => candidate.slug === "personal-portfolio-2026",
   )!;
   jest.mocked(getProjectBySlug).mockResolvedValue(portfolio);
 

@@ -24,29 +24,29 @@ afterEach(() => {
   jest.restoreAllMocks();
 });
 
-test("uses a missing preference with system dark and toggles immediately", async () => {
+test("uses light for a missing preference even when the system is dark", async () => {
   setSystemDark(true);
   const user = userEvent.setup();
   const { container } = render(<ThemeProvider><ThemeToggle /></ThemeProvider>);
-  const toggle = await screen.findByRole("button", { name: "Switch to light mode" });
-  expect(toggle).toHaveAttribute("aria-pressed", "true");
-  expect(toggle).toHaveAttribute("title", "Switch to light mode");
+  const toggle = await screen.findByRole("button", { name: "Switch to dark mode" });
+  expect(toggle).toHaveAttribute("aria-pressed", "false");
+  expect(toggle).toHaveAttribute("title", "Switch to dark mode");
   expect(toggle).toHaveClass("h-11", "w-11");
   expect(toggle).not.toHaveTextContent(/light|dark/i);
-  const sun = toggle.querySelector('[data-theme-icon="sun"]');
-  expect(sun).toHaveAttribute("aria-hidden", "true");
-  expect(sun).toHaveAttribute("focusable", "false");
-  expect(sun).toHaveClass("h-5", "w-5");
-  expect(document.documentElement).toHaveClass("dark");
-  expect(document.documentElement).toHaveStyle({ colorScheme: "dark" });
-  await user.click(toggle);
-  const lightToggle = screen.getByRole("button", { name: "Switch to dark mode" });
-  expect(lightToggle).toHaveAttribute("aria-pressed", "false");
-  expect(lightToggle).toHaveAttribute("title", "Switch to dark mode");
-  expect(lightToggle.querySelector('[data-theme-icon="moon"]')).toBeInTheDocument();
+  const moon = toggle.querySelector('[data-theme-icon="moon"]');
+  expect(moon).toHaveAttribute("aria-hidden", "true");
+  expect(moon).toHaveAttribute("focusable", "false");
+  expect(moon).toHaveClass("h-5", "w-5");
   expect(document.documentElement).not.toHaveClass("dark");
   expect(document.documentElement).toHaveStyle({ colorScheme: "light" });
-  expect(window.localStorage.getItem("theme")).toBe("light");
+  await user.click(toggle);
+  const darkToggle = screen.getByRole("button", { name: "Switch to light mode" });
+  expect(darkToggle).toHaveAttribute("aria-pressed", "true");
+  expect(darkToggle).toHaveAttribute("title", "Switch to light mode");
+  expect(darkToggle.querySelector('[data-theme-icon="sun"]')).toBeInTheDocument();
+  expect(document.documentElement).toHaveClass("dark");
+  expect(document.documentElement).toHaveStyle({ colorScheme: "dark" });
+  expect(window.localStorage.getItem("theme")).toBe("dark");
   expect(await axe(container)).toHaveNoViolations();
 });
 
@@ -100,7 +100,7 @@ test("uses a missing preference with system light", async () => {
   expect(document.documentElement).toHaveStyle({ colorScheme: "light" });
 });
 
-test("uses the safe system fallback when storage is malformed or unavailable", async () => {
+test("uses the safe light fallback when storage is malformed or unavailable", async () => {
   setSystemDark(true);
   jest.spyOn(Storage.prototype, "getItem").mockReturnValue("sepia");
   jest.spyOn(Storage.prototype, "setItem").mockImplementation(() => {
@@ -108,9 +108,9 @@ test("uses the safe system fallback when storage is malformed or unavailable", a
   });
 
   expect(() => render(<ThemeProvider><ThemeToggle /></ThemeProvider>)).not.toThrow();
-  expect(await screen.findByRole("button", { name: "Switch to light mode" })).toBeInTheDocument();
-  expect(document.documentElement).toHaveClass("dark");
-  expect(document.documentElement).toHaveStyle({ colorScheme: "dark" });
+  expect(await screen.findByRole("button", { name: "Switch to dark mode" })).toBeInTheDocument();
+  expect(document.documentElement).not.toHaveClass("dark");
+  expect(document.documentElement).toHaveStyle({ colorScheme: "light" });
 });
 
 test("toggles from light with Enter and stores dark", async () => {

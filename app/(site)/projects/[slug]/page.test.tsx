@@ -62,7 +62,8 @@ test("prebuilds every valid registered project route", async () => {
   expect(dynamicParams).toBe(false);
   expect(params).toHaveLength(2);
   expect(params).toContainEqual({ slug: "council-digital-platforms-mini-lab" });
-  expect(params).toContainEqual({ slug: "seo-portfolio-platform" });
+  expect(params).toContainEqual({ slug: "personal-portfolio-2026" });
+  expect(params).not.toContainEqual({ slug: "seo-portfolio-platform" });
   expect(params).not.toContainEqual({ slug: "nextjs-ecommerce-platform" });
   expect(params).not.toContainEqual({ slug: "not-a-real-project" });
 });
@@ -131,18 +132,18 @@ test("renders a temporary non-featured project through the generic full-page pat
   expect(container.querySelector('[data-project-media="fallback"]')).toBeInTheDocument();
 });
 
-test("uses the normal not-found behaviour for removed project slugs", async () => {
+test("uses the normal not-found behaviour for the previous Personal Portfolio slug", async () => {
   jest.mocked(getProjectBySlug).mockResolvedValue(undefined);
 
   await expect(
-    ProjectPage({ params: Promise.resolve({ slug: "nextjs-ecommerce-platform" }) }),
+    ProjectPage({ params: Promise.resolve({ slug: "seo-portfolio-platform" }) }),
   ).rejects.toThrow("NEXT_NOT_FOUND");
   expect(notFound).toHaveBeenCalled();
 });
 
 test("renders the V9 Personal Portfolio as a standalone Full Project", async () => {
   const portfolio = PROJECTS.find(
-    (candidate) => candidate.slug === "seo-portfolio-platform",
+    (candidate) => candidate.slug === "personal-portfolio-2026",
   ) as Project;
   jest.mocked(getProjectBySlug).mockResolvedValue(portfolio);
 

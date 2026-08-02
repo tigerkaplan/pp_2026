@@ -17,7 +17,7 @@ test("presents the verified Home actions, featured records and skills preview", 
   expect(screen.getByText("Council Digital Platforms Mini Lab")).toBeInTheDocument();
   expect(screen.getByRole("link", { name: "View full project: Personal Portfolio 2026" })).toHaveAttribute(
     "href",
-    "/projects/seo-portfolio-platform",
+    "/projects/personal-portfolio-2026",
   );
   expect(screen.queryByText("Next.js eCommerce Platform")).not.toBeInTheDocument();
 });
