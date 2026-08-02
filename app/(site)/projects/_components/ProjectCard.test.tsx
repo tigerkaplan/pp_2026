@@ -156,21 +156,18 @@ test("renders Council Preview and full-project actions without Live or GitHub", 
   expect(screen.queryByRole("link", { name: "GitHub" })).not.toBeInTheDocument();
 });
 
-test("keeps a visible generic registry card when its media and external actions are unavailable", () => {
-  const ecommerce = PROJECTS.find(
-    (candidate) => candidate.slug === "nextjs-ecommerce-platform",
-  )!;
-  render(<ProjectCard project={ecommerce} />);
+test("keeps a visible temporary generic card when its media and external actions are unavailable", () => {
+  render(<ProjectCard project={project} />);
 
-  expect(screen.getAllByText(ecommerce.title)).toHaveLength(2);
+  expect(screen.getAllByText(project.title)).toHaveLength(2);
   expect(screen.getByText("Preview unavailable")).toBeInTheDocument();
-  expect(screen.getByRole("link", { name: `Preview ${ecommerce.title}` })).toHaveAttribute(
+  expect(screen.getByRole("link", { name: `Preview ${project.title}` })).toHaveAttribute(
     "href",
-    `/projects/${ecommerce.slug}`,
+    `/projects/${project.slug}`,
   );
   expect(screen.getByRole("link", { name: /view full project/i })).toHaveAttribute(
     "href",
-    `/projects/${ecommerce.slug}`,
+    `/projects/${project.slug}`,
   );
   expect(screen.queryByRole("link", { name: "Live" })).not.toBeInTheDocument();
   expect(screen.queryByRole("link", { name: "GitHub" })).not.toBeInTheDocument();

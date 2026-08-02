@@ -1,4 +1,3 @@
-import { createHash } from "node:crypto";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { getProjectBySlug } from "@/app/(site)/projects/_lib/getProjectBySlug";
@@ -18,9 +17,9 @@ import {
 } from "./validate-projects";
 
 const COUNCIL_SLUG = "council-digital-platforms-mini-lab";
-
-const MOCK_SLUGS = [
-  "seo-portfolio-platform",
+const PORTFOLIO_SLUG = "seo-portfolio-platform";
+const ACTIVE_SLUGS = [COUNCIL_SLUG, PORTFOLIO_SLUG];
+const REMOVED_SLUGS = [
   "nextjs-ecommerce-platform",
   "inventory-management-api",
   "seo-optimization-dashboard",
@@ -33,9 +32,6 @@ const MOCK_SLUGS = [
   "blog-platform",
   "api-integration-service",
 ];
-
-const UNCHANGED_PROJECTS_SHA256 =
-  "3a6cef1c2ace03c7e38d668c176563a6b92d6b78fc807dcbd79103c3b1ef8543";
 
 function cloneSource(): Record<string, unknown> {
   const clone = JSON.parse(JSON.stringify(sourceProject)) as Record<string, unknown>;
@@ -50,57 +46,20 @@ function registration(
   return { source, content };
 }
 
-test("keeps Council first and restores the V9 self-project at its stable order", () => {
-  expect(PROJECTS).toHaveLength(13);
-  expect(PROJECTS.map((project) => project.slug)).toEqual([
-    COUNCIL_SLUG,
-    ...MOCK_SLUGS,
+test("keeps exactly the two active project records in registry order", () => {
+  expect(PROJECTS).toHaveLength(2);
+  expect(PROJECTS.map((project) => project.slug)).toEqual(ACTIVE_SLUGS);
+  expect(PROJECTS.map((project) => project.title)).toEqual([
+    "Council Digital Platforms Mini Lab",
+    "Personal Portfolio 2026",
   ]);
-  expect(PROJECTS.map((project) => project.featured)).toEqual([
-    true,
-    true,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-  ]);
-  expect(PROJECT_CONTENT.map((project) => project.order)).toEqual(
-    Array.from({ length: 13 }, (_, index) => index + 1),
-  );
-  expect(PROJECTS.map((project) => project.id)).toEqual(
-    [13, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-  );
-  const mockProjects = PROJECTS.filter((project) => project.slug !== COUNCIL_SLUG);
-  expect(mockProjects.map((project) => project.slug)).toEqual(MOCK_SLUGS);
-  const unchangedProjects = mockProjects.filter(
-    (project) => project.slug !== "seo-portfolio-platform",
-  );
-  const unchangedParityProjection = unchangedProjects.map((project) =>
-    project.slug === "nextjs-ecommerce-platform"
-      ? { ...project, featured: true }
-      : project,
-  );
-  expect(
-    createHash("sha256")
-      .update(JSON.stringify(unchangedParityProjection))
-      .digest("hex"),
-  ).toBe(UNCHANGED_PROJECTS_SHA256);
-  expect(PROJECTS.filter((project) => project.featured).map((project) => project.slug)).toEqual([
-    COUNCIL_SLUG,
-    "seo-portfolio-platform",
-  ]);
-  expect(PROJECTS.filter((project) => !project.featured)).toHaveLength(11);
-  expect(PROJECTS.filter((project) => !project.featured)[0]?.slug).toBe(
-    "nextjs-ecommerce-platform",
-  );
-  expect(PROJECT_CONTENT.filter((project) => project.slug === "seo-portfolio-platform")).toEqual([
+  expect(PROJECTS.map((project) => project.featured)).toEqual([true, true]);
+  expect(PROJECT_CONTENT.map((project) => project.order)).toEqual([1, 2]);
+  expect(PROJECTS.map((project) => project.id)).toEqual([13, 1]);
+  for (const slug of REMOVED_SLUGS) {
+    expect(PROJECTS.some((project) => project.slug === slug)).toBe(false);
+  }
+  expect(PROJECT_CONTENT.filter((project) => project.slug === PORTFOLIO_SLUG)).toEqual([
     expect.objectContaining({
       id: 1,
       title: "Personal Portfolio 2026",
@@ -175,8 +134,7 @@ test("keeps every registered media path inside the real public directory", () =>
   expect(PROJECT_CONTENT.find((project) => project.slug === COUNCIL_SLUG)?.media).toEqual(
     { cover: null, coverAlt: "", gallery: [] },
   );
-  expect(PROJECT_CONTENT.find((project) => project.slug === "nextjs-ecommerce-platform")?.media.cover).toBeNull();
-  expect(PROJECT_CONTENT.find((project) => project.slug === "seo-portfolio-platform")?.media).toEqual(
+  expect(PROJECT_CONTENT.find((project) => project.slug === PORTFOLIO_SLUG)?.media).toEqual(
     {
       cover: null,
       coverAlt: "Personal Portfolio project media is pending approval.",
@@ -316,14 +274,14 @@ test("normalizes optional links and missing cover media without placeholders", (
   });
 });
 
-test("keeps templates out of runtime registries and future additions at the data boundary", () => {
+test("keeps templates out of runtime registries and accepts future additions at the data boundary", () => {
   const projectDirectory = path.join(process.cwd(), "content", "projects");
   const runtimeJsonFiles = readdirSync(projectDirectory).filter((file) =>
     file.endsWith(".json"),
   );
   const templateDirectory = path.join(process.cwd(), "content", "templates");
 
-  expect(runtimeJsonFiles).toHaveLength(13);
+  expect(runtimeJsonFiles).toHaveLength(2);
   expect(runtimeJsonFiles.some((file) => file.includes(".template."))).toBe(
     false,
   );
@@ -346,11 +304,26 @@ test("keeps templates out of runtime registries and future additions at the data
     .join("\n");
   expect(componentSources).not.toContain("content/projects");
 
-  const futureContent = validateProjectContent(
-    cloneSource(),
-    "future-project.json",
-    new Set(),
+  const futureSource = cloneSource();
+  futureSource.id = 14;
+  futureSource.slug = "future-project";
+  futureSource.title = "Future project";
+  futureSource.order = 3;
+  futureSource.featured = false;
+  const futureProjects = validateProjectRegistry(
+    [
+      ...PROJECT_CONTENT.map((content, index) =>
+        registration(content, `active-project-${index}.json`),
+      ),
+      registration(futureSource, "future-project.json"),
+    ],
+    SKILL_IDS,
   );
+  const futureContent = futureProjects.at(-1)!;
+  expect(futureProjects.map((project) => project.slug)).toEqual([
+    ...ACTIVE_SLUGS,
+    "future-project",
+  ]);
   expect(normaliseProjectContent(futureContent)).toEqual(
     expect.objectContaining({
       slug: futureContent.slug,
@@ -358,4 +331,9 @@ test("keeps templates out of runtime registries and future additions at the data
       summary: futureContent.card.summary,
     }),
   );
+  const registrySource = readFileSync(
+    path.join(projectDirectory, "projects.index.ts"),
+    "utf8",
+  );
+  expect(registrySource).not.toMatch(/allowedSlugs|slice\(\s*0\s*,\s*2\s*\)/);
 });

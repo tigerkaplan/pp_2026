@@ -4,9 +4,16 @@ import ProjectModal from "./page";
 import { getProjectBySlug } from "../../_lib/getProjectBySlug";
 import { PROJECTS } from "../../_lib/projects.data";
 import type { Project } from "../../_types/project";
+import { notFound } from "next/navigation";
 
 jest.mock("../../_lib/getProjectBySlug", () => ({
   getProjectBySlug: jest.fn(),
+}));
+
+jest.mock("next/navigation", () => ({
+  notFound: jest.fn(() => {
+    throw new Error("NEXT_NOT_FOUND");
+  }),
 }));
 
 jest.mock("next/image", () => ({
@@ -99,25 +106,39 @@ test("keeps Council Preview content available without public action links", asyn
   expect(container.querySelector("img")).not.toBeInTheDocument();
 });
 
-test("keeps a media-less generic record visible in its Preview modal", async () => {
-  const ecommerce = PROJECTS.find(
-    (candidate) => candidate.slug === "nextjs-ecommerce-platform",
-  )!;
-  jest.mocked(getProjectBySlug).mockResolvedValue(ecommerce);
+test("keeps a temporary generic record visible in its Preview modal", async () => {
+  const futureProject: Project = {
+    ...project,
+    slug: "future-project",
+    title: "Future project",
+    featured: false,
+    images: [],
+    media: { cover: null, coverAlt: "", gallery: [] },
+  };
+  jest.mocked(getProjectBySlug).mockResolvedValue(futureProject);
 
   const { container } = render(
-    await ProjectModal({ params: Promise.resolve({ slug: ecommerce.slug }) }),
+    await ProjectModal({ params: Promise.resolve({ slug: futureProject.slug }) }),
   );
 
-  expect(screen.getByRole("dialog", { name: ecommerce.title })).toBeInTheDocument();
+  expect(screen.getByRole("dialog", { name: futureProject.title })).toBeInTheDocument();
   expect(screen.getByText("Preview unavailable")).toBeInTheDocument();
   expect(screen.getByRole("link", { name: /view full project/i })).toHaveAttribute(
     "href",
-    `/projects/${ecommerce.slug}`,
+    `/projects/${futureProject.slug}`,
   );
   expect(screen.queryByRole("link", { name: "Live" })).not.toBeInTheDocument();
   expect(screen.queryByRole("link", { name: "GitHub" })).not.toBeInTheDocument();
   expect(container.querySelector("img")).not.toBeInTheDocument();
+});
+
+test("uses the normal not-found behaviour for a removed Preview slug", async () => {
+  jest.mocked(getProjectBySlug).mockResolvedValue(undefined);
+
+  await expect(
+    ProjectModal({ params: Promise.resolve({ slug: "nextjs-ecommerce-platform" }) }),
+  ).rejects.toThrow("NEXT_NOT_FOUND");
+  expect(notFound).toHaveBeenCalled();
 });
 
 test("resolves the V9 Personal Portfolio through the existing Preview modal", async () => {

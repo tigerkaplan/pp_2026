@@ -19,6 +19,7 @@ test("presents the verified Home actions, featured records and skills preview", 
     "href",
     "/projects/seo-portfolio-platform",
   );
+  expect(screen.queryByText("Next.js eCommerce Platform")).not.toBeInTheDocument();
 });
 
 test("keeps About evidence-led and links to the Skills route", () => {
