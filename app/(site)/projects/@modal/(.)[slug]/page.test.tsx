@@ -84,7 +84,7 @@ test("uses a semantic fallback for missing intercepted-modal media", async () =>
   expect(await axe(container)).toHaveNoViolations();
 });
 
-test("keeps Council Preview content available without public action links", async () => {
+test("keeps Council Preview content available with verified public action links", async () => {
   const council = PROJECTS.find(
     (candidate) => candidate.slug === "council-digital-platforms-mini-lab",
   )!;
@@ -101,8 +101,14 @@ test("keeps Council Preview content available without public action links", asyn
     "href",
     `/projects/${council.slug}`,
   );
-  expect(screen.queryByRole("link", { name: "Live" })).not.toBeInTheDocument();
-  expect(screen.queryByRole("link", { name: "GitHub" })).not.toBeInTheDocument();
+  const live = screen.getByRole("link", { name: "Live" });
+  const github = screen.getByRole("link", { name: "GitHub" });
+  expect(live).toHaveAttribute("href", "https://council-digital-platforms-mini-lab.netlify.app/");
+  expect(live).toHaveAttribute("target", "_blank");
+  expect(live).toHaveAttribute("rel", "noreferrer");
+  expect(github).toHaveAttribute("href", "https://github.com/tigerkaplan/council-digital-platforms-mini-lab");
+  expect(github).toHaveAttribute("target", "_blank");
+  expect(github).toHaveAttribute("rel", "noreferrer");
   expect(container.querySelector("img")).not.toBeInTheDocument();
 });
 

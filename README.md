@@ -1,36 +1,53 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Personal Portfolio 2026
 
-## Getting Started
+A responsive, SEO-friendly portfolio built with Next.js. It presents evidence-led front-end and accessible digital-service work through reusable project records and detailed project pages.
 
-First, run the development server:
+## Current projects
+
+### Council Digital Platforms Mini Lab
+
+- [Live deployment](https://council-digital-platforms-mini-lab.netlify.app/)
+- [GitHub repository](https://github.com/tigerkaplan/council-digital-platforms-mini-lab)
+
+### Personal Portfolio 2026
+
+- Project page: `/projects/personal-portfolio-2026`
+
+## Features
+
+- Data-driven project records with reusable project cards
+- Preview modals and standalone full project pages
+- Dynamic project routes
+- Light and dark themes, with light as the first-visit default
+- Responsive navigation and accessibility features
+- Page metadata and a generated sitemap
+- Linting, type-checking and automated tests
+
+## Technology
+
+- Next.js, React and TypeScript
+- Tailwind CSS
+- ESLint
+- Jest, React Testing Library and jest-axe
+
+## Local development
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open `http://localhost:3000` in a browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Quality checks
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run lint
+npm run typecheck
+npm test
+npm run build
+```
 
-## Learn More
+## Deployment
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The Council Digital Platforms Mini Lab is deployed on Netlify at [council-digital-platforms-mini-lab.netlify.app](https://council-digital-platforms-mini-lab.netlify.app/).

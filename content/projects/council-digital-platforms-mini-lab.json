@@ -35,8 +35,8 @@
     "yaml-configuration"
   ],
   "links": {
-    "live": null,
-    "github": null
+    "live": "https://council-digital-platforms-mini-lab.netlify.app/",
+    "github": "https://github.com/tigerkaplan/council-digital-platforms-mini-lab"
   },
   "media": {
     "cover": null,
@@ -116,8 +116,8 @@
     "ogImage": null
   },
   "display": {
-    "showLiveLink": false,
-    "showGithubLink": false,
+    "showLiveLink": true,
+    "showGithubLink": true,
     "showPreview": true,
     "showFullProject": true
   }

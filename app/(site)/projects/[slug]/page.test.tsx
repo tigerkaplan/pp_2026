@@ -83,7 +83,7 @@ test("maps Council metadata from approved JSON content", async () => {
   });
 });
 
-test("renders Council as a standalone project without public links", async () => {
+test("renders Council as a standalone project with verified public links", async () => {
   const council = PROJECTS.find(
     (candidate) => candidate.slug === "council-digital-platforms-mini-lab",
   ) as Project;
@@ -106,8 +106,14 @@ test("renders Council as a standalone project without public links", async () =>
   expect(screen.queryByRole("heading", { name: "Screenshots" })).not.toBeInTheDocument();
   expect(screen.getByText("Preview unavailable")).toBeInTheDocument();
   expect(container.querySelector('[data-project-media="fallback"]')).toHaveClass("h-36", "sm:h-52");
-  expect(screen.queryByRole("link", { name: "Live demo" })).not.toBeInTheDocument();
-  expect(screen.queryByRole("link", { name: "GitHub" })).not.toBeInTheDocument();
+  const live = screen.getByRole("link", { name: "Live demo" });
+  const github = screen.getByRole("link", { name: "GitHub" });
+  expect(live).toHaveAttribute("href", "https://council-digital-platforms-mini-lab.netlify.app/");
+  expect(live).toHaveAttribute("target", "_blank");
+  expect(live).toHaveAttribute("rel", "noreferrer");
+  expect(github).toHaveAttribute("href", "https://github.com/tigerkaplan/council-digital-platforms-mini-lab");
+  expect(github).toHaveAttribute("target", "_blank");
+  expect(github).toHaveAttribute("rel", "noreferrer");
   expect(container.querySelector("img")).not.toBeInTheDocument();
 });
 

@@ -141,19 +141,29 @@ test("renders visible preview and full-project actions for the project card", ()
   );
 });
 
-test("renders Council Preview and full-project actions without Live or GitHub", () => {
+test("renders Council Preview, full-project and verified external actions", () => {
   const council = PROJECTS.find(
     (candidate) => candidate.slug === "council-digital-platforms-mini-lab",
   )!;
   render(<ProjectCard project={council} variant="featured" />);
-  const preview = screen.getByRole("link", { name: /preview council/i });
+  const previews = screen.getAllByRole("link", { name: /preview council/i });
 
   expect(screen.getByText("Preview unavailable")).toBeInTheDocument();
-  expect(preview).toHaveAttribute("href", `/projects/${council.slug}`);
-  expect(preview).toHaveAttribute("data-next-link", "true");
+  previews.forEach((preview) => {
+    expect(preview).toHaveAttribute("href", `/projects/${council.slug}`);
+    expect(preview).toHaveAttribute("data-next-link", "true");
+  });
   expect(screen.getByRole("link", { name: /view full project/i })).toBeInTheDocument();
-  expect(screen.queryByRole("link", { name: "Live" })).not.toBeInTheDocument();
-  expect(screen.queryByRole("link", { name: "GitHub" })).not.toBeInTheDocument();
+  screen.getAllByRole("link", { name: "Live" }).forEach((live) => {
+    expect(live).toHaveAttribute("href", "https://council-digital-platforms-mini-lab.netlify.app/");
+    expect(live).toHaveAttribute("target", "_blank");
+    expect(live).toHaveAttribute("rel", "noreferrer");
+  });
+  screen.getAllByRole("link", { name: "GitHub" }).forEach((github) => {
+    expect(github).toHaveAttribute("href", "https://github.com/tigerkaplan/council-digital-platforms-mini-lab");
+    expect(github).toHaveAttribute("target", "_blank");
+    expect(github).toHaveAttribute("rel", "noreferrer");
+  });
 });
 
 test("keeps a visible temporary generic card when its media and external actions are unavailable", () => {

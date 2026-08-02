@@ -14,10 +14,13 @@ test("returns every validated registry record without evidence-based withholding
   ]);
   expect(projects[0]).toMatchObject({
     media: { cover: null },
-    links: {},
+    links: {
+      live: "https://council-digital-platforms-mini-lab.netlify.app/",
+      github: "https://github.com/tigerkaplan/council-digital-platforms-mini-lab",
+    },
     display: {
-      showLiveLink: false,
-      showGithubLink: false,
+      showLiveLink: true,
+      showGithubLink: true,
       showPreview: true,
       showFullProject: true,
     },

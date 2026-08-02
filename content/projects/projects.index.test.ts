@@ -84,7 +84,7 @@ test("keeps exactly the two active project records in registry order", () => {
   ]);
 });
 
-test("registers Council with only approved skill evidence and no public links", () => {
+test("registers Council with only approved skill evidence and verified public links", () => {
   const council = PROJECT_CONTENT.find(
     (project) => project.slug === COUNCIL_SLUG,
   );
@@ -94,7 +94,16 @@ test("registers Council with only approved skill evidence and no public links", 
     featured: true,
     order: 1,
     title: "Council Digital Platforms Mini Lab",
-    links: { live: null, github: null },
+    links: {
+      live: "https://council-digital-platforms-mini-lab.netlify.app/",
+      github: "https://github.com/tigerkaplan/council-digital-platforms-mini-lab",
+    },
+    display: {
+      showLiveLink: true,
+      showGithubLink: true,
+      showPreview: true,
+      showFullProject: true,
+    },
     media: { cover: null, gallery: [] },
     seo: {
       title: "Council Digital Platforms Mini Lab",
@@ -110,7 +119,10 @@ test("registers Council with only approved skill evidence and no public links", 
   expect(council?.caseStudy.technicalImplementation).not.toContain("Twig");
   expect(PROJECTS[0]).toMatchObject({
     slug: COUNCIL_SLUG,
-    links: {},
+    links: {
+      live: "https://council-digital-platforms-mini-lab.netlify.app/",
+      github: "https://github.com/tigerkaplan/council-digital-platforms-mini-lab",
+    },
     images: [],
   });
 });
