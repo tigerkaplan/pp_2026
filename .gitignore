@@ -57,6 +57,7 @@ next-env.d.ts
 .DS_Store
 Thumbs.db
 .vscode/
+.agents/
 
 # ===============================
 # Notes / personal files
