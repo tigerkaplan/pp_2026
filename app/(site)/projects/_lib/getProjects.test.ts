@@ -13,7 +13,10 @@ test("returns every validated registry record without evidence-based withholding
     "personal-portfolio-2026",
   ]);
   expect(projects[0]).toMatchObject({
-    media: { cover: null },
+    media: {
+      cover: "/images/projects/council-digital-platforms-mini-lab/cover.png",
+      coverAlt: "Council Digital Platforms Mini Lab case study overview page",
+    },
     links: {
       live: "https://council-digital-platforms-mini-lab.netlify.app/",
       github: "https://github.com/tigerkaplan/council-digital-platforms-mini-lab",

@@ -107,7 +107,11 @@ test("registers Council with only approved skill evidence and verified public li
       showPreview: true,
       showFullProject: true,
     },
-    media: { cover: null, gallery: [] },
+    media: {
+      cover: "/images/projects/council-digital-platforms-mini-lab/cover.png",
+      coverAlt: "Council Digital Platforms Mini Lab case study overview page",
+      gallery: [],
+    },
     seo: {
       title: "Council Digital Platforms Mini Lab",
       description:
@@ -126,7 +130,7 @@ test("registers Council with only approved skill evidence and verified public li
       live: "https://council-digital-platforms-mini-lab.netlify.app/",
       github: "https://github.com/tigerkaplan/council-digital-platforms-mini-lab",
     },
-    images: [],
+    images: ["/images/projects/council-digital-platforms-mini-lab/cover.png"],
   });
 });
 
@@ -147,7 +151,11 @@ test("keeps every registered media path inside the real public directory", () =>
   }
 
   expect(PROJECT_CONTENT.find((project) => project.slug === COUNCIL_SLUG)?.media).toEqual(
-    { cover: null, coverAlt: "", gallery: [] },
+    {
+      cover: "/images/projects/council-digital-platforms-mini-lab/cover.png",
+      coverAlt: "Council Digital Platforms Mini Lab case study overview page",
+      gallery: [],
+    },
   );
   expect(PROJECT_CONTENT.find((project) => project.slug === PORTFOLIO_SLUG)?.media).toEqual(
     {

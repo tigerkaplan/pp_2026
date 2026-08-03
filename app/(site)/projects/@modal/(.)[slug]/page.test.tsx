@@ -96,7 +96,10 @@ test("keeps Council Preview content available with verified public action links"
 
   expect(getProjectBySlug).toHaveBeenCalledWith(council.slug);
   expect(screen.getByRole("dialog", { name: council.title })).toBeInTheDocument();
-  expect(screen.getByText("Preview unavailable")).toBeInTheDocument();
+  expect(screen.getByAltText("Council Digital Platforms Mini Lab case study overview page")).toHaveAttribute(
+    "src",
+    "/images/projects/council-digital-platforms-mini-lab/cover.png",
+  );
   expect(screen.getByRole("link", { name: /view full project/i })).toHaveAttribute(
     "href",
     `/projects/${council.slug}`,
@@ -109,7 +112,7 @@ test("keeps Council Preview content available with verified public action links"
   expect(github).toHaveAttribute("href", "https://github.com/tigerkaplan/council-digital-platforms-mini-lab");
   expect(github).toHaveAttribute("target", "_blank");
   expect(github).toHaveAttribute("rel", "noreferrer");
-  expect(container.querySelector("img")).not.toBeInTheDocument();
+  expect(container.querySelector("img")).toBeInTheDocument();
 });
 
 test("keeps a temporary generic record visible in its Preview modal", async () => {

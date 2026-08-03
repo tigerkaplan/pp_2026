@@ -23,6 +23,10 @@ test("presents the verified Home actions, featured records and skills preview", 
   expect(screen.getByRole("link", { name: "Contact" })).toHaveAttribute("href", "/contact");
   expect(screen.getByRole("heading", { name: "Featured work", level: 2 })).toBeInTheDocument();
   expect(screen.getByText("Council Digital Platforms Mini Lab")).toBeInTheDocument();
+  expect(screen.getByAltText("Council Digital Platforms Mini Lab case study overview page")).toHaveAttribute(
+    "src",
+    "/images/projects/council-digital-platforms-mini-lab/cover.png",
+  );
   expect(screen.getByRole("link", { name: "View full project: Personal Portfolio 2026" })).toHaveAttribute(
     "href",
     "/projects/personal-portfolio-2026",

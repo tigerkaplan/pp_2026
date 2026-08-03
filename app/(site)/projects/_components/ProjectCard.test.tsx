@@ -166,10 +166,14 @@ test("renders Council Preview, full-project and verified external actions", () =
   const council = PROJECTS.find(
     (candidate) => candidate.slug === "council-digital-platforms-mini-lab",
   )!;
+  jest.mocked(existsSync).mockReturnValue(true);
   render(<ProjectCard project={council} variant="featured" />);
   const previews = screen.getAllByRole("link", { name: /preview council/i });
 
-  expect(screen.getByText("Preview unavailable")).toBeInTheDocument();
+  expect(screen.getByAltText("Council Digital Platforms Mini Lab case study overview page")).toHaveAttribute(
+    "src",
+    "/images/projects/council-digital-platforms-mini-lab/cover.png",
+  );
   previews.forEach((preview) => {
     expect(preview).toHaveAttribute("href", `/projects/${council.slug}`);
     expect(preview).toHaveAttribute("data-next-link", "true");
