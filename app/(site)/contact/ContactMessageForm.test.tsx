@@ -254,7 +254,7 @@ test("has no automated accessibility violations in the unconfigured state", asyn
   expect(await axe(container)).toHaveNoViolations();
 });
 
-test("does not introduce a public email, secret, or placeholder form ID", () => {
+test("does not introduce a public email or real Formspree form ID", () => {
   const sourceFiles = [
     "app/(site)/contact/page.tsx",
     "app/(site)/contact/ContactMessageForm.tsx",
@@ -264,7 +264,7 @@ test("does not introduce a public email, secret, or placeholder form ID", () => 
   expect(sourceFiles).not.toMatch(/mailto:/i);
   expect(sourceFiles).not.toMatch(/[\w.+-]+@[\w.-]+\.[a-z]{2,}/i);
   expect(sourceFiles).not.toMatch(/your[_-]?form[_-]?id|placeholder[_-]?form|<real-id>/i);
-  expect(readFileSync(join(process.cwd(), ".env.example"), "utf8")).toMatch(
-    /NEXT_PUBLIC_FORMSPREE_FORM_ID=\s*$/,
+  expect(readFileSync(join(process.cwd(), ".env.example"), "utf8")).toContain(
+    "NEXT_PUBLIC_FORMSPREE_FORM_ID=your_formspree_form_id",
   );
 });

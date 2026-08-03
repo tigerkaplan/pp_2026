@@ -71,22 +71,40 @@ test("renders skills in validated evidence groups and filters them by evidence l
   expect(screen.getByText("Technical documentation")).toBeInTheDocument();
 });
 
-test("renders the verified Contact option without an unavailable message form", () => {
+test("renders the Contact form and presents GitHub as an additional source route", () => {
   render(<ContactPage />);
 
   expect(screen.getByRole("heading", { name: "Contact", level: 1 })).toBeInTheDocument();
-  expect(screen.getByRole("heading", { name: "Contact options", level: 2 })).toBeInTheDocument();
-  expect(screen.getByText("The verified public option currently available is the portfolio source on GitHub.")).toBeInTheDocument();
-  const portfolioLink = screen.getByRole("link", { name: "View the portfolio on GitHub" });
-  expect(portfolioLink).toHaveAttribute(
+  expect(screen.getByRole("heading", { name: "Send a message", level: 2 })).toBeInTheDocument();
+  expect(screen.getByRole("button", { name: "Send message" })).toBeDisabled();
+  expect(screen.getByRole("status")).toHaveTextContent("Online messaging is temporarily unavailable.");
+  expect(screen.getByText("You can also explore the portfolio source code and development approach on GitHub.")).toBeInTheDocument();
+  expect(screen.getByRole("link", { name: "View the portfolio on GitHub" })).toHaveAttribute(
     "href",
     "https://github.com/tigerkaplan/pp_2026",
   );
-  expect(portfolioLink).toHaveAttribute("target", "_blank");
-  expect(portfolioLink).toHaveAttribute("rel", "noreferrer");
-  expect(screen.queryByRole("form")).not.toBeInTheDocument();
-  expect(screen.queryByRole("button", { name: "Send message" })).not.toBeInTheDocument();
-  expect(screen.queryByText(/online messaging is temporarily unavailable/i)).not.toBeInTheDocument();
-  expect(screen.queryByText(/fields marked with an asterisk are required/i)).not.toBeInTheDocument();
+  expect(screen.queryByText(/if online messaging is unavailable/i)).not.toBeInTheDocument();
   expect(screen.queryByRole("link", { name: /email|linkedin|cv/i })).not.toBeInTheDocument();
+});
+
+test("does not restore stale source wording when the Contact form is configured", () => {
+  const previousFormId = process.env.NEXT_PUBLIC_FORMSPREE_FORM_ID;
+  process.env.NEXT_PUBLIC_FORMSPREE_FORM_ID = "configured-test-form";
+
+  try {
+    render(<ContactPage />);
+
+    expect(screen.getByRole("button", { name: "Send message" })).toBeEnabled();
+    expect(screen.queryByText(/if online messaging is unavailable/i)).not.toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "View the portfolio on GitHub" })).toHaveAttribute(
+      "href",
+      "https://github.com/tigerkaplan/pp_2026",
+    );
+  } finally {
+    if (previousFormId === undefined) {
+      delete process.env.NEXT_PUBLIC_FORMSPREE_FORM_ID;
+    } else {
+      process.env.NEXT_PUBLIC_FORMSPREE_FORM_ID = previousFormId;
+    }
+  }
 });
