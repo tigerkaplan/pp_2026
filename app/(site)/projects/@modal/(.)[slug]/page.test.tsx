@@ -147,7 +147,7 @@ test("uses the normal not-found behaviour for the previous Personal Portfolio Pr
   expect(notFound).toHaveBeenCalled();
 });
 
-test("resolves the V9 Personal Portfolio through the existing Preview modal", async () => {
+test("resolves Personal Portfolio through the existing Preview modal with approved media", async () => {
   const portfolio = PROJECTS.find(
     (candidate) => candidate.slug === "personal-portfolio-2026",
   )!;
@@ -168,5 +168,12 @@ test("resolves the V9 Personal Portfolio through the existing Preview modal", as
     "href",
     "https://github.com/tigerkaplan/pp_2026",
   );
-  expect(screen.queryByRole("link", { name: "Live" })).not.toBeInTheDocument();
+  expect(screen.getByAltText("Personal Portfolio 2026 homepage showing navigation, featured projects and project cards")).toHaveAttribute(
+    "src",
+    "/images/projects/personal-portfolio-2026/homepage.png",
+  );
+  expect(screen.getByRole("link", { name: "Live" })).toHaveAttribute(
+    "href",
+    "https://husniyeerparundev.netlify.app/",
+  );
 });

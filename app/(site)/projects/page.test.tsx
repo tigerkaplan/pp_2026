@@ -16,7 +16,15 @@ jest.mock("./_components/ProjectGrid", () => ({
       data-count={projects.length}
       data-first-project={projects[0]?.slug}
     >
-      {projects.map((project) => <span key={project.slug}>{project.title}</span>)}
+      {projects.map((project) => (
+        <div key={project.slug}>
+          <span>{project.title}</span>
+          {project.media.cover ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={project.media.cover} alt={project.media.coverAlt} />
+          ) : null}
+        </div>
+      ))}
     </div>
   ),
 }));
@@ -46,6 +54,10 @@ test("renders the real projects page with explicit grid contracts and offsets", 
   expect(screen.queryByTestId("all-projects-grid")).not.toBeInTheDocument();
   expect(screen.getByText("Council Digital Platforms Mini Lab")).toBeInTheDocument();
   expect(screen.getByText("Personal Portfolio 2026")).toBeInTheDocument();
+  expect(screen.getByAltText("Personal Portfolio 2026 homepage showing navigation, featured projects and project cards")).toHaveAttribute(
+    "src",
+    "/images/projects/personal-portfolio-2026/homepage.png",
+  );
   expect(screen.queryByText("Next.js eCommerce Platform")).not.toBeInTheDocument();
 
   const projectsRoot = container.querySelector("[data-projects-page]");

@@ -12,6 +12,7 @@ A responsive, SEO-friendly portfolio built with Next.js. It presents evidence-le
 ### Personal Portfolio 2026
 
 - Project page: `/projects/personal-portfolio-2026`
+- [Live deployment](https://husniyeerparundev.netlify.app/)
 
 ## Features
 

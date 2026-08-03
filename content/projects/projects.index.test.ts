@@ -73,9 +73,12 @@ test("keeps exactly the two active project records in registry order", () => {
           "Responsive, keyboard-aware interaction patterns",
         ],
       }),
-      links: { live: null, github: "https://github.com/tigerkaplan/pp_2026" },
+      links: {
+        live: "https://husniyeerparundev.netlify.app/",
+        github: "https://github.com/tigerkaplan/pp_2026",
+      },
       display: {
-        showLiveLink: false,
+        showLiveLink: true,
         showGithubLink: true,
         showPreview: true,
         showFullProject: true,
@@ -148,8 +151,8 @@ test("keeps every registered media path inside the real public directory", () =>
   );
   expect(PROJECT_CONTENT.find((project) => project.slug === PORTFOLIO_SLUG)?.media).toEqual(
     {
-      cover: null,
-      coverAlt: "Personal Portfolio project media is pending approval.",
+      cover: "/images/projects/personal-portfolio-2026/homepage.png",
+      coverAlt: "Personal Portfolio 2026 homepage showing navigation, featured projects and project cards",
       gallery: [],
     },
   );

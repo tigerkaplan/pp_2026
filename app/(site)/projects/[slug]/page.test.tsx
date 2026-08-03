@@ -147,7 +147,7 @@ test("uses the normal not-found behaviour for the previous Personal Portfolio sl
   expect(notFound).toHaveBeenCalled();
 });
 
-test("renders the V9 Personal Portfolio as a standalone Full Project", async () => {
+test("renders Personal Portfolio as a standalone Full Project with approved media", async () => {
   const portfolio = PROJECTS.find(
     (candidate) => candidate.slug === "personal-portfolio-2026",
   ) as Project;
@@ -165,8 +165,15 @@ test("renders the V9 Personal Portfolio as a standalone Full Project", async () 
     "href",
     "https://github.com/tigerkaplan/pp_2026",
   );
-  expect(screen.queryByRole("link", { name: "Live demo" })).not.toBeInTheDocument();
-  expect(container.querySelector('[data-project-media="fallback"]')).toBeInTheDocument();
+  expect(screen.getByRole("link", { name: "Live demo" })).toHaveAttribute(
+    "href",
+    "https://husniyeerparundev.netlify.app/",
+  );
+  expect(screen.getByAltText("Personal Portfolio 2026 homepage showing navigation, featured projects and project cards")).toHaveAttribute(
+    "src",
+    "/images/projects/personal-portfolio-2026/homepage.png",
+  );
+  expect(container.querySelector('[data-project-media="cover"]')).toBeInTheDocument();
 });
 
 test("maps normalized project fields into route metadata", async () => {

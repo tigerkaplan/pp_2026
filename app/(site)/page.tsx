@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getProjects } from "./projects/_lib/getProjects";
+import { hasRealProjectAsset, ProjectMedia } from "./projects/_components/ProjectMedia";
 import { SKILL_GROUPS, SKILLS } from "@/content/skills/skills.index";
 
 export const metadata: Metadata = {
@@ -50,6 +51,15 @@ export default async function HomePage() {
         <div className="grid gap-4 lg:grid-cols-2">
           {featuredProjects.map((project) => (
             <article key={project.slug} className="rounded-2xl border border-[rgb(var(--color-card-border))] bg-[rgb(var(--color-card-surface))] p-5">
+              {hasRealProjectAsset(project.media.cover ?? undefined) ? <div className="relative mb-4 h-48 w-full overflow-hidden rounded-xl bg-[rgb(var(--color-surface-strong))]">
+                <ProjectMedia
+                  src={project.media.cover ?? undefined}
+                  title={project.title}
+                  alt={project.media.coverAlt}
+                  className="object-contain"
+                  sizes="(min-width: 1024px) 50vw, 100vw"
+                />
+              </div> : null}
               <p className="text-sm text-[rgb(var(--color-fg-muted))]">{project.category ?? "Project"}</p>
               <h3 className="mt-2 text-xl font-semibold text-[rgb(var(--color-fg))]">{project.title}</h3>
               <p className="mt-3 text-sm leading-6 text-[rgb(var(--color-fg-muted))]">{project.summary}</p>

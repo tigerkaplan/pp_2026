@@ -1,6 +1,7 @@
 import { render, screen, within } from "@testing-library/react";
 import { axe } from "jest-axe";
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
+import path from "node:path";
 import ProjectCard from "./ProjectCard";
 import type { Project } from "../_types/project";
 import { PROJECTS } from "../_lib/projects.data";
@@ -25,6 +26,7 @@ jest.mock("next/link", () => ({
 }));
 
 jest.mock("node:fs", () => ({
+  ...jest.requireActual<typeof import("node:fs")>("node:fs"),
   existsSync: jest.fn(),
 }));
 
@@ -166,6 +168,17 @@ test("renders Council Preview, full-project and verified external actions", () =
   });
 });
 
+test("sources card media from generic project data rather than a project slug", () => {
+  const source = readFileSync(
+    path.join(process.cwd(), "app", "(site)", "projects", "_components", "ProjectCard.tsx"),
+    "utf8",
+  );
+
+  expect(source).toContain("project.images?.[0]");
+  expect(source).toContain("project.media.coverAlt");
+  expect(source).not.toContain("personal-portfolio-2026");
+});
+
 test("keeps a visible temporary generic card when its media and external actions are unavailable", () => {
   render(<ProjectCard project={project} />);
 
@@ -183,24 +196,36 @@ test("keeps a visible temporary generic card when its media and external actions
   expect(screen.queryByRole("link", { name: "GitHub" })).not.toBeInTheDocument();
 });
 
-test("renders the V9 Personal Portfolio card with only verified safe actions", () => {
+test("renders the Personal Portfolio card with approved media and verified actions", () => {
   const portfolio = PROJECTS.find(
     (candidate) => candidate.slug === "personal-portfolio-2026",
   )!;
+  jest.mocked(existsSync).mockReturnValue(true);
   render(<ProjectCard project={portfolio} variant="featured" />);
 
-  const preview = screen.getByRole("link", {
+  const previews = screen.getAllByRole("link", {
     name: "Preview Personal Portfolio 2026",
   });
-  expect(screen.getAllByText("Personal Portfolio 2026")).toHaveLength(2);
+  expect(screen.getAllByText("Personal Portfolio 2026")).toHaveLength(1);
   expect(screen.getByText(portfolio.summary)).toBeInTheDocument();
-  expect(preview).toHaveAttribute("href", `/projects/${portfolio.slug}`);
-  expect(preview).toHaveAttribute("data-next-link", "true");
-  expect(screen.getByRole("link", { name: "GitHub" })).toHaveAttribute(
-    "href",
-    "https://github.com/tigerkaplan/pp_2026",
+  expect(screen.getByAltText("Personal Portfolio 2026 homepage showing navigation, featured projects and project cards")).toHaveAttribute(
+    "src",
+    "/images/projects/personal-portfolio-2026/homepage.png",
   );
-  expect(screen.queryByRole("link", { name: "Live" })).not.toBeInTheDocument();
+  previews.forEach((preview) => {
+    expect(preview).toHaveAttribute("href", `/projects/${portfolio.slug}`);
+    expect(preview).toHaveAttribute("data-next-link", "true");
+  });
+  screen.getAllByRole("link", { name: "Live" }).forEach((live) => {
+    expect(live).toHaveAttribute("href", "https://husniyeerparundev.netlify.app/");
+    expect(live).toHaveAttribute("target", "_blank");
+    expect(live).toHaveAttribute("rel", "noreferrer");
+  });
+  screen.getAllByRole("link", { name: "GitHub" }).forEach((github) => {
+    expect(github).toHaveAttribute("href", "https://github.com/tigerkaplan/pp_2026");
+    expect(github).toHaveAttribute("target", "_blank");
+    expect(github).toHaveAttribute("rel", "noreferrer");
+  });
   expect(screen.getByRole("link", { name: /view full project/i })).toHaveAttribute(
     "href",
     `/projects/${portfolio.slug}`,

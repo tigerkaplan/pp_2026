@@ -36,6 +36,7 @@ const chipPrimary =
 ============================================================================= */
 function Cover({
   img,
+  alt,
   title,
   year,
   role,
@@ -49,6 +50,7 @@ function Cover({
   sizes,
 }: {
   img?: string;
+  alt: string;
   title: string;
   year: number;
   role: string;
@@ -79,6 +81,7 @@ function Cover({
         <ProjectMedia
           src={img}
           title={title}
+          alt={alt}
           className="object-cover"
           priority={priority}
           sizes={sizes}
@@ -286,6 +289,7 @@ export default function ProjectCard({
         <div className="flex flex-1 flex-col" data-project-card-body>
           <Cover
             img={img}
+            alt={project.media.coverAlt}
             title={project.title}
             year={project.year}
             role={project.role}
@@ -316,6 +320,7 @@ export default function ProjectCard({
       <div className="flex flex-1 flex-col" data-project-card-body>
         <Cover
           img={img}
+          alt={project.media.coverAlt}
           title={project.title}
           year={project.year}
           role={project.role}

@@ -5,6 +5,14 @@ import AboutPage from "./about/page";
 import ContactPage from "./contact/page";
 import SkillsPage from "./skills/page";
 
+jest.mock("next/image", () => ({
+  __esModule: true,
+  default: (props: React.ImgHTMLAttributes<HTMLImageElement>) => (
+    // eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text
+    <img {...props} />
+  ),
+}));
+
 test("presents the verified Home actions, featured records and skills preview", async () => {
   render(await HomePage());
 
@@ -18,6 +26,10 @@ test("presents the verified Home actions, featured records and skills preview", 
   expect(screen.getByRole("link", { name: "View full project: Personal Portfolio 2026" })).toHaveAttribute(
     "href",
     "/projects/personal-portfolio-2026",
+  );
+  expect(screen.getByAltText("Personal Portfolio 2026 homepage showing navigation, featured projects and project cards")).toHaveAttribute(
+    "src",
+    "/images/projects/personal-portfolio-2026/homepage.png",
   );
   expect(screen.queryByText("Next.js eCommerce Platform")).not.toBeInTheDocument();
 });

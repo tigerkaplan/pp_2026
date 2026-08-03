@@ -94,6 +94,7 @@ export default async function ProjectModal({ params }: Props) {
         <ProjectMedia
           src={project.images?.[0]}
           title={project.title}
+          alt={project.media.coverAlt}
           className="object-cover"
           sizes="(min-width: 640px) 900px, 100vw"
           priority
