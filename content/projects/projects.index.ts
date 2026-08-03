@@ -1,6 +1,7 @@
 import type { Project } from "@/app/(site)/projects/_types/project";
 import { SKILL_IDS } from "@/content/skills/skills.index";
 import councilDigitalPlatformsMiniLab from "./council-digital-platforms-mini-lab.json";
+import cliveLutleyPaintingGallery from "./clive-lutley-painting-gallery.json";
 import personalPortfolio2026 from "./personal-portfolio-2026.json";
 import type { ProjectContent, ProjectRegistration } from "./project-content";
 import { validateProjectRegistry } from "./validate-projects";
@@ -13,6 +14,10 @@ const PROJECT_REGISTRY: readonly ProjectRegistration[] = [
   {
     source: "content/projects/personal-portfolio-2026.json",
     content: personalPortfolio2026,
+  },
+  {
+    source: "content/projects/clive-lutley-painting-gallery.json",
+    content: cliveLutleyPaintingGallery,
   },
 ];
 

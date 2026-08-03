@@ -255,6 +255,34 @@ test("renders the Personal Portfolio card with approved media and verified actio
   );
 });
 
+test("renders Clive Lutley Painting Gallery through the generic all-project card", () => {
+  const clive = PROJECTS.find(
+    (candidate) => candidate.slug === "clive-lutley-painting-gallery",
+  )!;
+  jest.mocked(existsSync).mockReturnValue(true);
+  render(<ProjectCard project={clive} />);
+
+  expect(screen.getByText(clive.title)).toBeInTheDocument();
+  expect(screen.getByText(clive.summary)).toBeInTheDocument();
+  expect(screen.getByAltText("English homepage showing the Clive Lutley logo, artist portrait, navigation and gallery call to action.")).toHaveAttribute(
+    "src",
+    "/images/projects/clive-lutley-painting-gallery/cover.png",
+  );
+  expect(screen.getByText("+2 more")).toBeInTheDocument();
+  screen.getAllByRole("link", { name: `Preview ${clive.title}` }).forEach((preview) => {
+    expect(preview).toHaveAttribute("href", `/projects/${clive.slug}`);
+  });
+  screen.getAllByRole("link", { name: `View full project: ${clive.title}` }).forEach((fullProject) => {
+    expect(fullProject).toHaveAttribute("href", `/projects/${clive.slug}`);
+  });
+  screen.getAllByRole("link", { name: "Live" }).forEach((live) => {
+    expect(live).toHaveAttribute("href", "https://cl-painting-gallery.netlify.app");
+  });
+  screen.getAllByRole("link", { name: "GitHub" }).forEach((github) => {
+    expect(github).toHaveAttribute("href", "https://github.com/tigerkaplan/cl-painting-gallery");
+  });
+});
+
 test("renders the full-project action as a native anchor for hard navigation", () => {
   render(<ProjectCard project={project} />);
 

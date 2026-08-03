@@ -60,9 +60,10 @@ test("prebuilds every valid registered project route", async () => {
   const params = await generateStaticParams();
 
   expect(dynamicParams).toBe(false);
-  expect(params).toHaveLength(2);
+  expect(params).toHaveLength(3);
   expect(params).toContainEqual({ slug: "council-digital-platforms-mini-lab" });
   expect(params).toContainEqual({ slug: "personal-portfolio-2026" });
+  expect(params).toContainEqual({ slug: "clive-lutley-painting-gallery" });
   expect(params).not.toContainEqual({ slug: "seo-portfolio-platform" });
   expect(params).not.toContainEqual({ slug: "nextjs-ecommerce-platform" });
   expect(params).not.toContainEqual({ slug: "not-a-real-project" });
@@ -177,6 +178,50 @@ test("renders Personal Portfolio as a standalone Full Project with approved medi
     "/images/projects/personal-portfolio-2026/homepage.png",
   );
   expect(container.querySelector('[data-project-media="cover"]')).toBeInTheDocument();
+});
+
+test("renders Clive Lutley Painting Gallery as a standalone Full Project with its approved media", async () => {
+  const clive = PROJECTS.find(
+    (candidate) => candidate.slug === "clive-lutley-painting-gallery",
+  ) as Project;
+  jest.mocked(getProjectBySlug).mockResolvedValue(clive);
+
+  const { container } = render(
+    await ProjectPage({ params: Promise.resolve({ slug: clive.slug }) }),
+  );
+
+  expect(getProjectBySlug).toHaveBeenCalledWith(clive.slug);
+  expect(screen.getByRole("heading", { name: clive.title, level: 1 })).toBeInTheDocument();
+  expect(screen.getByText("Artist Portfolio & Gallery")).toBeInTheDocument();
+  expect(screen.getByRole("heading", { name: "Screenshots", level: 2 })).toBeInTheDocument();
+  expect(screen.getByAltText("English homepage showing the Clive Lutley logo, artist portrait, navigation and gallery call to action.")).toHaveAttribute(
+    "src",
+    "/images/projects/clive-lutley-painting-gallery/cover.png",
+  );
+  expect(screen.getByRole("link", { name: "Live demo" })).toHaveAttribute(
+    "href",
+    "https://cl-painting-gallery.netlify.app",
+  );
+  expect(screen.getByRole("link", { name: "GitHub" })).toHaveAttribute(
+    "href",
+    "https://github.com/tigerkaplan/cl-painting-gallery",
+  );
+  expect(container.querySelectorAll("img")).toHaveLength(4);
+});
+
+test("maps Clive Lutley Painting Gallery metadata from approved JSON content", async () => {
+  const clive = PROJECTS.find(
+    (candidate) => candidate.slug === "clive-lutley-painting-gallery",
+  ) as Project;
+  jest.mocked(getProjectBySlug).mockResolvedValue(clive);
+
+  await expect(
+    generateMetadata({ params: Promise.resolve({ slug: clive.slug }) }),
+  ).resolves.toMatchObject({
+    title: "Clive Lutley Painting Gallery | Projects",
+    description:
+      "A multilingual Next.js artist portfolio and painting gallery with English and German routes, artwork, events and artist information.",
+  });
 });
 
 test("maps normalized project fields into route metadata", async () => {

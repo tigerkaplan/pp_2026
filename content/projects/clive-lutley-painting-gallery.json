@@ -1,0 +1,114 @@
+{
+  "id": 14,
+  "slug": "clive-lutley-painting-gallery",
+  "title": "Clive Lutley Painting Gallery",
+  "featured": false,
+  "status": "Live",
+  "category": "Artist Portfolio & Gallery",
+  "year": 2025,
+  "role": "Web Developer",
+  "tags": [
+    "Next.js",
+    "Artist Portfolio",
+    "Multilingual",
+    "Gallery"
+  ],
+  "order": 3,
+  "card": {
+    "summary": "A multilingual artist portfolio and painting gallery built with Next.js, presenting artwork, events and artist information through English and German routes.",
+    "highlights": [
+      "English and German locale routing",
+      "Filterable masonry painting gallery",
+      "Static photo API route",
+      "Netlify deployment configuration"
+    ]
+  },
+  "technologies": [
+    "Next.js",
+    "TypeScript",
+    "React",
+    "next-intl",
+    "Tailwind CSS",
+    "Netlify"
+  ],
+  "skillIds": [],
+  "links": {
+    "live": "https://cl-painting-gallery.netlify.app",
+    "github": "https://github.com/tigerkaplan/cl-painting-gallery"
+  },
+  "media": {
+    "cover": "/images/projects/clive-lutley-painting-gallery/cover.png",
+    "coverAlt": "English homepage showing the Clive Lutley logo, artist portrait, navigation and gallery call to action.",
+    "gallery": [
+      "/images/projects/clive-lutley-painting-gallery/gallery-view.png",
+      "/images/projects/clive-lutley-painting-gallery/about-page.png",
+      "/images/projects/clive-lutley-painting-gallery/events-page.png"
+    ]
+  },
+  "caseStudy": {
+    "overview": "A public artist portfolio and painting gallery with locale-aware English and German routes, artist information, events and a client-rendered gallery.",
+    "context": "The public deployment presents the artist's paintings, background information and events through English and German routes.",
+    "problem": "The artist needed a clear, responsive website to present paintings, exhibitions and background information to both English- and German-speaking visitors. The existing content needed to be organised into a consistent multilingual structure that worked across desktop and mobile devices.",
+    "objectives": [
+      "Present paintings, exhibitions and background information through a public website.",
+      "Provide English and German routes for visitors.",
+      "Offer a filterable gallery for the available painting records."
+    ],
+    "approach": [
+      "Implemented locale-aware routes with next-intl.",
+      "Structured painting and event content as static data.",
+      "Built a client-rendered gallery with category filtering and image detail state.",
+      "Configured Netlify for deployment with Node.js 22 and the Next.js plugin."
+    ],
+    "solution": "The implementation uses the Next.js App Router, next-intl locale routing, static painting and event data, a client-rendered gallery, and a Netlify deployment configuration.",
+    "accessibility": [],
+    "testing": [
+      "The published deployment returned HTTP 200 responses for the English homepage and German about route on 1 August 2026.",
+      "The source includes 42 photo records and matching local image assets for the gallery."
+    ],
+    "technicalImplementation": [
+      "Next.js App Router with static pages and next-intl locale routing.",
+      "Typed static data modules for painting and event records.",
+      "Client-rendered masonry-style gallery with category filtering and image detail state.",
+      "Static route handler providing a photo catalogue to the gallery.",
+      "Netlify configuration with the Next.js plugin and Node.js 22."
+    ],
+    "result": "The completed website provides a responsive multilingual structure for presenting the artist's paintings, background information and events through a public Next.js site.",
+    "outcomes": [],
+    "limitations": [
+      "No automated test files or GitHub Actions workflow were found."
+    ],
+    "nextSteps": [
+      "Conduct an accessibility review before making accessibility claims.",
+      "Add optional approved mobile screenshots if they are needed for future project media."
+    ]
+  },
+  "evidence": {
+    "accessibility": [],
+    "testing": [
+      "The public English homepage and German about route returned HTTP 200 responses on 1 August 2026.",
+      "The gallery source includes 42 photo records with local image assets."
+    ],
+    "integration": [
+      "next-intl locale routing supports English and German public routes.",
+      "A static photo route supplies the gallery's painting catalogue.",
+      "Static painting and event data is rendered through the Next.js application."
+    ],
+    "delivery": [
+      "Netlify configuration uses the Next.js plugin and Node.js 22.",
+      "The public deployment is available at the approved live URL.",
+      "Approved desktop screenshots document the English homepage, gallery, about and events views."
+    ]
+  },
+  "seo": {
+    "title": "Clive Lutley Painting Gallery",
+    "description": "A multilingual Next.js artist portfolio and painting gallery with English and German routes, artwork, events and artist information.",
+    "ogImage": null
+  },
+  "display": {
+    "showLiveLink": true,
+    "showGithubLink": true,
+    "showPreview": true,
+    "showFullProject": true
+  }
+}

@@ -18,7 +18,8 @@ import {
 
 const COUNCIL_SLUG = "council-digital-platforms-mini-lab";
 const PORTFOLIO_SLUG = "personal-portfolio-2026";
-const ACTIVE_SLUGS = [COUNCIL_SLUG, PORTFOLIO_SLUG];
+const CLIVE_SLUG = "clive-lutley-painting-gallery";
+const ACTIVE_SLUGS = [COUNCIL_SLUG, PORTFOLIO_SLUG, CLIVE_SLUG];
 const REMOVED_SLUGS = [
   "nextjs-ecommerce-platform",
   "inventory-management-api",
@@ -46,16 +47,17 @@ function registration(
   return { source, content };
 }
 
-test("keeps exactly the two active project records in registry order", () => {
-  expect(PROJECTS).toHaveLength(2);
+test("keeps the three active project records in registry order", () => {
+  expect(PROJECTS).toHaveLength(3);
   expect(PROJECTS.map((project) => project.slug)).toEqual(ACTIVE_SLUGS);
   expect(PROJECTS.map((project) => project.title)).toEqual([
     "Council Digital Platforms Mini Lab",
     "Personal Portfolio 2026",
+    "Clive Lutley Painting Gallery",
   ]);
-  expect(PROJECTS.map((project) => project.featured)).toEqual([true, true]);
-  expect(PROJECT_CONTENT.map((project) => project.order)).toEqual([1, 2]);
-  expect(PROJECTS.map((project) => project.id)).toEqual([13, 1]);
+  expect(PROJECTS.map((project) => project.featured)).toEqual([true, true, false]);
+  expect(PROJECT_CONTENT.map((project) => project.order)).toEqual([1, 2, 3]);
+  expect(PROJECTS.map((project) => project.id)).toEqual([13, 1, 14]);
   for (const slug of REMOVED_SLUGS) {
     expect(PROJECTS.some((project) => project.slug === slug)).toBe(false);
   }
@@ -134,6 +136,49 @@ test("registers Council with only approved skill evidence and verified public li
   });
 });
 
+test("registers Clive Lutley Painting Gallery with approved public content and media", () => {
+  const clive = PROJECT_CONTENT.find((project) => project.slug === CLIVE_SLUG);
+
+  expect(clive).toMatchObject({
+    id: 14,
+    order: 3,
+    featured: false,
+    title: "Clive Lutley Painting Gallery",
+    category: "Artist Portfolio & Gallery",
+    links: {
+      live: "https://cl-painting-gallery.netlify.app",
+      github: "https://github.com/tigerkaplan/cl-painting-gallery",
+    },
+    media: {
+      cover: "/images/projects/clive-lutley-painting-gallery/cover.png",
+      coverAlt:
+        "English homepage showing the Clive Lutley logo, artist portrait, navigation and gallery call to action.",
+      gallery: [
+        "/images/projects/clive-lutley-painting-gallery/gallery-view.png",
+        "/images/projects/clive-lutley-painting-gallery/about-page.png",
+        "/images/projects/clive-lutley-painting-gallery/events-page.png",
+      ],
+    },
+    display: {
+      showLiveLink: true,
+      showGithubLink: true,
+      showPreview: true,
+      showFullProject: true,
+    },
+  });
+  expect(clive?.skillIds).toEqual([]);
+  expect(clive?.caseStudy.problem).toContain("clear, responsive website");
+  expect(PROJECTS.at(-1)).toMatchObject({
+    slug: CLIVE_SLUG,
+    images: [
+      "/images/projects/clive-lutley-painting-gallery/cover.png",
+      "/images/projects/clive-lutley-painting-gallery/gallery-view.png",
+      "/images/projects/clive-lutley-painting-gallery/about-page.png",
+      "/images/projects/clive-lutley-painting-gallery/events-page.png",
+    ],
+  });
+});
+
 test("keeps every registered media path inside the real public directory", () => {
   const publicDirectory = path.join(process.cwd(), "public");
   const resolveAsset = (assetPath: string) =>
@@ -162,6 +207,18 @@ test("keeps every registered media path inside the real public directory", () =>
       cover: "/images/projects/personal-portfolio-2026/homepage.png",
       coverAlt: "Personal Portfolio 2026 homepage showing navigation, featured projects and project cards",
       gallery: [],
+    },
+  );
+  expect(PROJECT_CONTENT.find((project) => project.slug === CLIVE_SLUG)?.media).toEqual(
+    {
+      cover: "/images/projects/clive-lutley-painting-gallery/cover.png",
+      coverAlt:
+        "English homepage showing the Clive Lutley logo, artist portrait, navigation and gallery call to action.",
+      gallery: [
+        "/images/projects/clive-lutley-painting-gallery/gallery-view.png",
+        "/images/projects/clive-lutley-painting-gallery/about-page.png",
+        "/images/projects/clive-lutley-painting-gallery/events-page.png",
+      ],
     },
   );
 });
@@ -304,7 +361,7 @@ test("keeps templates out of runtime registries and accepts future additions at 
   );
   const templateDirectory = path.join(process.cwd(), "content", "templates");
 
-  expect(runtimeJsonFiles).toHaveLength(2);
+  expect(runtimeJsonFiles).toHaveLength(3);
   expect(runtimeJsonFiles.some((file) => file.includes(".template."))).toBe(
     false,
   );
@@ -328,10 +385,10 @@ test("keeps templates out of runtime registries and accepts future additions at 
   expect(componentSources).not.toContain("content/projects");
 
   const futureSource = cloneSource();
-  futureSource.id = 14;
+  futureSource.id = 15;
   futureSource.slug = "future-project";
   futureSource.title = "Future project";
-  futureSource.order = 3;
+  futureSource.order = 4;
   futureSource.featured = false;
   const futureProjects = validateProjectRegistry(
     [

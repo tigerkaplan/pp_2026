@@ -180,3 +180,34 @@ test("resolves Personal Portfolio through the existing Preview modal with approv
     "https://husniyeerparundev.netlify.app/",
   );
 });
+
+test("resolves Clive Lutley Painting Gallery through the generic Preview modal", async () => {
+  const clive = PROJECTS.find(
+    (candidate) => candidate.slug === "clive-lutley-painting-gallery",
+  )!;
+  jest.mocked(getProjectBySlug).mockResolvedValue(clive);
+
+  render(
+    await ProjectModal({ params: Promise.resolve({ slug: clive.slug }) }),
+  );
+
+  expect(getProjectBySlug).toHaveBeenCalledWith(clive.slug);
+  expect(screen.getByRole("dialog", { name: clive.title })).toBeInTheDocument();
+  expect(screen.getByText(clive.summary)).toBeInTheDocument();
+  expect(screen.getByAltText("English homepage showing the Clive Lutley logo, artist portrait, navigation and gallery call to action.")).toHaveAttribute(
+    "src",
+    "/images/projects/clive-lutley-painting-gallery/cover.png",
+  );
+  expect(screen.getByRole("link", { name: /view full project/i })).toHaveAttribute(
+    "href",
+    `/projects/${clive.slug}`,
+  );
+  expect(screen.getByRole("link", { name: "GitHub" })).toHaveAttribute(
+    "href",
+    "https://github.com/tigerkaplan/cl-painting-gallery",
+  );
+  expect(screen.getByRole("link", { name: "Live" })).toHaveAttribute(
+    "href",
+    "https://cl-painting-gallery.netlify.app",
+  );
+});
