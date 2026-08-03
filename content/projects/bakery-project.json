@@ -1,0 +1,74 @@
+{
+  "id": 15,
+  "slug": "bakery-project",
+  "title": "Patisserie 4 You",
+  "shortTitle": "Bakery Project",
+  "featured": true,
+  "status": "Live",
+  "category": "Client Work",
+  "year": 2024,
+  "role": "Front-end Developer",
+  "tags": ["Client Work", "React", "Responsive Design", "Accessibility", "Interactive UI"],
+  "order": 4,
+  "card": {
+    "summary": "A responsive client-facing bakery website built with reusable React components, data-driven content and interactive menu features.",
+    "highlights": [
+      "Responsive single-page experience",
+      "Category-based menu filtering",
+      "Persistent browser-local favourites",
+      "Motion-aware interactions",
+      "Keyboard-operable navigation",
+      "Reusable data-driven React components"
+    ]
+  },
+  "technologies": ["React", "Vite", "Tailwind CSS", "Framer Motion", "JavaScript", "React Icons", "ESLint", "Netlify"],
+  "skillIds": ["keyboard-accessibility"],
+  "links": {
+    "live": "https://bakeryprojectapp.netlify.app/",
+    "github": "https://github.com/tigerkaplan/bakeryProject"
+  },
+  "media": {
+    "cover": "/images/projects/bakery-project/cover.png",
+    "coverAlt": "Patisserie 4 You homepage with coffee-bean hero image, navigation and bakery name.",
+    "gallery": [
+      "/images/projects/bakery-project/desktop-overview.png",
+      "/images/projects/bakery-project/menu-filtering.png",
+      "/images/projects/bakery-project/favourite-interaction.png",
+      "/images/projects/bakery-project/mobile-navigation.png",
+      "/images/projects/bakery-project/mission-media.png"
+    ]
+  },
+  "caseStudy": {
+    "overview": "Selected Client Work: Patisserie 4 You is a responsive bakery website developed around real business content, visual identity and customer-facing requirements. The public site brings menu content, business information and contact details together in one interactive page.",
+    "context": "Selected Client Work: The project translated approved bakery content and visual assets into a responsive customer-facing website while keeping the public presentation concise and easy to explore.",
+    "problem": "Bakery products, brand content and business information needed to be presented clearly across mobile, tablet and desktop screens without fragmenting the experience across multiple pages.",
+    "challenge": "The implementation combined a media-rich visual presentation with usable navigation, filtering and favourite interactions across representative viewport sizes, while respecting reduced-motion preferences and handling browser storage safely.",
+    "objectives": ["Present bakery products and business content clearly", "Provide usable desktop and mobile navigation", "Make menu exploration interactive through category filtering", "Retain favourite selections locally in the browser", "Preserve the bakery's public visual identity across screen sizes"],
+    "approach": ["Composed the active page from reusable React sections and cards", "Centralised shared navigation, menu and contact content", "Built responsive layouts with Tailwind CSS utilities", "Added Framer Motion interactions with reduced-motion handling", "Refined native controls, keyboard focus and mobile-menu state", "Verified the result through linting, production builds and manual runtime checks"],
+    "solution": "The completed React single-page experience combines a branded hero, filterable menu cards, business-story sections, mission media, expertise, review and contact content. Desktop and mobile navigation connect the sections, while favourite controls persist selected menu items in browser storage with defensive fallback behaviour.",
+    "accessibility": ["One meaningful page-level heading structures the active page", "Main, navigation and section landmarks support page structure", "Links and buttons use native keyboard-operable controls", "Visible focus styling supports keyboard navigation", "The mobile menu exposes labels, expanded state and its controlled region", "Escape closes the mobile menu and returns focus to its trigger", "Reduced-motion preferences affect animation, scrolling and video playback", "Active images use contextual or intentionally empty alternative text"],
+    "testing": ["ESLint completed successfully with zero warnings", "The Vite production build completed successfully", "The production preview responded with HTTP 200", "Manual responsive checks passed at 1280 x 800, 768 x 1024 and 375 x 812", "Desktop and mobile navigation, keyboard focus and Escape behaviour were checked manually", "Category filtering and favourite add, remove and reload persistence were checked manually", "Reduced-motion behaviour, console output and failed network requests were checked manually"],
+    "technicalImplementation": ["App.jsx composes the active single-page experience", "Reusable React components render sections and prop-driven menu cards", "Shared constants supply navigation, menu, contact and social content", "Local React state manages filters, navigation and favourite controls", "A dedicated utility parses and persists favourite identifiers safely", "Tailwind CSS utilities provide responsive layout and presentation", "Framer Motion provides interactions and reduced-motion support", "Vite and ESLint provide the build and code-quality pipeline", "The production site is publicly deployed on Netlify"],
+    "result": "A publicly deployed responsive bakery website with working section navigation, interactive menu filtering, persistent browser-local favourites and verified desktop, tablet and mobile presentation.",
+    "outcomes": ["Public deployment available on Netlify", "Lint and production build checks pass", "Representative desktop, tablet and mobile layouts are verified", "Keyboard, focus and reduced-motion behaviour were improved and checked", "Reusable components and shared data provide a maintainable page structure"],
+    "limitations": ["Favourites remain local to the current browser", "The site has no user accounts or server-side persistence", "No automated test suite is currently configured", "Large image and video files remain a performance optimisation opportunity"],
+    "nextSteps": ["Optimise large image and video assets", "Add an automated component or end-to-end test suite", "Review metadata and social-sharing previews", "Review and incorporate future approved client content updates"]
+  },
+  "evidence": {
+    "accessibility": ["src/components/Navbar.jsx implements labelled menu controls, expanded state, Escape handling and focus return", "src/App.jsx and the active video sections implement user reduced-motion handling", "src/components/HeroSection.jsx provides the meaningful page-level heading", "Manual verification covered keyboard focus, navigation and reduced-motion behaviour"],
+    "testing": ["npm run lint passed with zero warnings", "npm run build completed successfully", "The production preview returned HTTP 200", "Manual responsive and interaction checks passed at desktop, tablet and mobile sizes"],
+    "integration": [],
+    "delivery": ["Public Netlify deployment: https://bakeryprojectapp.netlify.app/", "Public GitHub repository: https://github.com/tigerkaplan/bakeryProject", "README.md contains verified public project documentation", "The Vite production build is verified", "Approved screenshot evidence: BAK-EV-001 through BAK-EV-006 in the private Bakery evidence register"]
+  },
+  "seo": {
+    "title": "Patisserie 4 You | Responsive Bakery Website",
+    "description": "Responsive React bakery website with menu filtering, browser-local favourites, reusable components and motion-aware interactions.",
+    "ogImage": null
+  },
+  "display": {
+    "showLiveLink": true,
+    "showGithubLink": true,
+    "showPreview": true,
+    "showFullProject": true
+  }
+}

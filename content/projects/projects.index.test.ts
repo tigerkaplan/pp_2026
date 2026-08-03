@@ -19,7 +19,8 @@ import {
 const COUNCIL_SLUG = "council-digital-platforms-mini-lab";
 const PORTFOLIO_SLUG = "personal-portfolio-2026";
 const CLIVE_SLUG = "clive-lutley-painting-gallery";
-const ACTIVE_SLUGS = [COUNCIL_SLUG, PORTFOLIO_SLUG, CLIVE_SLUG];
+const BAKERY_SLUG = "bakery-project";
+const ACTIVE_SLUGS = [COUNCIL_SLUG, PORTFOLIO_SLUG, CLIVE_SLUG, BAKERY_SLUG];
 const REMOVED_SLUGS = [
   "nextjs-ecommerce-platform",
   "inventory-management-api",
@@ -47,17 +48,18 @@ function registration(
   return { source, content };
 }
 
-test("keeps the three active project records in registry order", () => {
-  expect(PROJECTS).toHaveLength(3);
+test("keeps the active project records in registry order", () => {
+  expect(PROJECTS).toHaveLength(4);
   expect(PROJECTS.map((project) => project.slug)).toEqual(ACTIVE_SLUGS);
   expect(PROJECTS.map((project) => project.title)).toEqual([
     "Council Digital Platforms Mini Lab",
     "Personal Portfolio 2026",
     "Clive Lutley Painting Gallery",
+    "Patisserie 4 You",
   ]);
-  expect(PROJECTS.map((project) => project.featured)).toEqual([true, true, false]);
-  expect(PROJECT_CONTENT.map((project) => project.order)).toEqual([1, 2, 3]);
-  expect(PROJECTS.map((project) => project.id)).toEqual([13, 1, 14]);
+  expect(PROJECTS.map((project) => project.featured)).toEqual([true, true, false, true]);
+  expect(PROJECT_CONTENT.map((project) => project.order)).toEqual([1, 2, 3, 4]);
+  expect(PROJECTS.map((project) => project.id)).toEqual([13, 1, 14, 15]);
   for (const slug of REMOVED_SLUGS) {
     expect(PROJECTS.some((project) => project.slug === slug)).toBe(false);
   }
@@ -168,7 +170,7 @@ test("registers Clive Lutley Painting Gallery with approved public content and m
   });
   expect(clive?.skillIds).toEqual([]);
   expect(clive?.caseStudy.problem).toContain("clear, responsive website");
-  expect(PROJECTS.at(-1)).toMatchObject({
+  expect(PROJECTS.find((project) => project.slug === CLIVE_SLUG)).toMatchObject({
     slug: CLIVE_SLUG,
     images: [
       "/images/projects/clive-lutley-painting-gallery/cover.png",
@@ -177,6 +179,33 @@ test("registers Clive Lutley Painting Gallery with approved public content and m
       "/images/projects/clive-lutley-painting-gallery/events-page.png",
     ],
   });
+});
+
+test("registers Bakery as selected client work with approved media and public links", () => {
+  const bakery = PROJECT_CONTENT.find((project) => project.slug === BAKERY_SLUG);
+
+  expect(bakery).toMatchObject({
+    id: 15,
+    order: 4,
+    featured: true,
+    category: "Client Work",
+    skillIds: ["keyboard-accessibility"],
+    links: {
+      live: "https://bakeryprojectapp.netlify.app/",
+      github: "https://github.com/tigerkaplan/bakeryProject",
+    },
+    media: {
+      cover: "/images/projects/bakery-project/cover.png",
+      gallery: [
+        "/images/projects/bakery-project/desktop-overview.png",
+        "/images/projects/bakery-project/menu-filtering.png",
+        "/images/projects/bakery-project/favourite-interaction.png",
+        "/images/projects/bakery-project/mobile-navigation.png",
+        "/images/projects/bakery-project/mission-media.png",
+      ],
+    },
+  });
+  expect(bakery?.skillIds.every((skillId) => SKILL_IDS.has(skillId))).toBe(true);
 });
 
 test("keeps every registered media path inside the real public directory", () => {
@@ -218,6 +247,19 @@ test("keeps every registered media path inside the real public directory", () =>
         "/images/projects/clive-lutley-painting-gallery/gallery-view.png",
         "/images/projects/clive-lutley-painting-gallery/about-page.png",
         "/images/projects/clive-lutley-painting-gallery/events-page.png",
+      ],
+    },
+  );
+  expect(PROJECT_CONTENT.find((project) => project.slug === BAKERY_SLUG)?.media).toEqual(
+    {
+      cover: "/images/projects/bakery-project/cover.png",
+      coverAlt: "Patisserie 4 You homepage with coffee-bean hero image, navigation and bakery name.",
+      gallery: [
+        "/images/projects/bakery-project/desktop-overview.png",
+        "/images/projects/bakery-project/menu-filtering.png",
+        "/images/projects/bakery-project/favourite-interaction.png",
+        "/images/projects/bakery-project/mobile-navigation.png",
+        "/images/projects/bakery-project/mission-media.png",
       ],
     },
   );
@@ -361,7 +403,7 @@ test("keeps templates out of runtime registries and accepts future additions at 
   );
   const templateDirectory = path.join(process.cwd(), "content", "templates");
 
-  expect(runtimeJsonFiles).toHaveLength(3);
+  expect(runtimeJsonFiles).toHaveLength(4);
   expect(runtimeJsonFiles.some((file) => file.includes(".template."))).toBe(
     false,
   );
@@ -385,10 +427,10 @@ test("keeps templates out of runtime registries and accepts future additions at 
   expect(componentSources).not.toContain("content/projects");
 
   const futureSource = cloneSource();
-  futureSource.id = 15;
+  futureSource.id = 16;
   futureSource.slug = "future-project";
   futureSource.title = "Future project";
-  futureSource.order = 4;
+  futureSource.order = 5;
   futureSource.featured = false;
   const futureProjects = validateProjectRegistry(
     [

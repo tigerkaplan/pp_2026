@@ -41,11 +41,11 @@ test("renders the real projects page with explicit grid contracts and offsets", 
 
   expect(screen.getByTestId("featured-projects-grid")).toHaveAttribute(
     "data-count",
-    "2",
+    "3",
   );
   expect(screen.getByTestId("on-this-page")).toHaveAttribute(
     "data-count",
-    "3",
+    "4",
   );
   expect(screen.getByTestId("featured-projects-grid")).toHaveAttribute(
     "data-first-project",
@@ -62,6 +62,7 @@ test("renders the real projects page with explicit grid contracts and offsets", 
   expect(screen.getByText("Council Digital Platforms Mini Lab")).toBeInTheDocument();
   expect(screen.getByText("Personal Portfolio 2026")).toBeInTheDocument();
   expect(screen.getByText("Clive Lutley Painting Gallery")).toBeInTheDocument();
+  expect(screen.getByText("Patisserie 4 You")).toBeInTheDocument();
   expect(screen.getByAltText("Council Digital Platforms Mini Lab case study overview page")).toHaveAttribute(
     "src",
     "/images/projects/council-digital-platforms-mini-lab/cover.png",
@@ -73,6 +74,10 @@ test("renders the real projects page with explicit grid contracts and offsets", 
   expect(screen.getByAltText("English homepage showing the Clive Lutley logo, artist portrait, navigation and gallery call to action.")).toHaveAttribute(
     "src",
     "/images/projects/clive-lutley-painting-gallery/cover.png",
+  );
+  expect(screen.getByAltText("Patisserie 4 You homepage with coffee-bean hero image, navigation and bakery name.")).toHaveAttribute(
+    "src",
+    "/images/projects/bakery-project/cover.png",
   );
   expect(screen.queryByText("Next.js eCommerce Platform")).not.toBeInTheDocument();
 

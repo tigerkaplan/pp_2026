@@ -60,10 +60,11 @@ test("prebuilds every valid registered project route", async () => {
   const params = await generateStaticParams();
 
   expect(dynamicParams).toBe(false);
-  expect(params).toHaveLength(3);
+  expect(params).toHaveLength(4);
   expect(params).toContainEqual({ slug: "council-digital-platforms-mini-lab" });
   expect(params).toContainEqual({ slug: "personal-portfolio-2026" });
   expect(params).toContainEqual({ slug: "clive-lutley-painting-gallery" });
+  expect(params).toContainEqual({ slug: "bakery-project" });
   expect(params).not.toContainEqual({ slug: "seo-portfolio-platform" });
   expect(params).not.toContainEqual({ slug: "nextjs-ecommerce-platform" });
   expect(params).not.toContainEqual({ slug: "not-a-real-project" });
@@ -222,6 +223,35 @@ test("maps Clive Lutley Painting Gallery metadata from approved JSON content", a
     description:
       "A multilingual Next.js artist portfolio and painting gallery with English and German routes, artwork, events and artist information.",
   });
+});
+
+test("renders Bakery as selected client work with its approved gallery and public links", async () => {
+  const bakery = PROJECTS.find(
+    (candidate) => candidate.slug === "bakery-project",
+  ) as Project;
+  jest.mocked(getProjectBySlug).mockResolvedValue(bakery);
+
+  const { container } = render(
+    await ProjectPage({ params: Promise.resolve({ slug: bakery.slug }) }),
+  );
+
+  expect(screen.getByRole("heading", { name: bakery.title, level: 1 })).toBeInTheDocument();
+  expect(screen.getByText("Client Work")).toBeInTheDocument();
+  expect(screen.getAllByText(/Selected Client Work:/)).toHaveLength(2);
+  expect(screen.getByRole("heading", { name: "Screenshots", level: 2 })).toBeInTheDocument();
+  expect(screen.getByAltText("Patisserie 4 You homepage with coffee-bean hero image, navigation and bakery name.")).toHaveAttribute(
+    "src",
+    "/images/projects/bakery-project/cover.png",
+  );
+  expect(screen.getByRole("link", { name: "Live demo" })).toHaveAttribute(
+    "href",
+    "https://bakeryprojectapp.netlify.app/",
+  );
+  expect(screen.getByRole("link", { name: "GitHub" })).toHaveAttribute(
+    "href",
+    "https://github.com/tigerkaplan/bakeryProject",
+  );
+  expect(container.querySelectorAll("img")).toHaveLength(6);
 });
 
 test("maps normalized project fields into route metadata", async () => {

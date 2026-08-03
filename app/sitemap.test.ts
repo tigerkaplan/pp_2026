@@ -7,7 +7,7 @@ test("includes every valid project in the sitemap data source", async () => {
     entry.url.includes("/projects/"),
   );
 
-  expect(projectEntries).toHaveLength(3);
+  expect(projectEntries).toHaveLength(4);
 
   expect(entries).toContainEqual(
     expect.objectContaining({
@@ -25,6 +25,11 @@ test("includes every valid project in the sitemap data source", async () => {
   expect(entries).toContainEqual(
     expect.objectContaining({
       url: "http://localhost:3000/projects/clive-lutley-painting-gallery",
+    }),
+  );
+  expect(entries).toContainEqual(
+    expect.objectContaining({
+      url: "http://localhost:3000/projects/bakery-project",
     }),
   );
   expect(entries).not.toContainEqual(

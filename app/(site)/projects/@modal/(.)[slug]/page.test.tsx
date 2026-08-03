@@ -211,3 +211,33 @@ test("resolves Clive Lutley Painting Gallery through the generic Preview modal",
     "https://cl-painting-gallery.netlify.app",
   );
 });
+
+test("resolves Bakery through the existing Preview modal with its approved cover and public links", async () => {
+  const bakery = PROJECTS.find(
+    (candidate) => candidate.slug === "bakery-project",
+  )!;
+  jest.mocked(getProjectBySlug).mockResolvedValue(bakery);
+
+  render(
+    await ProjectModal({ params: Promise.resolve({ slug: bakery.slug }) }),
+  );
+
+  expect(screen.getByRole("dialog", { name: bakery.title })).toBeInTheDocument();
+  expect(screen.getByText("Client Work")).toBeInTheDocument();
+  expect(screen.getByAltText("Patisserie 4 You homepage with coffee-bean hero image, navigation and bakery name.")).toHaveAttribute(
+    "src",
+    "/images/projects/bakery-project/cover.png",
+  );
+  expect(screen.getByRole("link", { name: /view full project/i })).toHaveAttribute(
+    "href",
+    "/projects/bakery-project",
+  );
+  expect(screen.getByRole("link", { name: "GitHub" })).toHaveAttribute(
+    "href",
+    "https://github.com/tigerkaplan/bakeryProject",
+  );
+  expect(screen.getByRole("link", { name: "Live" })).toHaveAttribute(
+    "href",
+    "https://bakeryprojectapp.netlify.app/",
+  );
+});

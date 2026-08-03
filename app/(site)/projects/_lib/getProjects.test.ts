@@ -6,12 +6,13 @@ test("returns every validated registry record without evidence-based withholding
   const slugs = projects.map((project) => project.slug);
 
   expect(projects).toBe(PROJECTS);
-  expect(projects).toHaveLength(3);
-  expect(new Set(slugs).size).toBe(3);
+  expect(projects).toHaveLength(4);
+  expect(new Set(slugs).size).toBe(4);
   expect(slugs).toEqual([
     "council-digital-platforms-mini-lab",
     "personal-portfolio-2026",
     "clive-lutley-painting-gallery",
+    "bakery-project",
   ]);
   expect(projects[0]).toMatchObject({
     media: {
@@ -38,6 +39,17 @@ test("returns every validated registry record without evidence-based withholding
     links: {
       live: "https://cl-painting-gallery.netlify.app",
       github: "https://github.com/tigerkaplan/cl-painting-gallery",
+    },
+  });
+  expect(projects[3]).toMatchObject({
+    slug: "bakery-project",
+    category: "Client Work",
+    media: {
+      cover: "/images/projects/bakery-project/cover.png",
+    },
+    links: {
+      live: "https://bakeryprojectapp.netlify.app/",
+      github: "https://github.com/tigerkaplan/bakeryProject",
     },
   });
 });
