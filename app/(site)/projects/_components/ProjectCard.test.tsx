@@ -88,6 +88,25 @@ test("renders valid safe project media when the local asset is available", () =>
   expect(jest.mocked(existsSync)).toHaveBeenCalled();
 });
 
+test("keeps real project media unobscured and details in the card body", () => {
+  jest.mocked(existsSync).mockReturnValue(true);
+
+  const { container } = render(<ProjectCard project={validImageProject} />);
+  const header = container.querySelector<HTMLElement>("[data-project-header]")!;
+  const content = container.querySelector<HTMLElement>("[data-project-content]")!;
+
+  expect(header).toHaveTextContent("Accessibility");
+  expect(header).not.toHaveTextContent(validImageProject.title);
+  expect(header).not.toHaveTextContent(String(validImageProject.year));
+  expect(header).not.toHaveTextContent(validImageProject.role);
+  expect(header).not.toHaveTextContent(validImageProject.summary);
+  expect(header.querySelector('[class*="linear-gradient"]')).toBeNull();
+  expect(content).toHaveTextContent(validImageProject.title);
+  expect(content).toHaveTextContent(String(validImageProject.year));
+  expect(content).toHaveTextContent(validImageProject.role);
+  expect(content).toHaveTextContent(validImageProject.summary);
+});
+
 test("keeps the missing-media fallback inside media and its content below", () => {
   const { container } = render(<ProjectCard project={missingImageProject} />);
   const media = container.querySelector<HTMLElement>("[data-project-media]")!;

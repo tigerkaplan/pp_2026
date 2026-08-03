@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Project } from "../_types/project";
-import { hasRealProjectAsset, ProjectMedia } from "./ProjectMedia";
+import { ProjectMedia } from "./ProjectMedia";
 import {
   ProjectActionOverflow,
   type ProjectOverflowAction,
@@ -38,112 +38,48 @@ function Cover({
   img,
   alt,
   title,
-  year,
-  role,
   tags,
-  isFeatured,
   heightClass,
-  overlayClass,
-  showSummaryOnImage,
-  summary,
   priority,
   sizes,
 }: {
   img?: string;
   alt: string;
   title: string;
-  year: number;
-  role: string;
   tags: string[];
-  isFeatured: boolean;
   heightClass: string;
-  overlayClass: string;
-  showSummaryOnImage?: boolean;
-  summary: string;
   priority?: boolean;
   sizes: string;
 }) {
   const primaryTag = tags[0];
-  const hasRealImage = hasRealProjectAsset(img);
 
   return (
     <div data-project-header>
       <div
-      className={[
-        "relative w-full overflow-hidden rounded-t-2xl",
-        heightClass,
-        // fallback surface
-        "bg-[rgb(var(--color-surface-strong))]",
-      ].join(" ")}
-      data-project-media
-    >
-      <div className="absolute inset-0">
-        <ProjectMedia
-          src={img}
-          title={title}
-          alt={alt}
-          className="object-cover"
-          priority={priority}
-          sizes={sizes}
-        />
-      </div>
-
-      {primaryTag && (
-        <div className="absolute right-4 top-4">
-          <span className={chipPrimary}>{primaryTag}</span>
-        </div>
-      )}
-
-      {hasRealImage && (
-        <>
-          <div className={`absolute inset-0 ${overlayClass}`} />
-
-      <div className="absolute inset-x-0 bottom-0 p-5">
-        <div className="text-sm leading-5 text-white/80">
-          {year} • {role}
+        className={[
+          "relative w-full overflow-hidden rounded-t-2xl",
+          heightClass,
+          "bg-[rgb(var(--color-surface-strong))]",
+        ].join(" ")}
+        data-project-media
+      >
+        <div className="absolute inset-0">
+          <ProjectMedia
+            src={img}
+            title={title}
+            alt={alt}
+            className="object-cover"
+            priority={priority}
+            sizes={sizes}
+          />
         </div>
 
-        <h3
-          className={
-            isFeatured
-              ? "mt-1 text-2xl font-semibold leading-tight text-white sm:text-3xl"
-              : "mt-1 text-xl font-semibold leading-tight text-white lg:text-2xl"
-          }
-        >
-          {title}
-        </h3>
-
-        {showSummaryOnImage && (
-          <p className="mt-2 text-sm leading-6 text-white/85 line-clamp-2 sm:text-base">
-            {summary}
-          </p>
-        )}
+        {primaryTag && (
+          <div className="absolute right-4 top-4">
+            <span className={chipPrimary}>{primaryTag}</span>
           </div>
-          </>
         )}
       </div>
-
-      {!hasRealImage && (
-        <div className="p-5" data-project-title-content>
-          <div className="text-sm leading-5 text-[rgb(var(--color-fg-muted))]">
-            {year} {"\u2022"} {role}
-          </div>
-          <h3
-            className={
-              isFeatured
-                ? "mt-1 text-2xl font-semibold leading-tight text-[rgb(var(--color-fg))] sm:text-3xl"
-                : "mt-1 text-xl font-semibold leading-tight text-[rgb(var(--color-fg))] lg:text-2xl"
-            }
-          >
-            {title}
-          </h3>
-          {showSummaryOnImage && (
-            <p className="mt-2 text-sm leading-6 text-[rgb(var(--color-fg-muted))] line-clamp-2 sm:text-base">
-              {summary}
-            </p>
-          )}
-        </div>
-      )}
     </div>
   );
 }
@@ -291,17 +227,24 @@ export default function ProjectCard({
             img={img}
             alt={project.media.coverAlt}
             title={project.title}
-            year={project.year}
-            role={project.role}
             tags={project.tags ?? []}
-            isFeatured
             heightClass={coverFeaturedH}
-            overlayClass="bg-[linear-gradient(to_top,rgba(0,0,0,0.75),rgba(0,0,0,0.28),rgba(0,0,0,0.10))]"
-            showSummaryOnImage
-            summary={project.summary}
             priority
             sizes="100vw"
           />
+          <div className="flex flex-col gap-3 px-5 pb-5 pt-3" data-project-content>
+            <div data-project-title-content>
+              <div className="text-sm leading-5 text-[rgb(var(--color-fg-muted))]">
+                {project.year} {"\u2022"} {project.role}
+              </div>
+              <h3 className="mt-1 text-2xl font-semibold leading-tight text-[rgb(var(--color-fg))] sm:text-3xl">
+                {project.title}
+              </h3>
+            </div>
+            <p className="text-base leading-6 text-[rgb(var(--color-fg-muted))] lg:text-[17px]">
+              {project.summary}
+            </p>
+          </div>
         </div>
 
         <Ctas
@@ -322,13 +265,8 @@ export default function ProjectCard({
           img={img}
           alt={project.media.coverAlt}
           title={project.title}
-          year={project.year}
-          role={project.role}
           tags={project.tags ?? []}
-          isFeatured={false}
           heightClass={coverDefaultH}
-          overlayClass="bg-[linear-gradient(to_top,rgba(0,0,0,0.35),rgba(0,0,0,0))]"
-          summary={project.summary}
           sizes="(min-width:1200px) 33vw, (min-width:768px) 50vw, 100vw"
         />
 
@@ -336,6 +274,14 @@ export default function ProjectCard({
             className="flex flex-col gap-3 px-5 pb-5 pt-3"
             data-project-content
           >
+            <div data-project-title-content>
+              <div className="text-sm leading-5 text-[rgb(var(--color-fg-muted))]">
+                {project.year} {"\u2022"} {project.role}
+              </div>
+              <h3 className="mt-1 text-xl font-semibold leading-tight text-[rgb(var(--color-fg))] lg:text-2xl">
+                {project.title}
+              </h3>
+            </div>
             <p className="text-base leading-6 text-[rgb(var(--color-fg-muted))] lg:text-[17px]">
               {project.summary}
             </p>
