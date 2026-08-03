@@ -224,6 +224,7 @@ test("resolves Bakery through the existing Preview modal with its approved cover
 
   expect(screen.getByRole("dialog", { name: bakery.title })).toBeInTheDocument();
   expect(screen.getByText("Client Work")).toBeInTheDocument();
+  expect(screen.queryByText("Featured")).not.toBeInTheDocument();
   expect(screen.getByAltText("Patisserie 4 You homepage with coffee-bean hero image, navigation and bakery name.")).toHaveAttribute(
     "src",
     "/images/projects/bakery-project/cover.png",

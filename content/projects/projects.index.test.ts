@@ -57,7 +57,7 @@ test("keeps the active project records in registry order", () => {
     "Clive Lutley Painting Gallery",
     "Patisserie 4 You",
   ]);
-  expect(PROJECTS.map((project) => project.featured)).toEqual([true, true, false, true]);
+  expect(PROJECTS.map((project) => project.featured)).toEqual([true, true, false, false]);
   expect(PROJECT_CONTENT.map((project) => project.order)).toEqual([1, 2, 3, 4]);
   expect(PROJECTS.map((project) => project.id)).toEqual([13, 1, 14, 15]);
   for (const slug of REMOVED_SLUGS) {
@@ -187,7 +187,7 @@ test("registers Bakery as selected client work with approved media and public li
   expect(bakery).toMatchObject({
     id: 15,
     order: 4,
-    featured: true,
+    featured: false,
     category: "Client Work",
     skillIds: ["keyboard-accessibility"],
     links: {

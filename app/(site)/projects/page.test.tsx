@@ -15,6 +15,7 @@ jest.mock("./_components/ProjectGrid", () => ({
       data-testid={`${variant}-projects-grid`}
       data-count={projects.length}
       data-first-project={projects[0]?.slug}
+      data-project-slugs={projects.map((project) => project.slug).join(",")}
     >
       {projects.map((project) => (
         <div key={project.slug}>
@@ -41,7 +42,7 @@ test("renders the real projects page with explicit grid contracts and offsets", 
 
   expect(screen.getByTestId("featured-projects-grid")).toHaveAttribute(
     "data-count",
-    "3",
+    "2",
   );
   expect(screen.getByTestId("on-this-page")).toHaveAttribute(
     "data-count",
@@ -53,11 +54,19 @@ test("renders the real projects page with explicit grid contracts and offsets", 
   );
   expect(screen.getByTestId("all-projects-grid")).toHaveAttribute(
     "data-count",
-    "1",
+    "2",
   );
   expect(screen.getByTestId("all-projects-grid")).toHaveAttribute(
     "data-first-project",
     "clive-lutley-painting-gallery",
+  );
+  expect(screen.getByTestId("featured-projects-grid")).toHaveAttribute(
+    "data-project-slugs",
+    "council-digital-platforms-mini-lab,personal-portfolio-2026",
+  );
+  expect(screen.getByTestId("all-projects-grid")).toHaveAttribute(
+    "data-project-slugs",
+    "clive-lutley-painting-gallery,bakery-project",
   );
   expect(screen.getByText("Council Digital Platforms Mini Lab")).toBeInTheDocument();
   expect(screen.getByText("Personal Portfolio 2026")).toBeInTheDocument();
